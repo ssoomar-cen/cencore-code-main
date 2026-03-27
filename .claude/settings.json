@@ -9,7 +9,8 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080)",
       "Read(//c/Users/ssoomar.EEI/AppData/Local/Temp/claude/c--Users-ssoomar-EEI-OneDrive---Cenergistic-Projects-cencore-code-main/e87cf117-ba0c-4b3a-9b1f-d6da069e99cf/tasks/**)",
       "Bash(grep -r from.*measureb 'c:\\\\Users\\\\ssoomar.EEI\\\\OneDrive - Cenergistic\\\\Projects\\\\cencore-code-main\\\\src\\\\hooks' --include=*.ts --include=*.tsx -l)",
-      "Bash(grep -r from.*measureb 'c:\\\\Users\\\\ssoomar.EEI\\\\OneDrive - Cenergistic\\\\Projects\\\\cencore-code-main\\\\src\\\\components\\\\crm' --include=*.ts --include=*.tsx -n)"
+      "Bash(grep -r from.*measureb 'c:\\\\Users\\\\ssoomar.EEI\\\\OneDrive - Cenergistic\\\\Projects\\\\cencore-code-main\\\\src\\\\components\\\\crm' --include=*.ts --include=*.tsx -n)",
+      "Bash(gh auth:*)"
     ]
   }
 }
