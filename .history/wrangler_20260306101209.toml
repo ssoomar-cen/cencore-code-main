@@ -1,0 +1,27 @@
+name = "cencore"
+type = "javascript"
+compatibility_date = "2024-12-12"
+
+# Build configuration for Cloudflare Pages
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+# Pages Functions configuration (if needed in future)
+# Currently only deploying static assets from dist/
+
+[build]
+# Build the Vite React app
+command = "npm run build"
+cwd = "./src/.."
+watch_paths = ["src/**/*.ts", "src/**/*.tsx"]
+
+[build.upload]
+# Specify the output directory containing the built assets
+dir = "dist"
+# Exclude files/directories from upload to stay under 25 MiB limit
+exclude = ["supabase/", "server/", "data/", ".git/", ".env*", "node_modules/"]
+
+# Environment variables for the deployment
+[env.production.vars]
+VITE_SUPABASE_URL = ""
+VITE_SUPABASE_ANON_KEY = ""

@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Connection</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>CEN_Connections</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>CEN_Connections</fullName>
+        <fields>Name</fields>
+        <fields>Contact__c</fields>
+        <fields>Organization__c</fields>
+        <fields>Role__c</fields>
+        <fields>Active__c</fields>
+        <label>CEN Connections</label>
+    </compactLayouts>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Active__c</fullName>
+        <defaultValue>true</defaultValue>
+        <label>Active</label>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Connections</relationshipLabel>
+        <relationshipName>Connections</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>D365ConnectionGuid__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <label>D365ConnectionGuid</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>D365record1Guid__c</fullName>
+        <externalId>false</externalId>
+        <label>D365record1Guid</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>D365record2Guid__c</fullName>
+        <externalId>false</externalId>
+        <label>D365record2Guid</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DoNotReport__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Checked if these connections don&apos;t need to be on reports</description>
+        <label>Do Not Report</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>End_Date__c</fullName>
+        <label>End Date</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Notes__c</fullName>
+        <label>Notes</label>
+        <length>2000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Organization__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Organization</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Connections</relationshipLabel>
+        <relationshipName>Connections</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Push_to_D365__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Push to D365</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Role__c</fullName>
+        <label>Role</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Board Member</fullName>
+                    <default>false</default>
+                    <label>Board Member</label>
+                </value>
+                <value>
+                    <fullName>Cenergistic Consultant</fullName>
+                    <default>false</default>
+                    <label>Cenergistic Consultant</label>
+                </value>
+                <value>
+                    <fullName>Cenergistic Energy Specialist</fullName>
+                    <default>false</default>
+                    <label>Cenergistic Energy Specialist</label>
+                </value>
+                <value>
+                    <fullName>CFO</fullName>
+                    <default>false</default>
+                    <label>CFO</label>
+                </value>
+                <value>
+                    <fullName>Chief Administrator</fullName>
+                    <default>false</default>
+                    <label>Chief Administrator</label>
+                </value>
+                <value>
+                    <fullName>Communications POC</fullName>
+                    <default>false</default>
+                    <label>Communications POC</label>
+                </value>
+                <value>
+                    <fullName>Corporate Office</fullName>
+                    <default>false</default>
+                    <label>Corporate Office</label>
+                </value>
+                <value>
+                    <fullName>Energy Specialist</fullName>
+                    <default>false</default>
+                    <label>Energy Specialist</label>
+                </value>
+                <value>
+                    <fullName>Head Finance</fullName>
+                    <default>false</default>
+                    <label>Head Finance</label>
+                </value>
+                <value>
+                    <fullName>Head M and O</fullName>
+                    <default>false</default>
+                    <label>Head M and O</label>
+                </value>
+                <value>
+                    <fullName>Legal Counsel</fullName>
+                    <default>false</default>
+                    <label>Legal Counsel</label>
+                </value>
+                <value>
+                    <fullName>Market Consultant</fullName>
+                    <default>false</default>
+                    <label>Market Consultant</label>
+                </value>
+                <value>
+                    <fullName>Marketer</fullName>
+                    <default>false</default>
+                    <label>Marketer</label>
+                </value>
+                <value>
+                    <fullName>President</fullName>
+                    <default>false</default>
+                    <label>President</label>
+                </value>
+                <value>
+                    <fullName>Program Liaison</fullName>
+                    <default>false</default>
+                    <label>Program Liaison</label>
+                </value>
+                <value>
+                    <fullName>Senior Pastor</fullName>
+                    <default>false</default>
+                    <label>Senior Pastor</label>
+                </value>
+                <value>
+                    <fullName>Superintendent</fullName>
+                    <default>false</default>
+                    <label>Superintendent</label>
+                </value>
+                <value>
+                    <fullName>25th Anniversary Specialist Guests</fullName>
+                    <default>false</default>
+                    <label>25th Anniversary Specialist Guests</label>
+                </value>
+                <value>
+                    <fullName>Accounting</fullName>
+                    <default>false</default>
+                    <label>Accounting</label>
+                </value>
+                <value>
+                    <fullName>Assistant Energy Manager</fullName>
+                    <default>false</default>
+                    <label>Assistant Energy Manager</label>
+                </value>
+                <value>
+                    <fullName>Attorney</fullName>
+                    <default>false</default>
+                    <label>Attorney</label>
+                </value>
+                <value>
+                    <fullName>Billing Contact</fullName>
+                    <default>false</default>
+                    <label>Billing Contact</label>
+                </value>
+                <value>
+                    <fullName>Board President</fullName>
+                    <default>false</default>
+                    <label>Board President</label>
+                </value>
+                <value>
+                    <fullName>Business POC</fullName>
+                    <default>false</default>
+                    <label>Business POC</label>
+                </value>
+                <value>
+                    <fullName>Contractor</fullName>
+                    <default>false</default>
+                    <label>Contractor</label>
+                </value>
+                <value>
+                    <fullName>Data Clerk</fullName>
+                    <default>false</default>
+                    <label>Data Clerk</label>
+                </value>
+                <value>
+                    <fullName>Data Release Lead</fullName>
+                    <default>false</default>
+                    <label>Data Release Lead</label>
+                </value>
+                <value>
+                    <fullName>Dean</fullName>
+                    <default>false</default>
+                    <label>Dean</label>
+                </value>
+                <value>
+                    <fullName>EEM Recruiting Contact</fullName>
+                    <default>false</default>
+                    <label>EEM Recruiting Contact</label>
+                </value>
+                <value>
+                    <fullName>ES Recruiting Contact</fullName>
+                    <default>false</default>
+                    <label>ES Recruiting Contact</label>
+                </value>
+                <value>
+                    <fullName>Influencer</fullName>
+                    <default>false</default>
+                    <label>Influencer</label>
+                </value>
+                <value>
+                    <fullName>Maintenance POC</fullName>
+                    <default>false</default>
+                    <label>Maintenance POC</label>
+                </value>
+                <value>
+                    <fullName>NTC Attendee</fullName>
+                    <default>false</default>
+                    <label>NTC Attendee</label>
+                </value>
+                <value>
+                    <fullName>NTC Speaker</fullName>
+                    <default>false</default>
+                    <label>NTC Speaker</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>QuickStart Specialist</fullName>
+                    <default>false</default>
+                    <label>QuickStart Specialist</label>
+                </value>
+                <value>
+                    <fullName>Report</fullName>
+                    <default>false</default>
+                    <label>Report</label>
+                </value>
+                <value>
+                    <fullName>Reporting Senior</fullName>
+                    <default>false</default>
+                    <label>Reporting Senior</label>
+                </value>
+                <value>
+                    <fullName>Seminar Attendee</fullName>
+                    <default>false</default>
+                    <label>Seminar Attendee</label>
+                </value>
+                <value>
+                    <fullName>Senior Administrator –Non CA</fullName>
+                    <default>false</default>
+                    <label>Senior Administrator –Non CA</label>
+                </value>
+                <value>
+                    <fullName>Solutions Engineer</fullName>
+                    <default>false</default>
+                    <label>Solutions Engineer</label>
+                </value>
+                <value>
+                    <fullName>State Executive</fullName>
+                    <default>false</default>
+                    <label>State Executive</label>
+                </value>
+                <value>
+                    <fullName>University President</fullName>
+                    <default>false</default>
+                    <label>University President</label>
+                </value>
+                <value>
+                    <fullName>Data Analyst</fullName>
+                    <default>false</default>
+                    <label>Data Analyst</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Start_Date__c</fullName>
+        <label>Start Date</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <label>Connection</label>
+    <listViews>
+        <fullName>Active_Connections</fullName>
+        <columns>NAME</columns>
+        <columns>Active__c</columns>
+        <columns>Organization__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Role__c</columns>
+        <columns>Start_Date__c</columns>
+        <columns>End_Date__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Active__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Active Connections</label>
+    </listViews>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>OBJECT_ID</columns>
+        <columns>NAME</columns>
+        <columns>Active__c</columns>
+        <columns>Organization__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Role__c</columns>
+        <columns>Start_Date__c</columns>
+        <columns>End_Date__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>All_Connections</fullName>
+        <columns>NAME</columns>
+        <columns>Active__c</columns>
+        <columns>Organization__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Role__c</columns>
+        <columns>Start_Date__c</columns>
+        <columns>End_Date__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <label>All Connections</label>
+    </listViews>
+    <listViews>
+        <fullName>Connections_with_Contact_No_Role</fullName>
+        <columns>OBJECT_ID</columns>
+        <columns>NAME</columns>
+        <columns>Active__c</columns>
+        <columns>Organization__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Role__c</columns>
+        <columns>Start_Date__c</columns>
+        <columns>End_Date__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Contact__c</field>
+            <operation>notEqual</operation>
+        </filters>
+        <filters>
+            <field>Role__c</field>
+            <operation>equals</operation>
+        </filters>
+        <filters>
+            <field>Start_Date__c</field>
+            <operation>equals</operation>
+        </filters>
+        <filters>
+            <field>End_Date__c</field>
+            <operation>equals</operation>
+        </filters>
+        <label>Conn with Contact No Role No Dates</label>
+    </listViews>
+    <listViews>
+        <fullName>Connections_with_No_Contacts</fullName>
+        <columns>OBJECT_ID</columns>
+        <columns>NAME</columns>
+        <columns>Active__c</columns>
+        <columns>Organization__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Role__c</columns>
+        <columns>Start_Date__c</columns>
+        <columns>End_Date__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Contact__c</field>
+            <operation>equals</operation>
+        </filters>
+        <label>Connections with No Contacts</label>
+    </listViews>
+    <listViews>
+        <fullName>Inactive_Connections</fullName>
+        <columns>NAME</columns>
+        <columns>Active__c</columns>
+        <columns>Organization__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Role__c</columns>
+        <columns>Start_Date__c</columns>
+        <columns>End_Date__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Active__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <label>Inactive Connections</label>
+    </listViews>
+    <nameField>
+        <displayFormat>Connect-{0000000}</displayFormat>
+        <label>Connection Name</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Connections</pluralLabel>
+    <searchLayouts>
+        <excludedStandardButtons>OpenListInQuip</excludedStandardButtons>
+        <excludedStandardButtons>Accept</excludedStandardButtons>
+        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
+        <excludedStandardButtons>Import</excludedStandardButtons>
+        <excludedStandardButtons>MassChangeOwner</excludedStandardButtons>
+        <excludedStandardButtons>MassAssignRecordLabel</excludedStandardButtons>
+        <searchResultsAdditionalFields>Active__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Contact__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Organization__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Role__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Start_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>End_Date__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

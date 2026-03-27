@@ -1,0 +1,268 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Cenergistic Brand Theme
+   Primary Brand Color: #008552 = hsl(156, 100%, 26%)
+   A cohesive dark theme built around the official Cenergistic green.
+*/
+
+@layer base {
+  :root {
+    /* Cenergistic Light Theme */
+    --background: 0 0% 99.5%;
+    --foreground: 160 20% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 160 20% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 20% 8%;
+
+    /* Primary - Cenergistic Brand Green #008552 */
+    --primary: 156 100% 26%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 156 100% 22%;
+    --primary-light: 156 100% 40%;
+    
+    /* Secondary - Light teal accent */
+    --secondary: 160 25% 90%;
+    --secondary-foreground: 160 40% 15%;
+
+    --muted: 160 15% 92%;
+    --muted-foreground: 160 15% 35%;
+
+    --accent: 160 25% 90%;
+    --accent-foreground: 156 100% 22%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 160 15% 82%;
+    --input: 160 15% 90%;
+    --ring: 156 100% 26%;
+
+    --radius: 0.625rem;
+
+    /* Sidebar - Light version with bolder text */
+    --sidebar-background: 160 12% 96%;
+    --sidebar-foreground: 160 25% 15%;
+    --sidebar-primary: 156 100% 26%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 160 20% 90%;
+    --sidebar-accent-foreground: 160 30% 10%;
+    --sidebar-border: 160 12% 82%;
+    --sidebar-ring: 156 100% 26%;
+    
+    /* Custom Portal Colors */
+    --portal-nav: 160 12% 94%;
+    --success: 156 80% 32%;
+    --warning: 38 92% 45%;
+    --info: 200 80% 45%;
+    
+    /* Chart Colors - Harmonized palette */
+    --chart-1: 156 100% 26%;
+    --chart-2: 156 60% 38%;
+    --chart-3: 200 80% 45%;
+    --chart-4: 38 85% 50%;
+    --chart-5: 280 50% 45%;
+  }
+
+  .dark {
+    /* Same as root - already dark theme */
+    --background: 160 10% 7%;
+    --foreground: 160 5% 95%;
+
+    --card: 160 8% 11%;
+    --card-foreground: 160 5% 95%;
+
+    --popover: 160 10% 9%;
+    --popover-foreground: 160 5% 95%;
+
+    --primary: 156 100% 26%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 156 100% 22%;
+
+    --secondary: 160 50% 18%;
+    --secondary-foreground: 160 5% 95%;
+
+    --muted: 160 8% 15%;
+    --muted-foreground: 160 5% 55%;
+
+    --accent: 160 12% 18%;
+    --accent-foreground: 156 100% 40%;
+
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 160 8% 20%;
+    --input: 160 8% 18%;
+    --ring: 156 100% 26%;
+    
+    /* Sidebar */
+    --sidebar-background: 160 12% 6%;
+    --sidebar-foreground: 160 5% 80%;
+    --sidebar-primary: 156 100% 26%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 160 10% 14%;
+    --sidebar-accent-foreground: 160 5% 95%;
+    --sidebar-border: 160 8% 18%;
+    --sidebar-ring: 156 100% 26%;
+    
+    --portal-nav: 160 15% 5%;
+    --success: 156 80% 40%;
+    --warning: 38 92% 55%;
+    --info: 200 80% 60%;
+    
+    /* Chart Colors */
+    --chart-1: 156 100% 26%;
+    --chart-2: 156 60% 42%;
+    --chart-3: 200 80% 60%;
+    --chart-4: 38 85% 55%;
+    --chart-5: 280 50% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+  
+  /* Mobile enhancements */
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    touch-action: manipulation;
+  }
+  
+  /* Safe area support for mobile devices */
+  .safe-area-pb {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .safe-area-pt {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  /* Prevent text selection on buttons for better mobile UX */
+  button {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  
+  /* Better scrolling on mobile */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@layer components {
+  /* Enhanced button styling */
+  .btn-modern {
+    @apply font-medium transition-all duration-200 ease-out;
+  }
+  
+  .btn-modern:hover {
+    @apply transform -translate-y-0.5 shadow-md;
+  }
+  
+  .btn-modern:active {
+    @apply transform translate-y-0;
+  }
+  
+  /* Enhanced card styling */
+  .card-modern {
+    @apply rounded-lg border border-border bg-card transition-all duration-200;
+  }
+  
+  .card-modern:hover {
+    @apply shadow-md border-primary/20;
+  }
+  
+  /* Enhanced input styling */
+  .input-modern {
+    @apply rounded-md border border-input bg-background transition-all duration-200;
+  }
+  
+  .input-modern:focus {
+    @apply border-primary ring-2 ring-primary/10;
+  }
+  
+  /* Smooth transitions for links */
+  a {
+    @apply transition-colors duration-200 ease-out;
+  }
+  
+  /* Better focus states for accessibility */
+  a:focus-visible, button:focus-visible, input:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2;
+  }
+  
+  /* Enhanced backdrop blur for modals */
+  .modal-backdrop {
+    @apply fixed inset-0 z-40 bg-black/30 backdrop-blur-sm transition-opacity duration-200;
+  }
+}
+@layer components {
+  /* Primary button with gradient */
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary to-primary/90 text-primary-foreground rounded-lg font-medium transition-all duration-300;
+  }
+  
+  .btn-primary:hover {
+    @apply shadow-lg shadow-primary/40 -translate-y-0.5;
+  }
+  
+  /* Enhanced card styling */
+  .card-elegant {
+    @apply bg-gradient-to-br from-card to-card/80 rounded-xl border border-border/40 shadow-sm hover:shadow-lg transition-all duration-300;
+  }
+  
+  /* Empty state styling */
+  .empty-state {
+    @apply flex flex-col items-center justify-center py-12 px-4 text-center;
+  }
+  
+  .empty-state-icon {
+    @apply h-16 w-16 text-muted-foreground/30 mb-4;
+  }
+  
+  .empty-state-title {
+    @apply text-lg font-semibold text-foreground mb-2;
+  }
+  
+  .empty-state-description {
+    @apply text-sm text-muted-foreground;
+  }
+  
+  /* Loading spinner */
+  .loading-spinner {
+    @apply h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent;
+  }
+  
+  /* Link accent styling */
+  .link-accent {
+    @apply text-primary hover:text-primary/80 underline-offset-4 hover:underline transition-all duration-200;
+  }
+  
+  /* Shadow elevation system */
+  .shadow-elevation-1 {
+    @apply shadow-sm;
+  }
+  
+  .shadow-elevation-2 {
+    @apply shadow-md shadow-primary/10;
+  }
+  
+  .shadow-elevation-3 {
+    @apply shadow-lg shadow-primary/15;
+  }
+  
+  .shadow-elevation-4 {
+    @apply shadow-xl shadow-primary/20;
+  }
+}

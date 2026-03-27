@@ -1,0 +1,17 @@
+name = "cencore"
+type = "javascript"
+compatibility_date = "2024-12-12"
+main = "src/main.tsx"
+
+# Cloudflare Pages deployment configuration
+# Only the dist/ output directory will be deployed
+pages_build_output_dir = "dist"
+
+[build]
+# Build the Vite React app to dist/
+command = "npm run build"
+watch_paths = ["src/**/*.ts", "src/**/*.tsx"]
+
+[env.production]
+name = "cencore"
+vars = { ENVIRONMENT = "production" }

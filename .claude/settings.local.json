@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -l \"supabase\\\\|createClient\" \"C:\\\\Users\\\\ssoom\\\\OneDrive - Cenergistic\\\\Projects\\\\cencore - claude\\\\supabase\\\\functions\"/*/*.ts)",
+      "Read(//c/Users/ssoom/OneDrive - Cenergistic/Projects/cenergisticsql-api/**)",
+      "Bash(grep -E \"^react$|^@types\")",
+      "Bash(timeout 15 npm run dev)",
+      "Bash(npm run:*)",
+      "Bash(grep -l \"contract\" c:/Projects/cencore-code/supabase/migrations/*.sql)",
+      "Bash(grep -h \"ALTER TABLE.*contract\\\\b\\\\|ADD COLUMN.*contract\\\\|salesforce_id\\\\|contract_number\" c:/Projects/cencore-code/supabase/migrations/*.sql)",
+      "Bash(grep -h \"ALTER TABLE public.contract ADD COLUMN\" c:/Projects/cencore-code/supabase/migrations/*.sql)",
+      "Bash(ls /c/Projects/cencore-code/src/components/crm/*Module.tsx)",
+      "Bash(done)",
+      "Bash(find c:Projectscencore-codeserver -type f -name *contract* -o -name *generate*)",
+      "Bash(find c:Projectscencore-codeserversrc -type f -name *.ts -o -name *.tsx)",
+      "Bash(grep -ri \"import.*docx\\\\|from \"\"docx\"\"\\\\|from ''docx''\" \"c:\\\\Projects\\\\cencore-code\\\\src\")",
+      "Bash(find c:Projectscencore-code -type f -path *supabase* -name *.ts)",
+      "Bash(grep -h \"CREATE TABLE.*addend\\\\|ALTER TABLE.*addend\\\\|ADD COLUMN.*addend\" c:/Projects/cencore-code/supabase/migrations/*.sql)",
+      "Bash(grep -h \"CREATE TABLE public.addend\\\\|addenda\\\\|addendum\" c:/Projects/cencore-code/supabase/migrations/*.sql)",
+      "Bash(grep -h \"CREATE TABLE public.connection\\\\b\" c:/Projects/cencore-code/supabase/migrations/*.sql)",
+      "Bash(grep -A 20 'CREATE TABLE public\\\\.connection\\\\b' c:/Projects/cencore-code/supabase/migrations/*.sql)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx supabase:*)",
+      "Bash(winget install:*)",
+      "Bash(scoop install:*)",
+      "Bash(curl -L https://github.com/supabase/cli/releases/latest/download/supabase_windows_amd64.tar.gz -o /tmp/supabase.tar.gz)",
+      "Bash(tar -xzf /tmp/supabase.tar.gz -C /tmp)",
+      "Bash(/tmp/supabase.exe --version)",
+      "Bash(/tmp/supabase.exe functions:*)",
+      "Bash(grep -r \"deploy\\\\|host\\\\|publish\" c:/Projects/cencore-code/*.json)",
+      "Bash(grep -E \"\\\\.\\(toml|yaml|json|config|xml\\)$\")",
+      "Bash(git -C c:/Projects/cencore-code remote -v)",
+      "Bash(npx vite:*)",
+      "Bash(node_modules/.bin/vite)",
+      "Bash(node_modules/.bin/vite --port 8080)",
+      "Bash(find c:Projectscencore-code -name supabaseClient* -o -name *supabase*config*)",
+      "Bash(find c:Projectscencore-code -name .env* -o -name *.env)",
+      "Bash(grep -l \"REFERENCES.*\\\\\\(account\\\\|project\\\\|opportunity\\\\|contract\\\\|quote\\\\|building\\\\|activity\\\\|connection\\\\\\)\" c:/Projects/cencore-code/supabase/migrations/*.sql)"
+    ]
+  }
+}

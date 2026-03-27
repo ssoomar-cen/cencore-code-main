@@ -1,0 +1,995 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Energy_Program</content>
+        <formFactor>Small</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Energy_Program</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>Energy_Program</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Energy_Program</fullName>
+        <fields>Name</fields>
+        <fields>Service_Status__c</fields>
+        <fields>Related_Opportunity__c</fields>
+        <label>Energy Program</label>
+    </compactLayouts>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Billing_Schedule_End_Date__c</fullName>
+        <label>Billing Schedule End Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>CT_HotNotes__c</fullName>
+        <label>CT HotNotes</label>
+        <length>2000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Client_Manager__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Client Manager</label>
+        <lookupFilter>
+            <active>true</active>
+            <booleanFilter>1 OR 2</booleanFilter>
+            <errorMessage>You must select a person that is has the title Client Manager on their Salesforce user record. If you are unable to find the person that you are looking for, contact the CRM Administrator.</errorMessage>
+            <filterItems>
+                <field>User.Title</field>
+                <operation>equals</operation>
+                <value>Client Manager</value>
+            </filterItems>
+            <filterItems>
+                <field>User.Title</field>
+                <operation>equals</operation>
+                <value>Regional Vice President</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Energy_Programs</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Start_Date__c</fullName>
+        <label>Original Contract Start Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Status__c</fullName>
+        <label>Contract Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Draft</fullName>
+                    <default>false</default>
+                    <label>Draft</label>
+                </value>
+                <value>
+                    <fullName>Active</fullName>
+                    <default>false</default>
+                    <label>Active</label>
+                </value>
+                <value>
+                    <fullName>Expired</fullName>
+                    <default>false</default>
+                    <label>Expired</label>
+                </value>
+                <value>
+                    <fullName>Terminated</fullName>
+                    <default>false</default>
+                    <label>Terminated</label>
+                </value>
+                <value>
+                    <fullName>Closed Lost</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Closed Lost</label>
+                </value>
+                <value>
+                    <fullName>Inactive</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Inactive</label>
+                </value>
+                <value>
+                    <fullName>Negotiation</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Negotiation</label>
+                </value>
+                <value>
+                    <fullName>Signed</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Signed</label>
+                </value>
+                <value>
+                    <fullName>Signed/Not Executed</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Signed/Not Executed</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Contract_Term__c</fullName>
+        <externalId>false</externalId>
+        <label>Contract Term</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract_Type__c</fullName>
+        <label>Contract Type</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Fixed</fullName>
+                    <default>false</default>
+                    <label>Fixed</label>
+                </value>
+                <value>
+                    <fullName>Fixed-ES</fullName>
+                    <default>false</default>
+                    <label>Fixed-ES</label>
+                </value>
+                <value>
+                    <fullName>Var Fixed</fullName>
+                    <default>false</default>
+                    <label>Var Fixed</label>
+                </value>
+                <value>
+                    <fullName>Var Fixed-ES</fullName>
+                    <default>false</default>
+                    <label>Var Fixed-ES</label>
+                </value>
+                <value>
+                    <fullName>Split Fee</fullName>
+                    <default>false</default>
+                    <label>Split Fee</label>
+                </value>
+                <value>
+                    <fullName>Performance Fee</fullName>
+                    <default>false</default>
+                    <label>Performance Fee</label>
+                </value>
+                <value>
+                    <fullName>Turnkey</fullName>
+                    <default>false</default>
+                    <label>Turnkey</label>
+                </value>
+                <value>
+                    <fullName>Turnkey-R</fullName>
+                    <default>false</default>
+                    <label>Turnkey-R</label>
+                </value>
+                <value>
+                    <fullName>Turnkey-S</fullName>
+                    <default>false</default>
+                    <label>Turnkey-S</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>D365EnergyProgramGuid__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <label>D365EnergyProgramGuid</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Data_Released__c</fullName>
+        <label>Data Released</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>ECAP_Online_Database__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>ECAP Online Database</label>
+        <referenceTo>ECAP_Online_Database__c</referenceTo>
+        <relationshipLabel>Energy Programs</relationshipLabel>
+        <relationshipName>ECAP_Online_Database</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>ECAP_Online_Owner_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>ECAP Online Owner ID</label>
+        <length>18</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Executive_app_includes_QS__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Executive app includes QS</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>GX_Lead__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>GX Lead</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Energy_Programs1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Implementation_Consultant_2__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Implementation Consultant 2</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Energy_Programs6</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Implementation_Consultant__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Implementation Consultant</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Energy_Programs5</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Key_Reference_Notes__c</fullName>
+        <label>Key Reference Notes</label>
+        <length>2000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Key_Reference__c</fullName>
+        <label>Key Reference List</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Yes_No</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>M_V_Lead__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>M&amp;V Lead</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Energy_Programs2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Organization__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Organization</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Energy Programs</relationshipLabel>
+        <relationshipName>Energy_Programs</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PMA_Password__c</fullName>
+        <externalId>false</externalId>
+        <label>PMA Password</label>
+        <length>64</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PMA_User_Id__c</fullName>
+        <externalId>false</externalId>
+        <label>PMA User Id</label>
+        <length>96</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Project__c</fullName>
+        <label>Project</label>
+        <length>52</length>
+        <referenceTo>Project__x</referenceTo>
+        <relationshipLabel>Energy Programs</relationshipLabel>
+        <relationshipName>Energy_Programs</relationshipName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>ExternalLookup</type>
+    </fields>
+    <fields>
+        <fullName>Push_to_D365__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Push to D365</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Related_Contract__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Related Contract</label>
+        <referenceTo>Contract_CEN__c</referenceTo>
+        <relationshipLabel>Energy Programs</relationshipLabel>
+        <relationshipName>Energy_Programs</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Related_Measure__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Related Measure</label>
+        <referenceTo>Measure__c</referenceTo>
+        <relationshipLabel>Energy Programs</relationshipLabel>
+        <relationshipName>Energy_Programs</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Related_Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Related Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Energy Programs</relationshipLabel>
+        <relationshipName>Energy_Programs</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Send_Contacts__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Send Contacts</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Service_Status__c</fullName>
+        <label>Service Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>IC</fullName>
+                    <default>true</default>
+                    <label>IC</label>
+                </value>
+                <value>
+                    <fullName>OOC</fullName>
+                    <default>false</default>
+                    <label>OOC</label>
+                </value>
+                <value>
+                    <fullName>Suspended</fullName>
+                    <default>false</default>
+                    <label>Suspended</label>
+                </value>
+                <value>
+                    <fullName>Terminated</fullName>
+                    <default>false</default>
+                    <label>Terminated</label>
+                </value>
+                <value>
+                    <fullName>Draft</fullName>
+                    <default>false</default>
+                    <label>Draft</label>
+                </value>
+                <value>
+                    <fullName>Inactive</fullName>
+                    <default>false</default>
+                    <label>Inactive</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>SharePoint_Path__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF ( AND (  ISBLANK ( D365EnergyProgramGuid__c ),  DATEVALUE( CreatedDate ) &gt; DATE ( 2025,3,10 ) ), 
+Name + &quot;_&quot; +  Id , 
+Name + &quot;_&quot; +  D365EnergyProgramGuid__c )</formula>
+        <inlineHelpText>Used for PDF Butler SharePoint integration to determine path to SharePoint file location.</inlineHelpText>
+        <label>SharePoint Path</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <label>Status</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Active_Inactive</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Sus_Term_Date__c</fullName>
+        <label>Sus Term Date</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Sus_Term_Info__c</fullName>
+        <inlineHelpText>Max 2000 characters.</inlineHelpText>
+        <label>Sus Term Info</label>
+        <length>2000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Sus_Term_Reason__c</fullName>
+        <inlineHelpText>Max 2000 characters.</inlineHelpText>
+        <label>Sus Term Reason</label>
+        <length>2000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Technical_Lead_2__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Technical Lead 2</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Energy_Programs4</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Technical_Lead__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Technical Lead</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Energy_Programs3</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>User_Is_Client_Manager__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF (  $User.Id =  Client_Manager__r.Id , 1, 0 )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used in the Assigned Energy Program list view</inlineHelpText>
+        <label>User Is Client Manager</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_Is_Implementation_Consultant2__c</fullName>
+        <description>Used in the Assigned Energy Program list view</description>
+        <externalId>false</externalId>
+        <formula>IF ( $User.Id = Implementation_Consultant_2__r.Id , 1, 0 )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used in the Assigned Energy Program list view</inlineHelpText>
+        <label>User Is Implementation Consultant2</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_Is_Implementation_Consultant__c</fullName>
+        <description>Used in the Assigned Energy Program list view</description>
+        <externalId>false</externalId>
+        <formula>IF ( $User.Id = Implementation_Consultant__r.Id , 1, 0 )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used in the Assigned Energy Program list view</inlineHelpText>
+        <label>User Is Implementation Consultant</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_Is_M_V_Lead__c</fullName>
+        <description>Used in the Assigned Energy Program list view</description>
+        <externalId>false</externalId>
+        <formula>IF ( $User.Id =  M_V_Lead__r.Id  , 1, 0 )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used in the Assigned Energy Program list view</inlineHelpText>
+        <label>User Is M&amp;V Lead</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_Is_Owner__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF ( $User.Id =  OwnerId , 1, 0 )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used in the Assigned Energy Program list view</inlineHelpText>
+        <label>User Is Owner</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_Is_Tech_Lead2__c</fullName>
+        <description>Used in the Assigned Energy Program list view</description>
+        <externalId>false</externalId>
+        <formula>IF ( $User.Id = Technical_Lead_2__r.Id , 1, 0 )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used in the Assigned Energy Program list view</inlineHelpText>
+        <label>User Is Tech Lead2</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_Is_Tech_Lead__c</fullName>
+        <description>Used in the Assigned Energy Program list view</description>
+        <externalId>false</externalId>
+        <formula>IF ( $User.Id = Technical_Lead__r.Id , 1, 0 )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used in the Assigned Energy Program list view</inlineHelpText>
+        <label>User Is Tech Lead</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pgmId__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>Unique Energy Program ID.  This needs to be populated with either legacy ID from C360/D365 or ID generated by Measure</description>
+        <externalId>true</externalId>
+        <label>pgmId</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <label>Energy Program</label>
+    <listViews>
+        <fullName>Active</fullName>
+        <columns>NAME</columns>
+        <columns>Contract_Start_Date__c</columns>
+        <columns>Organization__c</columns>
+        <columns>Service_Status__c</columns>
+        <columns>Contract_Status__c</columns>
+        <columns>Related_Opportunity__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Service_Status__c</field>
+            <operation>equals</operation>
+            <value>IC</value>
+        </filters>
+        <label>Active</label>
+    </listViews>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Contract_Start_Date__c</columns>
+        <columns>Organization__c</columns>
+        <columns>Related_Opportunity__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>Related_Contract__c</columns>
+        <columns>Service_Status__c</columns>
+        <columns>Contract_Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>All_INACTIVE</fullName>
+        <columns>NAME</columns>
+        <columns>Contract_Start_Date__c</columns>
+        <columns>Organization__c</columns>
+        <columns>Service_Status__c</columns>
+        <columns>Related_Opportunity__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Service_Status__c</field>
+            <operation>notEqual</operation>
+            <value>IC</value>
+        </filters>
+        <label>All INACTIVE</label>
+    </listViews>
+    <listViews>
+        <fullName>Copy_of_TEST_My_Dynamic_EPs</fullName>
+        <booleanFilter>( 1 OR 2 OR 3 OR 4 OR 5 OR 6 OR 7 ) AND 8</booleanFilter>
+        <columns>NAME</columns>
+        <columns>Contract_Status__c</columns>
+        <columns>Service_Status__c</columns>
+        <columns>Contract_Start_Date__c</columns>
+        <columns>Billing_Schedule_End_Date__c</columns>
+        <columns>Client_Manager__c</columns>
+        <columns>Technical_Lead__c</columns>
+        <columns>M_V_Lead__c</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>User_Is_Client_Manager__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>User_Is_Owner__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>User_Is_Implementation_Consultant__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>User_Is_Implementation_Consultant2__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>User_Is_M_V_Lead__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>User_Is_Tech_Lead__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>User_Is_Tech_Lead2__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>Service_Status__c</field>
+            <operation>equals</operation>
+            <value>IC</value>
+        </filters>
+        <label>Assigned Energy Program</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Energy_Programs</fullName>
+        <columns>NAME</columns>
+        <columns>Client_Manager__c</columns>
+        <columns>Service_Status__c</columns>
+        <columns>Contract_Status__c</columns>
+        <columns>Contract_Type__c</columns>
+        <columns>Contract_Start_Date__c</columns>
+        <columns>Billing_Schedule_End_Date__c</columns>
+        <columns>M_V_Lead__c</columns>
+        <columns>Technical_Lead__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>Service_Status__c</field>
+            <operation>equals</operation>
+            <value>IC</value>
+        </filters>
+        <label>My Energy Programs</label>
+    </listViews>
+    <nameField>
+        <label>Energy Program Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Energy Programs</pluralLabel>
+    <searchLayouts>
+        <excludedStandardButtons>OpenListInQuip</excludedStandardButtons>
+        <excludedStandardButtons>NewFromDocument</excludedStandardButtons>
+        <excludedStandardButtons>Accept</excludedStandardButtons>
+        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
+        <excludedStandardButtons>Import</excludedStandardButtons>
+        <excludedStandardButtons>MassChangeOwner</excludedStandardButtons>
+        <excludedStandardButtons>MassAssignRecordLabel</excludedStandardButtons>
+        <searchResultsAdditionalFields>Organization__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Service_Status__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Related_Opportunity__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CREATED_DATE</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <visibility>Public</visibility>
+</CustomObject>

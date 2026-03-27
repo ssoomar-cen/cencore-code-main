@@ -1,0 +1,2427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ComposeGmail</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ComposeGmail</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ComposeGmail</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>LogCall</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>LogCall</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>LogCall</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>MailMerge</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>MailMerge</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>MailMerge</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>RequestUpdate</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>RequestUpdate</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>RequestUpdate</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SendEmail</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SendEmail</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SendEmail</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ViewAll</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ViewAll</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ViewAll</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Addtional_Materials_Needed__c</fullName>
+        <inlineHelpText>Max 254 characters.</inlineHelpText>
+        <label>Addtional Materials Needed</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Alert_Details__c</fullName>
+        <label>Alert Details</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Alert_Type__c</fullName>
+        <label>Alert Type</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Sales</fullName>
+                    <default>false</default>
+                    <label>Sales</label>
+                </value>
+                <value>
+                    <fullName>Legal</fullName>
+                    <default>false</default>
+                    <label>Legal</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Assigned_Name__c</fullName>
+        <description>Used for automations and reporting.</description>
+        <externalId>false</externalId>
+        <formula>Owner:User.FirstName + &quot; &quot; +  Owner:User.LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used for automations and reporting.</inlineHelpText>
+        <label>Assigned Name</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Award_Type__c</fullName>
+        <label>Award Type</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <controllingField>Visit_Type__c</controllingField>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Best In Class</fullName>
+                    <default>false</default>
+                    <label>Best In Class</label>
+                </value>
+                <value>
+                    <fullName>Energy Award Excellence</fullName>
+                    <default>false</default>
+                    <label>Energy Award Excellence</label>
+                </value>
+                <value>
+                    <fullName>Energy Excellence</fullName>
+                    <default>false</default>
+                    <label>Energy Excellence</label>
+                </value>
+                <value>
+                    <fullName>Energy Star</fullName>
+                    <default>false</default>
+                    <label>Energy Star</label>
+                </value>
+                <value>
+                    <fullName>Energy Star and Best In Class</fullName>
+                    <default>false</default>
+                    <label>Energy Star and Best In Class</label>
+                </value>
+                <value>
+                    <fullName>Environment Excellence</fullName>
+                    <default>false</default>
+                    <label>Environment Excellence</label>
+                </value>
+                <value>
+                    <fullName>Milestone</fullName>
+                    <default>false</default>
+                    <label>Milestone</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+            </valueSetDefinition>
+            <valueSettings>
+                <controllingFieldValue>Facilities Award</controllingFieldValue>
+                <controllingFieldValue>Management Award</controllingFieldValue>
+                <controllingFieldValue>Management Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>CFU Award</controllingFieldValue>
+                <controllingFieldValue>Facilities Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Energy Management Action Plan Remote Visit</controllingFieldValue>
+                <valueName>Best In Class</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Facilities Award</controllingFieldValue>
+                <controllingFieldValue>Management Award</controllingFieldValue>
+                <controllingFieldValue>Management Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>CFU Award</controllingFieldValue>
+                <controllingFieldValue>Facilities Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>Facilities Welcome Visit</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Energy Management Action Plan Remote Visit</controllingFieldValue>
+                <valueName>Energy Award Excellence</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Facilities Award</controllingFieldValue>
+                <controllingFieldValue>Management Award</controllingFieldValue>
+                <controllingFieldValue>Management Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>CFU Award</controllingFieldValue>
+                <controllingFieldValue>Facilities Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>Facilities Welcome Visit</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Energy Management Action Plan Remote Visit</controllingFieldValue>
+                <valueName>Energy Excellence</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Facilities Award</controllingFieldValue>
+                <controllingFieldValue>Management Award</controllingFieldValue>
+                <controllingFieldValue>Management Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>CFU Award</controllingFieldValue>
+                <controllingFieldValue>Facilities Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>Facilities Welcome Visit</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Energy Management Action Plan Remote Visit</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Energy Star Visit</controllingFieldValue>
+                <valueName>Energy Star</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Facilities Award</controllingFieldValue>
+                <controllingFieldValue>Management Award</controllingFieldValue>
+                <controllingFieldValue>Management Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>CFU Award</controllingFieldValue>
+                <controllingFieldValue>Facilities Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>Facilities Welcome Visit</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Energy Management Action Plan Remote Visit</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Energy Star Visit</controllingFieldValue>
+                <valueName>Energy Star and Best In Class</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Facilities Award</controllingFieldValue>
+                <controllingFieldValue>Management Award</controllingFieldValue>
+                <controllingFieldValue>Management Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>CFU Award</controllingFieldValue>
+                <controllingFieldValue>Facilities Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Energy Management Action Plan Remote Visit</controllingFieldValue>
+                <valueName>Environment Excellence</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Facilities Award</controllingFieldValue>
+                <controllingFieldValue>Management Award</controllingFieldValue>
+                <controllingFieldValue>Management Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>CFU Award</controllingFieldValue>
+                <controllingFieldValue>Facilities Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Energy Management Action Plan Remote Visit</controllingFieldValue>
+                <valueName>Milestone</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Facilities Award</controllingFieldValue>
+                <controllingFieldValue>Management Award</controllingFieldValue>
+                <controllingFieldValue>Management Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>CFU Award</controllingFieldValue>
+                <controllingFieldValue>Facilities Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Award &amp; Board Report</controllingFieldValue>
+                <controllingFieldValue>M&amp;V Energy Management Action Plan Remote Visit</controllingFieldValue>
+                <valueName>Other</valueName>
+            </valueSettings>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Bonus_Check_Given_to_EC__c</fullName>
+        <label>Bonus Check Given to EC</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Yes_No</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Color_Event__c</fullName>
+        <externalId>false</externalId>
+        <label>Color_Event</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact_Method__c</fullName>
+        <label>Contact Method</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Meeting-Virtual</fullName>
+                    <default>false</default>
+                    <label>Meeting-Virtual</label>
+                </value>
+                <value>
+                    <fullName>Meeting-In Person</fullName>
+                    <default>false</default>
+                    <label>Meeting-In Person</label>
+                </value>
+                <value>
+                    <fullName>Phone Call</fullName>
+                    <default>false</default>
+                    <label>Phone Call</label>
+                </value>
+                <value>
+                    <fullName>Email</fullName>
+                    <default>false</default>
+                    <label>Email</label>
+                </value>
+                <value>
+                    <fullName>None</fullName>
+                    <default>false</default>
+                    <label>None</label>
+                </value>
+                <value>
+                    <fullName>Cenergistic Meeting</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Cenergistic Meeting</label>
+                </value>
+                <value>
+                    <fullName>Client Meeting</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Client Meeting</label>
+                </value>
+                <value>
+                    <fullName>MC Meeting</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>MC Meeting</label>
+                </value>
+                <value>
+                    <fullName>Other Meeting</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Other Meeting</label>
+                </value>
+                <value>
+                    <fullName>Prospect Meeting</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Prospect Meeting</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Create_Attendee_List__c</fullName>
+        <label>Create Attendee List</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Yes_No</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Create_CVR__c</fullName>
+        <label>Create CVR</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Yes_No</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Create_Follow_up__c</fullName>
+        <label>Create Follow-up</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Phone Call</fullName>
+                    <default>false</default>
+                    <label>Phone Call</label>
+                </value>
+                <value>
+                    <fullName>Appointment</fullName>
+                    <default>false</default>
+                    <label>Appointment</label>
+                </value>
+                <value>
+                    <fullName>Task</fullName>
+                    <default>false</default>
+                    <label>Task</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>D365ActivityID__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <label>D365ActivityID</label>
+        <length>52</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>D365RegardingGuid__c</fullName>
+        <externalId>false</externalId>
+        <label>D365RegardingGuid</label>
+        <length>52</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EEI_Calendar__c</fullName>
+        <label>EEI Calendar</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Yes_No</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Energy_Program_Lookup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <inlineHelpText>Connect Appointment to an EP with Service Status IC</inlineHelpText>
+        <label>Energy Program Lookup</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Energy_Program__c.Service_Status__c</field>
+                <operation>equals</operation>
+                <value>IC</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Energy_Program__c</referenceTo>
+        <relationshipLabel>Activities</relationshipLabel>
+        <relationshipName>Activities</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Event_Participants__c</fullName>
+        <inlineHelpText>A place to capture up to 6 names for those that participated in the meeting.</inlineHelpText>
+        <label>Event Participants</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Exclude_from_Reporting__c</fullName>
+        <label>Exclude from Reporting</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Yes_No</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Legacy_Owner__c</fullName>
+        <description>D365 Owner</description>
+        <externalId>false</externalId>
+        <label>Legacy Owner</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MC_Primary__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <inlineHelpText>The main MC on the opportunity</inlineHelpText>
+        <label>MC Primary</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Contact.Status__c</field>
+                <operation>equals</operation>
+                <value>Active</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Activities</relationshipLabel>
+        <relationshipName>ActivitiesMC</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Meet_with_PL__c</fullName>
+        <label>Meet with PL?</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Yes_No</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Meet_with_Supt__c</fullName>
+        <label>Meet with Supt?</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Yes_No</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Notification_Date_Time__c</fullName>
+        <label>Notification Date Time</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Notification_Timer__c</fullName>
+        <externalId>false</externalId>
+        <label>Notification Timer</label>
+        <length>5</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_of_Attendees__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Attendees</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opportunity_Lookup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Connect Appointment to an Opportunity.</description>
+        <inlineHelpText>Connect Appointment to an Opportunity.</inlineHelpText>
+        <label>Opportunity Lookup</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Activities</relationshipLabel>
+        <relationshipName>Activities</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Org_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Org Name</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Organization_Lookup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <inlineHelpText>Connect Appointment to an Organization.</inlineHelpText>
+        <label>Organization Lookup</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Activities</relationshipLabel>
+        <relationshipName>Activities</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Organizer__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Organizer</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Activities</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Priority__c</fullName>
+        <label>Priority</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Normal</fullName>
+                    <default>true</default>
+                    <label>Normal</label>
+                </value>
+                <value>
+                    <fullName>High</fullName>
+                    <default>false</default>
+                    <label>High</label>
+                </value>
+                <value>
+                    <fullName>Low</fullName>
+                    <default>false</default>
+                    <label>Low</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Push_to_D365__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Push to D365</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Sales_Meeting_Type__c</fullName>
+        <label>Sales Meeting Type</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Sales Call</fullName>
+                    <default>false</default>
+                    <label>Sales Call</label>
+                </value>
+                <value>
+                    <fullName>Non-Sales Call</fullName>
+                    <default>false</default>
+                    <label>Non-Sales Call</label>
+                </value>
+                <value>
+                    <fullName>N/A</fullName>
+                    <default>false</default>
+                    <label>N/A</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Sales_Support_Alert__c</fullName>
+        <label>Sales Support Alert</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Sales_Weekly_Report__c</fullName>
+        <label>Sales Weekly Report</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Yes_No</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Status_Reason__c</fullName>
+        <label>Status Reason</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Free</fullName>
+                    <default>false</default>
+                    <label>Free</label>
+                </value>
+                <value>
+                    <fullName>Busy</fullName>
+                    <default>false</default>
+                    <label>Busy</label>
+                </value>
+                <value>
+                    <fullName>Out of Office</fullName>
+                    <default>false</default>
+                    <label>Out of Office</label>
+                </value>
+                <value>
+                    <fullName>Tentative</fullName>
+                    <default>false</default>
+                    <label>Tentative</label>
+                </value>
+                <value>
+                    <fullName>Completed</fullName>
+                    <default>false</default>
+                    <label>Completed</label>
+                </value>
+                <value>
+                    <fullName>Canceled</fullName>
+                    <default>false</default>
+                    <label>Canceled</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Status_Text__c</fullName>
+        <label>Status Text</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <label>Status</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Open</fullName>
+                    <color>#3366FF</color>
+                    <default>true</default>
+                    <label>Open</label>
+                </value>
+                <value>
+                    <fullName>Completed</fullName>
+                    <color>#33CC00</color>
+                    <default>false</default>
+                    <label>Completed</label>
+                </value>
+                <value>
+                    <fullName>Canceled</fullName>
+                    <color>#F3D904</color>
+                    <default>false</default>
+                    <label>Canceled</label>
+                </value>
+                <value>
+                    <fullName>Tentative</fullName>
+                    <default>false</default>
+                    <label>Tentative</label>
+                </value>
+                <value>
+                    <fullName>Scheduled</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Scheduled</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Subject_Owner__c</fullName>
+        <externalId>false</externalId>
+        <label>Subject Owner</label>
+        <length>120</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Supt_Present__c</fullName>
+        <label>Supt Present</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Yes_No</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Tracked_Meeting__c</fullName>
+        <label>Tracked Meeting</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Yes_No</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Travel_Day__c</fullName>
+        <label>Travel Day</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Yes_No</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <description>This is for Event Type.</description>
+        <label>Type</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Client Visit</fullName>
+                    <default>false</default>
+                    <label>Client Visit</label>
+                </value>
+                <value>
+                    <fullName>PTO</fullName>
+                    <default>false</default>
+                    <label>PTO</label>
+                </value>
+                <value>
+                    <fullName>Training</fullName>
+                    <default>false</default>
+                    <label>Training</label>
+                </value>
+                <value>
+                    <fullName>Scheduled Off</fullName>
+                    <default>false</default>
+                    <label>Scheduled Off</label>
+                </value>
+                <value>
+                    <fullName>Sales</fullName>
+                    <default>false</default>
+                    <label>Sales</label>
+                </value>
+                <value>
+                    <fullName>Operations</fullName>
+                    <default>false</default>
+                    <label>Operations</label>
+                </value>
+                <value>
+                    <fullName>COE</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>COE</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Visit_Length_Days__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASE(Visit_Length__c,
+    &quot;1/8 Day&quot;,                    0.125,
+    &quot;1/4 Day&quot;,                    0.25,
+    &quot;1/3 Day (3 visits per day)&quot;, 0.333,
+    &quot;1/2 Day&quot;,                    0.5,
+    &quot;3/4 Day&quot;,                    0.75,
+    &quot;1 Full Day&quot;,                 1.0,
+    &quot;1 1/2 Day&quot;,                  1.5,
+    &quot;2 Full Days&quot;,                2.0,
+    &quot;2 1/2 Day&quot;,                  2.5,
+    &quot;3 Full Days&quot;,                3.0,
+    &quot;4 Full Days&quot;,                4.0,
+    &quot;5 Full Days&quot;,                5.0,
+    ActivityDate - ActivityDate + 1
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Visit Length Days</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>3</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Visit_Length__c</fullName>
+        <label>Visit Length</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>1 1/2 Day</fullName>
+                    <default>false</default>
+                    <label>1 1/2 Day</label>
+                </value>
+                <value>
+                    <fullName>1 Full Day</fullName>
+                    <default>false</default>
+                    <label>1 Full Day</label>
+                </value>
+                <value>
+                    <fullName>1/2 Day</fullName>
+                    <default>false</default>
+                    <label>1/2 Day</label>
+                </value>
+                <value>
+                    <fullName>1/3 Day (3 visits per day)</fullName>
+                    <default>false</default>
+                    <label>1/3 Day (3 visits per day)</label>
+                </value>
+                <value>
+                    <fullName>1/4 Day</fullName>
+                    <default>false</default>
+                    <label>1/4 Day</label>
+                </value>
+                <value>
+                    <fullName>2 1/2 Day</fullName>
+                    <default>false</default>
+                    <label>2 1/2 Day</label>
+                </value>
+                <value>
+                    <fullName>2 Full Days</fullName>
+                    <default>false</default>
+                    <label>2 Full Days</label>
+                </value>
+                <value>
+                    <fullName>3 Full Days</fullName>
+                    <default>false</default>
+                    <label>3 Full Days</label>
+                </value>
+                <value>
+                    <fullName>3/4 Day</fullName>
+                    <default>false</default>
+                    <label>3/4 Day</label>
+                </value>
+                <value>
+                    <fullName>4 Full Days</fullName>
+                    <default>false</default>
+                    <label>4 Full Days</label>
+                </value>
+                <value>
+                    <fullName>5 Full Days</fullName>
+                    <default>false</default>
+                    <label>5 Full Days</label>
+                </value>
+                <value>
+                    <fullName>1/8 Day</fullName>
+                    <default>false</default>
+                    <label>1/8 Day</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Visit_Task__c</fullName>
+        <inlineHelpText>Max 254 characters.</inlineHelpText>
+        <label>Visit Task</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Visit_Type_Abbreviation__c</fullName>
+        <description>Populated via a flow based on the value in the Visit Type field. Only visible to Sys Admin and not on any page layouts.</description>
+        <externalId>false</externalId>
+        <label>Visit Type Abbreviation</label>
+        <length>48</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Visit_Type_Name__c</fullName>
+        <description>Used for automations and reporting.</description>
+        <externalId>false</externalId>
+        <formula>TEXT ( Visit_Type__c  )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Visit Type Name</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Visit_Type__c</fullName>
+        <label>Visit Type</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <controllingField>Type__c</controllingField>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>90 Day Implementation Feedback</fullName>
+                    <default>false</default>
+                    <label>90 Day Implementation Feedback</label>
+                </value>
+                <value>
+                    <fullName>Adjustments</fullName>
+                    <default>false</default>
+                    <label>Adjustments</label>
+                </value>
+                <value>
+                    <fullName>AIM EMAP</fullName>
+                    <default>false</default>
+                    <label>AIM EMAP</label>
+                </value>
+                <value>
+                    <fullName>Board Action</fullName>
+                    <default>false</default>
+                    <label>Board Vote</label>
+                </value>
+                <value>
+                    <fullName>Board Committee</fullName>
+                    <default>false</default>
+                    <label>Board Info/Committee</label>
+                </value>
+                <value>
+                    <fullName>Board Meeting</fullName>
+                    <default>false</default>
+                    <label>Board Meeting</label>
+                </value>
+                <value>
+                    <fullName>Board Preparation Visit</fullName>
+                    <default>false</default>
+                    <label>Board Preparation Visit</label>
+                </value>
+                <value>
+                    <fullName>Board Report</fullName>
+                    <default>false</default>
+                    <label>Board Report</label>
+                </value>
+                <value>
+                    <fullName>Business Review</fullName>
+                    <default>false</default>
+                    <label>Business Review</label>
+                </value>
+                <value>
+                    <fullName>Cenergistic CRM</fullName>
+                    <default>false</default>
+                    <label>Cenergistic CRM</label>
+                </value>
+                <value>
+                    <fullName>Cenergistic Internal Mtg</fullName>
+                    <default>false</default>
+                    <label>Cenergistic Internal Mtg</label>
+                </value>
+                <value>
+                    <fullName>Cenergistic Meeting</fullName>
+                    <default>false</default>
+                    <label>Cenergistic Meeting</label>
+                </value>
+                <value>
+                    <fullName>Cenergistic NTC</fullName>
+                    <default>false</default>
+                    <label>Cenergistic NTC</label>
+                </value>
+                <value>
+                    <fullName>CFU</fullName>
+                    <default>false</default>
+                    <label>CFU</label>
+                </value>
+                <value>
+                    <fullName>CFU Award</fullName>
+                    <default>false</default>
+                    <label>CFU Award</label>
+                </value>
+                <value>
+                    <fullName>CFU-Award</fullName>
+                    <default>false</default>
+                    <label>Award (CFU)</label>
+                </value>
+                <value>
+                    <fullName>CFU-CA</fullName>
+                    <default>false</default>
+                    <label>CFU-CA</label>
+                </value>
+                <value>
+                    <fullName>CFU-OPS</fullName>
+                    <default>false</default>
+                    <label>CFU-OPS</label>
+                </value>
+                <value>
+                    <fullName>Church Assement</fullName>
+                    <default>false</default>
+                    <label>Church Assement</label>
+                </value>
+                <value>
+                    <fullName>CM Training</fullName>
+                    <default>false</default>
+                    <label>CM Training</label>
+                </value>
+                <value>
+                    <fullName>Corporate Travel</fullName>
+                    <default>false</default>
+                    <label>Corporate Travel</label>
+                </value>
+                <value>
+                    <fullName>CRM Training</fullName>
+                    <default>false</default>
+                    <label>CRM Training</label>
+                </value>
+                <value>
+                    <fullName>Customer Satisfaction</fullName>
+                    <default>false</default>
+                    <label>Customer Satisfaction</label>
+                </value>
+                <value>
+                    <fullName>CVR-Orientation CPR-Implementation Visit</fullName>
+                    <default>false</default>
+                    <label>CVR-Orientation CPR-Implementation Visit</label>
+                </value>
+                <value>
+                    <fullName>Data</fullName>
+                    <default>false</default>
+                    <label>Data</label>
+                </value>
+                <value>
+                    <fullName>Data/Adj Blitz</fullName>
+                    <default>false</default>
+                    <label>Data/Adj Blitz</label>
+                </value>
+                <value>
+                    <fullName>Data Blitz</fullName>
+                    <default>false</default>
+                    <label>Data Blitz</label>
+                </value>
+                <value>
+                    <fullName>Data Implementation Performance Progress</fullName>
+                    <default>false</default>
+                    <label>Data Implementation Performance Progress</label>
+                </value>
+                <value>
+                    <fullName>Data Orientation</fullName>
+                    <default>false</default>
+                    <label>Data Orientation</label>
+                </value>
+                <value>
+                    <fullName>Data Release</fullName>
+                    <default>false</default>
+                    <label>Data Release</label>
+                </value>
+                <value>
+                    <fullName>Data Special Project</fullName>
+                    <default>false</default>
+                    <label>Data Special Project</label>
+                </value>
+                <value>
+                    <fullName>Data Special Request</fullName>
+                    <default>false</default>
+                    <label>Data Special Request</label>
+                </value>
+                <value>
+                    <fullName>Data Start</fullName>
+                    <default>false</default>
+                    <label>Data Start</label>
+                </value>
+                <value>
+                    <fullName>Diagnostics</fullName>
+                    <default>false</default>
+                    <label>Diagnostics</label>
+                </value>
+                <value>
+                    <fullName>EES Search Confirmed</fullName>
+                    <default>false</default>
+                    <label>EES Search Confirmed</label>
+                </value>
+                <value>
+                    <fullName>EMAP Meeting</fullName>
+                    <default>false</default>
+                    <label>EMAP Meeting</label>
+                </value>
+                <value>
+                    <fullName>End of Contract Review</fullName>
+                    <default>false</default>
+                    <label>End of Contract Review</label>
+                </value>
+                <value>
+                    <fullName>Energy Management Action Plan Visit</fullName>
+                    <default>false</default>
+                    <label>Energy Management Action Plan Visit</label>
+                </value>
+                <value>
+                    <fullName>Energy Program Review</fullName>
+                    <default>false</default>
+                    <label>Energy Program Review</label>
+                </value>
+                <value>
+                    <fullName>Energy Star Data</fullName>
+                    <default>false</default>
+                    <label>Energy Star Data</label>
+                </value>
+                <value>
+                    <fullName>Energy Star Verification</fullName>
+                    <default>false</default>
+                    <label>Energy Star Verification</label>
+                </value>
+                <value>
+                    <fullName>ENG Adjustments</fullName>
+                    <default>false</default>
+                    <label>ENG Adjustments</label>
+                </value>
+                <value>
+                    <fullName>Engineering Blitz</fullName>
+                    <default>false</default>
+                    <label>Engineering Blitz</label>
+                </value>
+                <value>
+                    <fullName>Engineering Support</fullName>
+                    <default>false</default>
+                    <label>Engineering Support</label>
+                </value>
+                <value>
+                    <fullName>ENG Office Day</fullName>
+                    <default>false</default>
+                    <label>ENG Office Day</label>
+                </value>
+                <value>
+                    <fullName>ESPT</fullName>
+                    <default>false</default>
+                    <label>ESPT</label>
+                </value>
+                <value>
+                    <fullName>Exit CFU Report</fullName>
+                    <default>false</default>
+                    <label>Exit CFU Report</label>
+                </value>
+                <value>
+                    <fullName>Facilities Award</fullName>
+                    <default>false</default>
+                    <label>Facilities Award</label>
+                </value>
+                <value>
+                    <fullName>Facilities Award &amp; Board Report</fullName>
+                    <default>false</default>
+                    <label>Facilities Award &amp; Board Report</label>
+                </value>
+                <value>
+                    <fullName>Facilities Board Report Remote Visit</fullName>
+                    <default>false</default>
+                    <label>Facilities Board Report Remote Visit</label>
+                </value>
+                <value>
+                    <fullName>Facilities Board Report Visit</fullName>
+                    <default>false</default>
+                    <label>Facilities Board Report Visit</label>
+                </value>
+                <value>
+                    <fullName>Facilities CFU</fullName>
+                    <default>false</default>
+                    <label>Facilities CFU</label>
+                </value>
+                <value>
+                    <fullName>Facilities Energy Management Action Plan Remote Visit</fullName>
+                    <default>false</default>
+                    <label>Facilities Energy Management Action Plan Remote Visit</label>
+                </value>
+                <value>
+                    <fullName>Facilities Energy Management Action Plan Visit</fullName>
+                    <default>false</default>
+                    <label>Facilities Energy Management Action Plan Visit</label>
+                </value>
+                <value>
+                    <fullName>Facilities Energy Star Visit</fullName>
+                    <default>false</default>
+                    <label>Facilities Energy Star Visit</label>
+                </value>
+                <value>
+                    <fullName>Facilities Full Data Release Visit</fullName>
+                    <default>false</default>
+                    <label>Facilities Full Data Release Visit</label>
+                </value>
+                <value>
+                    <fullName>Facilities On-site Training</fullName>
+                    <default>false</default>
+                    <label>Facilities On-site Training</label>
+                </value>
+                <value>
+                    <fullName>Facilities On-site Visit</fullName>
+                    <default>false</default>
+                    <label>Facilities On-site Visit</label>
+                </value>
+                <value>
+                    <fullName>Facilities Raw Data Release Visit</fullName>
+                    <default>false</default>
+                    <label>Facilities Raw Data Release Visit</label>
+                </value>
+                <value>
+                    <fullName>Facilities Remote Visit</fullName>
+                    <default>false</default>
+                    <label>Facilities Remote Visit</label>
+                </value>
+                <value>
+                    <fullName>Facilities Special Project</fullName>
+                    <default>false</default>
+                    <label>Facilities Special Project</label>
+                </value>
+                <value>
+                    <fullName>Facilities Welcome Visit</fullName>
+                    <default>false</default>
+                    <label>Facilities Welcome Visit</label>
+                </value>
+                <value>
+                    <fullName>Facility</fullName>
+                    <default>false</default>
+                    <label>Facility</label>
+                </value>
+                <value>
+                    <fullName>Facility Blitz</fullName>
+                    <default>false</default>
+                    <label>Facility Blitz</label>
+                </value>
+                <value>
+                    <fullName>Facility End of Contract Review</fullName>
+                    <default>false</default>
+                    <label>Facility End of Contract Review</label>
+                </value>
+                <value>
+                    <fullName>Facility Special Request</fullName>
+                    <default>false</default>
+                    <label>Facility Special Request</label>
+                </value>
+                <value>
+                    <fullName>FBI</fullName>
+                    <default>false</default>
+                    <label>FBI</label>
+                </value>
+                <value>
+                    <fullName>Full Data Release Visit</fullName>
+                    <default>false</default>
+                    <label>Full Data Release Visit</label>
+                </value>
+                <value>
+                    <fullName>Higher Ed Assessment</fullName>
+                    <default>false</default>
+                    <label>Higher Ed Assessment</label>
+                </value>
+                <value>
+                    <fullName>Holiday</fullName>
+                    <default>false</default>
+                    <label>Holiday</label>
+                </value>
+                <value>
+                    <fullName>Home Office</fullName>
+                    <default>false</default>
+                    <label>Home Office</label>
+                </value>
+                <value>
+                    <fullName>Hybrid</fullName>
+                    <default>false</default>
+                    <label>Hybrid</label>
+                </value>
+                <value>
+                    <fullName>IMAP Meeting</fullName>
+                    <default>false</default>
+                    <label>IMAP Meeting</label>
+                </value>
+                <value>
+                    <fullName>Implementation Visit</fullName>
+                    <default>false</default>
+                    <label>Implementation Visit</label>
+                </value>
+                <value>
+                    <fullName>Initial Meeting</fullName>
+                    <default>false</default>
+                    <label>Initial Meeting</label>
+                </value>
+                <value>
+                    <fullName>Interval Data</fullName>
+                    <default>false</default>
+                    <label>Interval Data</label>
+                </value>
+                <value>
+                    <fullName>Invoicing</fullName>
+                    <default>false</default>
+                    <label>Invoicing</label>
+                </value>
+                <value>
+                    <fullName>Irrigation Blitz</fullName>
+                    <default>false</default>
+                    <label>Irrigation Blitz</label>
+                </value>
+                <value>
+                    <fullName>K-12 Assessment</fullName>
+                    <default>false</default>
+                    <label>K-12 Assessment</label>
+                </value>
+                <value>
+                    <fullName>LAUNCH</fullName>
+                    <default>false</default>
+                    <label>LAUNCH</label>
+                </value>
+                <value>
+                    <fullName>LOG</fullName>
+                    <default>false</default>
+                    <label>LOG</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V Award</fullName>
+                    <default>false</default>
+                    <label>M&amp;V Award</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V Award &amp; Board Report</fullName>
+                    <default>false</default>
+                    <label>M&amp;V Award &amp; Board Report</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V Board Report Remote Visit</fullName>
+                    <default>false</default>
+                    <label>M&amp;V Board Report Remote Visit</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V Board Report Visit</fullName>
+                    <default>false</default>
+                    <label>M&amp;V Board Report Visit</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V CFU</fullName>
+                    <default>false</default>
+                    <label>M&amp;V CFU</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V Energy Management Action Plan Remote Visit</fullName>
+                    <default>false</default>
+                    <label>M&amp;V Energy Management Action Plan Remote Visit</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V Energy Management Action Plan Visit</fullName>
+                    <default>false</default>
+                    <label>M&amp;V Energy Management Action Plan Visit</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V Energy Star Visit</fullName>
+                    <default>false</default>
+                    <label>M&amp;V Energy Star Visit</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V Full Data Release Visit</fullName>
+                    <default>false</default>
+                    <label>M&amp;V Full Data Release Visit</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V On-site Visit</fullName>
+                    <default>false</default>
+                    <label>M&amp;V On-site Visit</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V Orientation</fullName>
+                    <default>false</default>
+                    <label>M&amp;V Orientation</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V Raw Data Release Visit</fullName>
+                    <default>false</default>
+                    <label>M&amp;V Raw Data Release Visit</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V Remote Visit</fullName>
+                    <default>false</default>
+                    <label>M&amp;V Remote Visit</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V Special Project</fullName>
+                    <default>false</default>
+                    <label>M&amp;V Special Project</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V Training</fullName>
+                    <default>false</default>
+                    <label>M&amp;V Training</label>
+                </value>
+                <value>
+                    <fullName>M&amp;V Welcome Visit</fullName>
+                    <default>false</default>
+                    <label>M&amp;V Welcome Visit</label>
+                </value>
+                <value>
+                    <fullName>Maintenance Director Orientation</fullName>
+                    <default>false</default>
+                    <label>Maintenance Director Orientation</label>
+                </value>
+                <value>
+                    <fullName>Management Award</fullName>
+                    <default>false</default>
+                    <label>Management Award</label>
+                </value>
+                <value>
+                    <fullName>Management Award &amp; Board Report</fullName>
+                    <default>false</default>
+                    <label>Management Award &amp; Board Report</label>
+                </value>
+                <value>
+                    <fullName>Management Board Report Remote Visit</fullName>
+                    <default>false</default>
+                    <label>Management Board Report Remote Visit</label>
+                </value>
+                <value>
+                    <fullName>Management Board Report Visit</fullName>
+                    <default>false</default>
+                    <label>Management Board Report Visit</label>
+                </value>
+                <value>
+                    <fullName>Management CFU</fullName>
+                    <default>false</default>
+                    <label>Management CFU</label>
+                </value>
+                <value>
+                    <fullName>Management Energy Management Action Plan Remote Visit</fullName>
+                    <default>false</default>
+                    <label>Management Energy Management Action Plan Remote Visit</label>
+                </value>
+                <value>
+                    <fullName>Management Energy Management Action Plan Visit</fullName>
+                    <default>false</default>
+                    <label>Management Energy Management Action Plan Visit</label>
+                </value>
+                <value>
+                    <fullName>Management Energy Star Visit</fullName>
+                    <default>false</default>
+                    <label>Management Energy Star Visit</label>
+                </value>
+                <value>
+                    <fullName>Management Full Data Release Visit</fullName>
+                    <default>false</default>
+                    <label>Management Full Data Release Visit</label>
+                </value>
+                <value>
+                    <fullName>Management On-site Visit</fullName>
+                    <default>false</default>
+                    <label>Management On-site Visit</label>
+                </value>
+                <value>
+                    <fullName>Management PHA</fullName>
+                    <default>false</default>
+                    <label>Management PHA</label>
+                </value>
+                <value>
+                    <fullName>Management Raw Data Release Visit</fullName>
+                    <default>false</default>
+                    <label>Management Raw Data Release Visit</label>
+                </value>
+                <value>
+                    <fullName>Management Remote Visit</fullName>
+                    <default>false</default>
+                    <label>Management Remote Visit</label>
+                </value>
+                <value>
+                    <fullName>Management Special Project</fullName>
+                    <default>false</default>
+                    <label>Management Special Project</label>
+                </value>
+                <value>
+                    <fullName>Management Welcome Visit</fullName>
+                    <default>false</default>
+                    <label>Management Welcome Visit</label>
+                </value>
+                <value>
+                    <fullName>MC/Prospect Meeting</fullName>
+                    <default>false</default>
+                    <label>MC/Prospect Meeting</label>
+                </value>
+                <value>
+                    <fullName>MC Meeting</fullName>
+                    <default>false</default>
+                    <label>MC Meeting</label>
+                </value>
+                <value>
+                    <fullName>Non-Travel</fullName>
+                    <default>false</default>
+                    <label>Non-Travel</label>
+                </value>
+                <value>
+                    <fullName>NTC Data Clinic</fullName>
+                    <default>false</default>
+                    <label>NTC Data Clinic</label>
+                </value>
+                <value>
+                    <fullName>Ops Intro</fullName>
+                    <default>false</default>
+                    <label>Ops Intro</label>
+                </value>
+                <value>
+                    <fullName>Ops Training</fullName>
+                    <default>false</default>
+                    <label>Ops Training</label>
+                </value>
+                <value>
+                    <fullName>Orientation</fullName>
+                    <default>false</default>
+                    <label>Orientation</label>
+                </value>
+                <value>
+                    <fullName>Orientation-New</fullName>
+                    <default>false</default>
+                    <label>Orientation-New</label>
+                </value>
+                <value>
+                    <fullName>Other Assessment</fullName>
+                    <default>false</default>
+                    <label>Other Assessment</label>
+                </value>
+                <value>
+                    <fullName>Other Meeting</fullName>
+                    <default>false</default>
+                    <label>Other Meeting</label>
+                </value>
+                <value>
+                    <fullName>Performance Improvement Plan</fullName>
+                    <default>false</default>
+                    <label>Performance Improvement Plan</label>
+                </value>
+                <value>
+                    <fullName>PL/RS Update</fullName>
+                    <default>false</default>
+                    <label>PL/RS Update</label>
+                </value>
+                <value>
+                    <fullName>Planned CFU</fullName>
+                    <default>false</default>
+                    <label>Planned CFU</label>
+                </value>
+                <value>
+                    <fullName>Pre Contract Assessment</fullName>
+                    <default>false</default>
+                    <label>Pre Contract Assessment</label>
+                </value>
+                <value>
+                    <fullName>Pre-Contract Assessment</fullName>
+                    <default>false</default>
+                    <label>Pre-Contract Assessment</label>
+                </value>
+                <value>
+                    <fullName>Pre-DRF</fullName>
+                    <default>false</default>
+                    <label>Pre-DRF</label>
+                </value>
+                <value>
+                    <fullName>Pre-PD</fullName>
+                    <default>false</default>
+                    <label>Pre-Proposal Mtg</label>
+                </value>
+                <value>
+                    <fullName>Proposal Delivery</fullName>
+                    <default>false</default>
+                    <label>Proposal Delivery</label>
+                </value>
+                <value>
+                    <fullName>Proposal Follow-Up</fullName>
+                    <default>false</default>
+                    <label>Proposal Follow-Up</label>
+                </value>
+                <value>
+                    <fullName>Prospect Follow Up (PFU)</fullName>
+                    <default>false</default>
+                    <label>Prospect Follow Up (PFU)</label>
+                </value>
+                <value>
+                    <fullName>PTO</fullName>
+                    <default>false</default>
+                    <label>PTO</label>
+                </value>
+                <value>
+                    <fullName>Public Relations</fullName>
+                    <default>false</default>
+                    <label>Public Relations</label>
+                </value>
+                <value>
+                    <fullName>Quality Review</fullName>
+                    <default>false</default>
+                    <label>Quality Review</label>
+                </value>
+                <value>
+                    <fullName>Raw Data Release Visit</fullName>
+                    <default>false</default>
+                    <label>Raw Data Release Visit</label>
+                </value>
+                <value>
+                    <fullName>Remote Visit</fullName>
+                    <default>false</default>
+                    <label>Remote Visit</label>
+                </value>
+                <value>
+                    <fullName>Reporting Senior Orientation</fullName>
+                    <default>false</default>
+                    <label>Reporting Senior Orientation</label>
+                </value>
+                <value>
+                    <fullName>REV</fullName>
+                    <default>false</default>
+                    <label>REV</label>
+                </value>
+                <value>
+                    <fullName>Search Follow Up</fullName>
+                    <default>false</default>
+                    <label>Search Follow Up</label>
+                </value>
+                <value>
+                    <fullName>Shutdown Blitz</fullName>
+                    <default>false</default>
+                    <label>Shutdown Blitz</label>
+                </value>
+                <value>
+                    <fullName>Site Administrator Meeting</fullName>
+                    <default>false</default>
+                    <label>Site Administrator Meeting</label>
+                </value>
+                <value>
+                    <fullName>Site Assessment</fullName>
+                    <default>false</default>
+                    <label>Site Assessment (Engineering)</label>
+                </value>
+                <value>
+                    <fullName>Supt/Administrator Conf</fullName>
+                    <default>false</default>
+                    <label>Supt/Administrator Conf</label>
+                </value>
+                <value>
+                    <fullName>Technical Implementation Plan</fullName>
+                    <default>false</default>
+                    <label>Technical Implementation Plan</label>
+                </value>
+                <value>
+                    <fullName>Technical Visit</fullName>
+                    <default>false</default>
+                    <label>Technical Visit</label>
+                </value>
+                <value>
+                    <fullName>Tech Training</fullName>
+                    <default>false</default>
+                    <label>Tech Training</label>
+                </value>
+                <value>
+                    <fullName>TIP Development</fullName>
+                    <default>false</default>
+                    <label>TIP Development</label>
+                </value>
+                <value>
+                    <fullName>Training</fullName>
+                    <default>false</default>
+                    <label>Training</label>
+                </value>
+                <value>
+                    <fullName>Travel</fullName>
+                    <default>false</default>
+                    <label>Travel</label>
+                </value>
+                <value>
+                    <fullName>Travel Day</fullName>
+                    <default>false</default>
+                    <label>Travel Day</label>
+                </value>
+                <value>
+                    <fullName>Update</fullName>
+                    <default>false</default>
+                    <label>Update</label>
+                </value>
+                <value>
+                    <fullName>Visual Inventory Tool</fullName>
+                    <default>false</default>
+                    <label>Visual Inventory Tool</label>
+                </value>
+                <value>
+                    <fullName>VIT1</fullName>
+                    <default>false</default>
+                    <label>VIT1</label>
+                </value>
+                <value>
+                    <fullName>VIT2</fullName>
+                    <default>false</default>
+                    <label>VIT2</label>
+                </value>
+                <value>
+                    <fullName>VT</fullName>
+                    <default>false</default>
+                    <label>VT</label>
+                </value>
+                <value>
+                    <fullName>Renewal Meeting</fullName>
+                    <default>false</default>
+                    <label>Renewal Meeting</label>
+                </value>
+                <value>
+                    <fullName>Site Visit</fullName>
+                    <default>false</default>
+                    <label>Site Visit</label>
+                </value>
+                <value>
+                    <fullName>Scheduled Off</fullName>
+                    <default>false</default>
+                    <label>Scheduled Off</label>
+                </value>
+                <value>
+                    <fullName>Account Management Visit</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Account Management Visit</label>
+                </value>
+                <value>
+                    <fullName>Administrative</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Administrative</label>
+                </value>
+                <value>
+                    <fullName>Board Info</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Board Info</label>
+                </value>
+                <value>
+                    <fullName>CER</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>CER</label>
+                </value>
+                <value>
+                    <fullName>CER - ClientSP</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>CER - ClientSP</label>
+                </value>
+                <value>
+                    <fullName>CER – Client SP</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>CER – Client SP</label>
+                </value>
+                <value>
+                    <fullName>CFU &amp; CFU-Award</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>CFU &amp; CFU-Award</label>
+                </value>
+                <value>
+                    <fullName>CFU-Attempted</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>CFU-Attempted</label>
+                </value>
+                <value>
+                    <fullName>Cancelled</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Cancelled</label>
+                </value>
+                <value>
+                    <fullName>Contract Review</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Contract Review</label>
+                </value>
+                <value>
+                    <fullName>Data Request Form</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Data Request Form</label>
+                </value>
+                <value>
+                    <fullName>Finance Intro</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Finance Intro</label>
+                </value>
+                <value>
+                    <fullName>Home Office Day</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Home Office Day</label>
+                </value>
+                <value>
+                    <fullName>Job Information Session</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Job Information Session</label>
+                </value>
+                <value>
+                    <fullName>MC Recruitment</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>MC Recruitment</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>PFU</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>PFU</label>
+                </value>
+                <value>
+                    <fullName>Post DRF</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Post DRF</label>
+                </value>
+                <value>
+                    <fullName>Post-DRF</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Post-DRF</label>
+                </value>
+                <value>
+                    <fullName>Pre-Proposal Assessment</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Pre-Proposal Assessment</label>
+                </value>
+                <value>
+                    <fullName>Program Health Assessment</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Program Health Assessment</label>
+                </value>
+                <value>
+                    <fullName>Prospect Meeting</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Prospect Meeting</label>
+                </value>
+                <value>
+                    <fullName>Supt/Administrator Conference</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Supt/Administrator Conference</label>
+                </value>
+            </valueSetDefinition>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Facilities Award</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Facilities Award &amp; Board Report</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Facilities Board Report Remote Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Facilities Board Report Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Facilities CFU</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Facilities Energy Management Action Plan Remote Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Facilities Energy Management Action Plan Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Facilities Energy Star Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Facilities Full Data Release Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Facilities On-site Training</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Facilities On-site Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Facilities Raw Data Release Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Facilities Remote Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Facilities Welcome Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>M&amp;V Award</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>M&amp;V Award &amp; Board Report</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>M&amp;V Board Report Remote Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>M&amp;V Board Report Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>M&amp;V CFU</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>M&amp;V Energy Management Action Plan Remote Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>M&amp;V Energy Management Action Plan Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>M&amp;V Energy Star Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>M&amp;V Full Data Release Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>M&amp;V On-site Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>M&amp;V Orientation</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>M&amp;V Raw Data Release Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>M&amp;V Remote Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <controllingFieldValue>Training</controllingFieldValue>
+                <valueName>M&amp;V Training</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>M&amp;V Welcome Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Management Award</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Management Award &amp; Board Report</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Management Board Report Remote Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Management Board Report Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Management CFU</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Management Energy Management Action Plan Remote Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Management Energy Management Action Plan Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Management Energy Star Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Management Full Data Release Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Management On-site Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Management Raw Data Release Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Management Remote Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Management Welcome Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Client Visit</controllingFieldValue>
+                <valueName>Site Administrator Meeting</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>PTO</controllingFieldValue>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>PTO</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Training</controllingFieldValue>
+                <valueName>CM Training</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Training</controllingFieldValue>
+                <valueName>CRM Training</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Training</controllingFieldValue>
+                <valueName>Ops Training</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Training</controllingFieldValue>
+                <valueName>Tech Training</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Training</controllingFieldValue>
+                <valueName>Training</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Scheduled Off</controllingFieldValue>
+                <valueName>Scheduled Off</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Board Action</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Board Committee</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Board Meeting</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Cenergistic Meeting</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>CFU</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>CFU Award</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Customer Satisfaction</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Holiday</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>MC Meeting</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Ops Intro</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Pre Contract Assessment</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Pre-DRF</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Pre-PD</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Proposal Delivery</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Prospect Follow Up (PFU)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Site Assessment</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Travel Day</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Update</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Renewal Meeting</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Sales</controllingFieldValue>
+                <valueName>Site Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Operations</controllingFieldValue>
+                <valueName>Data/Adj Blitz</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Operations</controllingFieldValue>
+                <valueName>ENG Adjustments</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Operations</controllingFieldValue>
+                <valueName>ENG Office Day</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Operations</controllingFieldValue>
+                <valueName>Travel</valueName>
+            </valueSettings>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>vsa__Assigned_To_RO__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Used to display the name of the Assigned to User in the Create Mutual Plan Flow</description>
+        <externalId>false</externalId>
+        <formula>Owner:User.FirstName &amp;&quot; &quot;&amp; Owner:User.LastName</formula>
+        <label>Assigned To</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__ComponentId__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Component Id</label>
+        <length>128</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__Phase__c</fullName>
+        <deprecated>false</deprecated>
+        <label>Phase</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Phase 1</fullName>
+                    <default>false</default>
+                    <label>Phase 1</label>
+                </value>
+                <value>
+                    <fullName>Phase 2</fullName>
+                    <default>false</default>
+                    <label>Phase 2</label>
+                </value>
+                <value>
+                    <fullName>Phase 3</fullName>
+                    <default>false</default>
+                    <label>Phase 3</label>
+                </value>
+                <value>
+                    <fullName>Phase 4</fullName>
+                    <default>false</default>
+                    <label>Phase 4</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>vsa__Predecessor__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Predecessor</label>
+        <length>128</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__Resource__c</fullName>
+        <deprecated>false</deprecated>
+        <label>Resource</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>vsa__Reverse_Timeline_Action__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <label>Reverse Timeline Action</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>vsa__Section__c</fullName>
+        <deprecated>false</deprecated>
+        <label>Section</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>vsa__VSAccountPlanningPrinciples</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>vsa__Start_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <label>Start Date</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>vsa__Subject_RO__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Consumed in the create Mutual Plan flow to display the subject of the Tasks being selected</description>
+        <externalId>false</externalId>
+        <formula>Subject</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Subject</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <listViews>
+        <fullName>MyActivities</fullName>
+        <columns>ACTIVITY_SUBTYPE</columns>
+        <columns>TASK.STATUS</columns>
+        <columns>TASK.SUBJECT</columns>
+        <columns>TASK.DUE_DATE</columns>
+        <columns>TASK.WHAT_NAME</columns>
+        <columns>TASK.WHO_NAME</columns>
+        <columns>EVENT.LOCATION</columns>
+        <filterScope>Mine</filterScope>
+        <label>My Activities</label>
+    </listViews>
+    <listViews>
+        <fullName>MyDelegatedActivities</fullName>
+        <filterScope>Delegated</filterScope>
+        <label>My Delegated Activities</label>
+    </listViews>
+    <listViews>
+        <fullName>MyTeamsActivities</fullName>
+        <filterScope>Team</filterScope>
+        <label>My Team&apos;s Activities</label>
+    </listViews>
+    <listViews>
+        <fullName>TodaysTasks</fullName>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>TASK.CLOSED</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>ACTIVITY.TASK</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>TASK.DUE_DATE</field>
+            <operation>lessThan</operation>
+            <value>TOMORROW</value>
+        </filters>
+        <label>Today&apos;s Tasks</label>
+    </listViews>
+    <listViews>
+        <fullName>UpcomingEvents</fullName>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>ACTIVITY.TASK</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>TASK.DUE_DATE</field>
+            <operation>greaterThan</operation>
+            <value>YESTERDAY</value>
+        </filters>
+        <label>Upcoming Events</label>
+    </listViews>
+    <searchLayouts>
+        <searchResultsAdditionalFields>TASK.SUBJECT</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>TASK.WHO_NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>TASK.DUE_DATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CORE.USERS.FULL_NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>TASK.WHAT_NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Type__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Visit_Type__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+</CustomObject>

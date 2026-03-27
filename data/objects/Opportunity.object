@@ -1,0 +1,4512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>AddInfluence</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>AddInfluence</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>AddInfluence</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>CEN_Opportunity_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>CEN_Opportunity_Page</content>
+        <formFactor>Small</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <businessProcesses>
+        <fullName>CEN Value Selling</fullName>
+        <description>default Sales Process using the eValue Prompter process</description>
+        <isActive>true</isActive>
+        <values>
+            <fullName>Closed Lost</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed Won</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contracting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Discovery</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Qualified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Quoted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Targeted Account</fullName>
+            <default>false</default>
+        </values>
+    </businessProcesses>
+    <compactLayoutAssignment>New_Awesome_Companct_Layout</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>New_Awesome_Companct_Layout</fullName>
+        <fields>Name</fields>
+        <fields>AccountId</fields>
+        <fields>CloseDate</fields>
+        <fields>OwnerId</fields>
+        <fields>Type</fields>
+        <fields>Fee_Type__c</fields>
+        <fields>Market_Consultant__c</fields>
+        <label>New Awesome Compact Layout</label>
+    </compactLayouts>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>AccountId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Active_Contract__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Contract associated with the Opportunity.</description>
+        <inlineHelpText>Contract associated with the Opportunity.</inlineHelpText>
+        <label>Active Contract</label>
+        <referenceTo>Contract_CEN__c</referenceTo>
+        <relationshipLabel>Opportunities (Active Contract)</relationshipLabel>
+        <relationshipName>Opportunities_Active_Contract</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Close_Date__c</fullName>
+        <inlineHelpText>Date the Opportunity formally closes.</inlineHelpText>
+        <label>Actual Close Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Additional_Square_Footage_Planned__c</fullName>
+        <label>Additional Square Footage Planned</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Additional_sq_ft_planned_next_2_years__c</fullName>
+        <externalId>false</externalId>
+        <label>Additional sq. ft. planned next 2 years</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Allocate_Plant_Costs__c</fullName>
+        <label>Allocate Plant Costs?</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Amount</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>true</trackTrending>
+    </fields>
+    <fields>
+        <fullName>Annual_Utility_Costs__c</fullName>
+        <formula>Electricity__c +  Heating_Oil__c +  Natural_Gas__c +  Solar__c +  Water_Sewer__c +  Other__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Annual Utility Costs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Average_Weekly_Attendance__c</fullName>
+        <externalId>false</externalId>
+        <label>Average Weekly Attendance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Billable_Term__c</fullName>
+        <description>Previously Billable Term</description>
+        <externalId>false</externalId>
+        <label>Billable Term Months</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Board_Vote_Date__c</fullName>
+        <label>Board Vote Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Board_Vote__c</fullName>
+        <label>Board Vote</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Budget_Confirmed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Budget Confirmed</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Budgeted_Annual_Utility_Costs_Proposal__c</fullName>
+        <formula>Budgeted_Electricity__c +  Budgeted_Solar__c +  Budgeted_Natural_Gas__c +  Budgeted_Water_Sewer__c +  Budgeted_Heating_Oil__c +  Budgeted_Other_Expense__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Budgeted Annual Utility Costs Proposal</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Budgeted_Electricity__c</fullName>
+        <label>Budgeted Electricity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Budgeted_Exp_Reporting_Period_Mos__c</fullName>
+        <externalId>false</externalId>
+        <label>Budgeted Exp Reporting Period Mos</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Budgeted_Exp_Reporting_Period__c</fullName>
+        <externalId>false</externalId>
+        <label>Budgeted Exp Reporting Period</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Budgeted_Heating_Oil__c</fullName>
+        <label>Budgeted Heating Oil</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Budgeted_Natural_Gas__c</fullName>
+        <label>Budgeted Natural Gas</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Budgeted_Other_Expense__c</fullName>
+        <label>Budgeted Other Expense</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Budgeted_Solar__c</fullName>
+        <label>Budgeted Solar</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Budgeted_Water_Sewer__c</fullName>
+        <label>Budgeted Water Sewer</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Buildings_Served_by_Central_Plant__c</fullName>
+        <externalId>false</externalId>
+        <label># of Buildings Served by Central Plant</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bundled__c</fullName>
+        <externalId>false</externalId>
+        <label>Bundled</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CampaignId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Central_Heating_Cooling_Plant__c</fullName>
+        <label>Central/Heating Cooling Plant?</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Church_Membership_Enrollment__c</fullName>
+        <externalId>false</externalId>
+        <label>Church Membership Enrollment</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Church_Operated_School__c</fullName>
+        <label>Church Operated School?</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Clinics_Square_Footage__c</fullName>
+        <externalId>false</externalId>
+        <label>Clinics Square Footage</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CloseDate</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>true</trackTrending>
+    </fields>
+    <fields>
+        <fullName>Co_Salesperson__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Co Salesperson</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Opportunities4</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Commencement_Date__c</fullName>
+        <label>Commencement Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Competition_Comments__c</fullName>
+        <label>Competition Comments</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>ContractId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Credits__c</fullName>
+        <externalId>false</externalId>
+        <label>Contract Credits</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract_Services_Company__c</fullName>
+        <externalId>false</externalId>
+        <label>Contract Services Company</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contract_Start_Date__c</fullName>
+        <inlineHelpText>Date the Contract takes effect.</inlineHelpText>
+        <label>Contract Start Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Contract__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Contract associated with the Opportunity.</description>
+        <inlineHelpText>Contract associated with the Opportunity.</inlineHelpText>
+        <label>Contract</label>
+        <referenceTo>Contract_CEN__c</referenceTo>
+        <relationshipLabel>Opportunities</relationshipLabel>
+        <relationshipName>Opportunities</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Cost_per_Square_Foot__c</fullName>
+        <formula>Annual_Utility_Costs__c /  Square_Footage__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Cost per Square Foot</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Cost_per_Student__c</fullName>
+        <formula>Annual_Utility_Costs__c /  Membership_Enrollment__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Cost per Student</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>D365AccountGuid__c</fullName>
+        <externalId>true</externalId>
+        <label>D365AccountGuid</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>D365OpportunityGuid__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <label>D365OpportunityGuid</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>DRF_Email_Recipient__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>DRF Email Recipient</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Opportunities (DRF Email Recipient)</relationshipLabel>
+        <relationshipName>Opportunities7</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>DRF_Primary_Contact__c</fullName>
+        <externalId>false</externalId>
+        <label>DRF Primary Contact</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DRF_Received_Date__c</fullName>
+        <label>DRF Received Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>DRF_Submitter_Email__c</fullName>
+        <externalId>false</externalId>
+        <label>DRF Submitter Email</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DRF_Submitter_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>DRF Submitter Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DRF_Submitter_Phone__c</fullName>
+        <label>DRF Submitter Phone</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>DRF_Submitter_Title__c</fullName>
+        <externalId>false</externalId>
+        <label>DRF Submitter Title</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Days_Open__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF (  IsClosed = True, 
+ CloseDate - DATEVALUE ( CreatedDate ) ,
+ TODAY() - DATEVALUE ( CreatedDate) )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Determines the numbers of days an opportunity is open and accounts for it being closed.</inlineHelpText>
+        <label>Days Open</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Description</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Discount__c</fullName>
+        <externalId>false</externalId>
+        <label>Discount %</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>3</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Discovery_Completed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Discovery Completed</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ECAP_Fee_Payments__c</fullName>
+        <externalId>false</externalId>
+        <label># eCAP Fee Payments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ECAP_Fee__c</fullName>
+        <label>eCAP Software Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ECAP_Renewal_Fee__c</fullName>
+        <label>eCAP Maintenance Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ES_Employed_By__c</fullName>
+        <label>ES Employed By</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Client</fullName>
+                    <default>false</default>
+                    <label>Client</label>
+                </value>
+                <value>
+                    <fullName>Cenergistic</fullName>
+                    <default>false</default>
+                    <label>Cenergistic</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>ES_Estimated_Salary_Annual__c</fullName>
+        <label>ES Estimated Salary Annual</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ES_Estimated_Salary_Monthly__c</fullName>
+        <formula>ES_Estimated_Salary_Annual__c /12</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ES Estimated Salary Monthly</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ES_FT__c</fullName>
+        <externalId>false</externalId>
+        <label># ES FT</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ES_PT__c</fullName>
+        <externalId>false</externalId>
+        <label># ES PT</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Electric_Company_Interval_Usage_Data__c</fullName>
+        <label>Electric Company Interval Usage Data</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Electricity_Vendor__c</fullName>
+        <externalId>false</externalId>
+        <label>Electricity Vendor</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Electricity__c</fullName>
+        <label>Electricity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Energy_Accounting_Software__c</fullName>
+        <externalId>false</externalId>
+        <label>Energy Accounting Software</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Engineer__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Engineer</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Opportunities5</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_Net_Annual_Fee__c</fullName>
+        <formula>Estimated_Net_Monthly_Fee__c * 12</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Estimated Net Annual Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_Net_Monthly_Fee__c</fullName>
+        <label>Estimated Net Monthly Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Executive_Annual_Allocation__c</fullName>
+        <label>Executive Annual Allocation</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Executive_Pastor__c</fullName>
+        <externalId>false</externalId>
+        <label>Executive Pastor</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Executive_Utilized__c</fullName>
+        <label>Executive Utilized</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>ExpectedRevenue</fullName>
+    </fields>
+    <fields>
+        <fullName>Fee_Type__c</fullName>
+        <label>Fee Type</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Fixed</fullName>
+                    <default>false</default>
+                    <label>Fixed</label>
+                </value>
+                <value>
+                    <fullName>Fixed-ES</fullName>
+                    <default>false</default>
+                    <label>Fixed-ES</label>
+                </value>
+                <value>
+                    <fullName>Var Fixed</fullName>
+                    <default>false</default>
+                    <label>Var Fixed</label>
+                </value>
+                <value>
+                    <fullName>Var Fixed-ES</fullName>
+                    <default>false</default>
+                    <label>Var Fixed-ES</label>
+                </value>
+                <value>
+                    <fullName>Split Fee</fullName>
+                    <default>false</default>
+                    <label>Split Fee</label>
+                </value>
+                <value>
+                    <fullName>Performance Fee</fullName>
+                    <default>false</default>
+                    <label>Performance Fee</label>
+                </value>
+                <value>
+                    <fullName>Turnkey</fullName>
+                    <default>false</default>
+                    <label>Turnkey</label>
+                </value>
+                <value>
+                    <fullName>Turnkey-R</fullName>
+                    <default>false</default>
+                    <label>Turnkey-R</label>
+                </value>
+                <value>
+                    <fullName>Turnkey-S</fullName>
+                    <default>false</default>
+                    <label>Turnkey-S</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Fixed_Annual_Fee__c</fullName>
+        <label>Fixed Annual Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Funnel__c</fullName>
+        <label>Funnel</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>PA</fullName>
+                    <default>false</default>
+                    <label>PA</label>
+                </value>
+                <value>
+                    <fullName>PPD</fullName>
+                    <default>false</default>
+                    <label>PPD</label>
+                </value>
+                <value>
+                    <fullName>PD</fullName>
+                    <default>false</default>
+                    <label>PD</label>
+                </value>
+                <value>
+                    <fullName>Decision</fullName>
+                    <default>false</default>
+                    <label>Decision</label>
+                </value>
+                <value>
+                    <fullName>Won</fullName>
+                    <default>false</default>
+                    <label>Won</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Generate_Own_Power__c</fullName>
+        <label>Generate Own Power?</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>GreenX_Annual_Allocation__c</fullName>
+        <label>GreenX Annual Allocation</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>GreenX_Utilized__c</fullName>
+        <label>GreenX Utilized</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Gross_Monthly_Fee_PY1__c</fullName>
+        <label>Gross Monthly Fee PY1</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Gross_Monthly_Fee_PY2__c</fullName>
+        <label>Gross Monthly Fee PY2</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Gross_Monthly_Fee_PY3__c</fullName>
+        <label>Gross Monthly Fee PY3</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Gross_Monthly_Fee_PY4__c</fullName>
+        <label>Gross Monthly Fee PY4</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Gross_Monthly_Fee_PY5__c</fullName>
+        <label>Gross Monthly Fee PY5</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Gross_Monthly_Fee_PY6__c</fullName>
+        <label>Gross Monthly Fee PY6</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Heating_Oil__c</fullName>
+        <label>Heating Oil</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Hospital_Beds__c</fullName>
+        <externalId>false</externalId>
+        <label>Hospital Beds</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Hospital_Square_Footage__c</fullName>
+        <externalId>false</externalId>
+        <label>Hospital Square Footage</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Hours_of_Operation__c</fullName>
+        <externalId>false</externalId>
+        <label>Hours of Operation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Included_All_Expenditures__c</fullName>
+        <label>Included All Expenditures?</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Interval_Data__c</fullName>
+        <label>Interval Data</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>IqScore</fullName>
+    </fields>
+    <fields>
+        <fullName>IsExcludedFromTerritory2Filter</fullName>
+    </fields>
+    <fields>
+        <fullName>IsPrivate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Jointly_Owned_Operated_Buildings__c</fullName>
+        <externalId>false</externalId>
+        <label>Jointly Owned/Operated Buildings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LeadSource</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Legacy_Created_Date__c</fullName>
+        <label>Legacy Created Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Legacy_Owner__c</fullName>
+        <description>D365 Owner</description>
+        <externalId>false</externalId>
+        <label>Legacy Owner</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Loss_Reason_Note__c</fullName>
+        <inlineHelpText>Provide a brief description outlining the reason the opportunity did not move forward.</inlineHelpText>
+        <label>Loss Reason Note</label>
+        <length>2000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Loss_Reason__c</fullName>
+        <label>Loss Reason</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Lost to Competitor</fullName>
+                    <default>false</default>
+                    <label>Lost to Competitor</label>
+                </value>
+                <value>
+                    <fullName>Contract Terms</fullName>
+                    <default>false</default>
+                    <label>Contract Terms</label>
+                </value>
+                <value>
+                    <fullName>No Budget / Lost Funding</fullName>
+                    <default>false</default>
+                    <label>No Budget / Lost Funding</label>
+                </value>
+                <value>
+                    <fullName>No Decision / Non-Responsive</fullName>
+                    <default>false</default>
+                    <label>No Decision / Non-Responsive</label>
+                </value>
+                <value>
+                    <fullName>Price</fullName>
+                    <default>false</default>
+                    <label>Price</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>MC_2_Assigned_Date__c</fullName>
+        <label>MC #2 Assigned Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>MC_Assigned_Date__c</fullName>
+        <label>MC Assigned Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Market_Consultant_2__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Market Consultant #2</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Opportunities (Market Consultant #2)</relationshipLabel>
+        <relationshipName>Opportunities2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Market_Consultant__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Market Consultant</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Opportunities (Market Consultant)</relationshipLabel>
+        <relationshipName>Opportunities1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Matrix_Approved_Date__c</fullName>
+        <label>Matrix Approved Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Matrix_Cost_Per_Visit__c</fullName>
+        <label>Matrix Cost Per Visit</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Matrix_Notes__c</fullName>
+        <label>Matrix Notes</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Matrix_Utility_Spend__c</fullName>
+        <label>Matrix Utility Spend</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Measure_Annual_Allocation__c</fullName>
+        <label>Measure Annual Allocation</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Measure_Utilized__c</fullName>
+        <label>Measure Utilized</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Medical_Office_Buildings_Square_Footage__c</fullName>
+        <externalId>false</externalId>
+        <label>Medical Office Buildings Square Footage</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Membership_Enrollment__c</fullName>
+        <externalId>false</externalId>
+        <label>Membership Enrollment</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Mentor__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Mentor</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Opportunities6</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Name</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Natural_Gas__c</fullName>
+        <label>Natural Gas</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Net_Contract_Value__c</fullName>
+        <label>Net Contract Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Net_Monthly_Fee_PY1__c</fullName>
+        <label>Net Monthly Fee PY1</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Net_Monthly_Fee_PY2__c</fullName>
+        <label>Net Monthly Fee PY2</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Net_Monthly_Fee_PY3__c</fullName>
+        <label>Net Monthly Fee PY3</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Net_Monthly_Fee_PY4__c</fullName>
+        <label>Net Monthly Fee PY4</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Net_Monthly_Fee_PY5__c</fullName>
+        <label>Net Monthly Fee PY5</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Net_Monthly_Fee_PY6__c</fullName>
+        <label>Net Monthly Fee PY6</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>New_Contracts_Gross_Annual_Fee__c</fullName>
+        <label>New Contracts Gross Annual Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>New_Contracts_Gross_Monthly_Fee__c</fullName>
+        <label>New Contracts Gross Monthly Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>NextStep</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Number_ECAP_Renewal_Payments__c</fullName>
+        <externalId>false</externalId>
+        <label>Number ECAP Renewal Payments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_of_Buildings_Battery__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Buildings (Battery)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_of_Buildings_Co_generation__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Buildings (Co-generation)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_of_Buildings_Wind__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Buildings (Wind)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_of_Buildings__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Buildings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_of_Employees__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Employees</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_of_Hospitals__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Hospitals</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_of_Outpatient_Clinics__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Outpatient Clinics</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_of_Professional_Office_Buildings__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Professional Office Buildings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_of_Schools_Campuses__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Schools/Campuses</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_of_Water_Treatment_Plants__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Water Treatment Plants</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Onsite_Electrical_Generation_Type__c</fullName>
+        <label>Onsite Electrical Generation Type</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Solar</fullName>
+                    <default>false</default>
+                    <label>Solar</label>
+                </value>
+                <value>
+                    <fullName>Generators</fullName>
+                    <default>false</default>
+                    <label>Generators</label>
+                </value>
+                <value>
+                    <fullName>Cogeneration</fullName>
+                    <default>false</default>
+                    <label>Cogeneration</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Onsite_Electrical_Generation__c</fullName>
+        <externalId>false</externalId>
+        <label>Onsite Electrical Generation (KW)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opportunity_Name_Override__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>Used by admin team to  override automatic name creation.</inlineHelpText>
+        <label>Opportunity Name Override</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>OpsPerson__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Ops Person</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Opportunities_OpsPerson</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Org_Type__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Account.Org_Type__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Org Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Other_Square_Footage__c</fullName>
+        <externalId>false</externalId>
+        <label>Other Square Footage</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Other_Utility_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Other Utility Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Other__c</fullName>
+        <label>Other</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Out_patient_Center_Square_Footage__c</fullName>
+        <externalId>false</externalId>
+        <label>Out-patient Center Square Footage</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>OwnerId</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PD_MC_2__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>PD MC #2</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Opportunities (PD MC #2)</relationshipLabel>
+        <relationshipName>Opportunities4</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PD_MC__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>PD MC</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Opportunities (PD MC)</relationshipLabel>
+        <relationshipName>Opportunities3</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PD_Salesperson_2__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>PD Salesperson #2</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Opportunities1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PD_Salesperson__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>PD Salesperson</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Opportunities</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Perf_Fee__c</fullName>
+        <externalId>false</externalId>
+        <label>Perf Fee %</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Pre_PD_MC_2__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Pre-PD MC #2</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Opportunities (Pre-PD MC #2)</relationshipLabel>
+        <relationshipName>Opportunities6</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Pre_PD_MC__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Pre-PD MC</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Opportunities (Pre-PD MC)</relationshipLabel>
+        <relationshipName>Opportunities5</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Pre_PD_Meeting_Date__c</fullName>
+        <label>Pre PD Meeting Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Pre_PD_Salesperson_2__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Pre PD Salesperson #2</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Opportunities2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Pre_PD_Salesperson__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Pre-PD Salesperson</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Opportunities3</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Pricebook2Id</fullName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Primary_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Primary Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Opportunities</relationshipLabel>
+        <relationshipName>Opportunities</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Probability</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>true</trackTrending>
+    </fields>
+    <fields>
+        <fullName>Profile_Notes__c</fullName>
+        <label>Profile Notes</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Proposal_Delivery_Date__c</fullName>
+        <label>Proposal Delivery Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Proposal_Total_Gross_Savings_CALC__c</fullName>
+        <label>Proposal Total Gross Savings CALC</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Proposal_Total_Gross_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Proposal Total Gross Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Proposal_Total_Net_Savings_CALC__c</fullName>
+        <label>Proposal Total Net Savings CALC</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Proposal_Total_Net_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Proposal Total Net Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Push_to_D365__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Push to D365</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>QS_Gross_Savings__c</fullName>
+        <label>QS Gross Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>QS_Months__c</fullName>
+        <externalId>false</externalId>
+        <label>QS Months</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>QS_Net_Savings__c</fullName>
+        <label>QS Net Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>QS_Type__c</fullName>
+        <description>Previously QS Type</description>
+        <label>Billing Type</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Quick Start</fullName>
+                    <default>false</default>
+                    <label>Quick Start</label>
+                </value>
+                <value>
+                    <fullName>Delayed Billing</fullName>
+                    <default>false</default>
+                    <label>Delayed Billing</label>
+                </value>
+                <value>
+                    <fullName>Shorten Billing</fullName>
+                    <default>false</default>
+                    <label>Shorten Billing</label>
+                </value>
+                <value>
+                    <fullName>Standard</fullName>
+                    <default>true</default>
+                    <label>Standard</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Renewal</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Renewal</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>RFP_Notes__c</fullName>
+        <label>RFP Notes</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>RFP_Shipped_Date__c</fullName>
+        <label>RFP Shipped Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>RFP_Stage__c</fullName>
+        <label>RFP Stage</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Monitoring for Requirements Release</fullName>
+                    <default>false</default>
+                    <label>Monitoring for Requirements Release</label>
+                </value>
+                <value>
+                    <fullName>Requirements Received</fullName>
+                    <default>false</default>
+                    <label>Requirements Received</label>
+                </value>
+                <value>
+                    <fullName>Preparing Response</fullName>
+                    <default>false</default>
+                    <label>Preparing Response</label>
+                </value>
+                <value>
+                    <fullName>Shipped Response</fullName>
+                    <default>false</default>
+                    <label>Shipped Response</label>
+                </value>
+                <value>
+                    <fullName>Prospect Received Response</fullName>
+                    <default>false</default>
+                    <label>Prospect Received Response</label>
+                </value>
+                <value>
+                    <fullName>Won Bid</fullName>
+                    <default>false</default>
+                    <label>Won Bid</label>
+                </value>
+                <value>
+                    <fullName>Lost Bid</fullName>
+                    <default>false</default>
+                    <label>Lost Bid</label>
+                </value>
+                <value>
+                    <fullName>Lost Bid, No Action</fullName>
+                    <default>false</default>
+                    <label>Lost Bid, No Action</label>
+                </value>
+                <value>
+                    <fullName>Lost, Competition</fullName>
+                    <default>false</default>
+                    <label>Lost, Competition</label>
+                </value>
+                <value>
+                    <fullName>Withdrew Bid</fullName>
+                    <default>false</default>
+                    <label>Withdrew Bid</label>
+                </value>
+                <value>
+                    <fullName>Declined to Respond</fullName>
+                    <default>false</default>
+                    <label>Declined to Respond</label>
+                </value>
+                <value>
+                    <fullName>RFP Response Rejected</fullName>
+                    <default>false</default>
+                    <label>RFP Response Rejected</label>
+                </value>
+                <value>
+                    <fullName>Prospect Rescinded/Cancelled RFP</fullName>
+                    <default>false</default>
+                    <label>Prospect Rescinded/Cancelled RFP</label>
+                </value>
+                <value>
+                    <fullName>Awarded RFP, but No Signed Contract</fullName>
+                    <default>false</default>
+                    <label>Awarded RFP, but No Signed Contract</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>RFP_Website__c</fullName>
+        <label>RFP Website</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>RFP__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>RFP</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ROI_Analysis_Completed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>ROI Analysis Completed</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Reporting_Period_End_Actuals__c</fullName>
+        <label>Reporting Period End (Actuals)</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Reporting_Period_End_Budget__c</fullName>
+        <label>Reporting Period End (Budget)</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Reporting_Period_Start_Actuals__c</fullName>
+        <label>Reporting Period Start (Actuals)</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Reporting_Period_Start_Budget__c</fullName>
+        <label>Reporting Period Start (Budget)</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Reporting_Period__c</fullName>
+        <externalId>false</externalId>
+        <label>Reporting Period</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Response_Deadline__c</fullName>
+        <label>Response Deadline</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Sales_Support_Notes__c</fullName>
+        <label>Sales Support Notes</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Savings_Percent__c</fullName>
+        <externalId>false</externalId>
+        <label>Savings %</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>School_Enrollment__c</fullName>
+        <externalId>false</externalId>
+        <label>School Enrollment</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Senior_Pastor__c</fullName>
+        <externalId>false</externalId>
+        <label>Senior Pastor</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SharePoint_Path_URL__c</fullName>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(
+  &quot;https://cenergistic.sharepoint.com/sites/D365Sales/account/Forms/AllItems.aspx?id=&quot; &amp;
+  /* Encode the server-relative path for the id= parameter (safe order, % first) */
+  SUBSTITUTE(
+    SUBSTITUTE(
+      SUBSTITUTE(
+        SUBSTITUTE(
+          SUBSTITUTE(
+            SUBSTITUTE(
+              &quot;/sites/D365Sales/account/&quot; &amp;
+              Account.SharePoint_Path__c &amp;
+              &quot;/opportunity/&quot; &amp;
+              IF(
+                AND(
+                  ISBLANK(D365OpportunityGuid__c),
+                  DATEVALUE(CreatedDate) &gt; DATE(2025, 3, 10)
+                ),
+                /* Use 15-char Id (NOT CASESAFEID) */
+                Name &amp; &quot;_&quot; &amp; Id,
+                Name &amp; &quot;_&quot; &amp; D365OpportunityGuid__c
+              ),
+              &quot;%&quot;, &quot;%25&quot;   /* encode % first */
+            ),
+            &quot; &quot;, &quot;%20&quot;
+          ),
+          &quot;&amp;&quot;, &quot;%26&quot;
+        ),
+        &quot;#&quot;, &quot;%23&quot;
+      ),
+      &quot;?&quot;, &quot;%3F&quot;
+    ),
+    &quot;+&quot;, &quot;%2B&quot;
+  ),
+  &quot;Open in SharePoint&quot;,
+  &quot;_blank&quot;
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>SharePoint Path URL</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SharePoint_Path__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account.SharePoint_Path__c +&quot;/&quot;+&quot;opportunity&quot;+&quot;/&quot;+
+
+IF ( AND (  ISBLANK ( D365OpportunityGuid__c ),  DATEVALUE( CreatedDate ) &gt; DATE ( 2025,3,10 ) ), 
+Name + &quot;_&quot; +  Id , 
+Name + &quot;_&quot; +  D365OpportunityGuid__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used for PDF Butler SharePoint integration to determine path to SharePoint file location.</inlineHelpText>
+        <label>SharePoint Path</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Simulate_Annual_Allocation__c</fullName>
+        <label>Simulate Annual Allocation</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Simulate_Utilized__c</fullName>
+        <label>Simulate Utilized</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Sites_Powered_By_Solar_Next_2yrs__c</fullName>
+        <externalId>false</externalId>
+        <label>Sites Powered By Solar Next 2yrs</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Smart_Meter_Count__c</fullName>
+        <externalId>false</externalId>
+        <label>Smart Meter Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Smart_Meter_Percentage__c</fullName>
+        <label>Smart Meter Percentage</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Smart_Meters__c</fullName>
+        <label>Smart Meters</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Software_Type__c</fullName>
+        <label>Software Type</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Measure</fullName>
+                    <default>false</default>
+                    <label>Measure</label>
+                </value>
+                <value>
+                    <fullName>ECAP</fullName>
+                    <default>false</default>
+                    <label>ECAP</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Solar__c</fullName>
+        <label>Solar</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Sq_Footage_served_by_Central_Plant__c</fullName>
+        <externalId>false</externalId>
+        <label>Sq Footage served by Central Plant</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Square_Footage__c</fullName>
+        <externalId>false</externalId>
+        <label>Square Footage</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>StageName</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>true</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Street_Traffic_Light_Percentage__c</fullName>
+        <label>Street &amp; Traffic Light Percentage</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Sub_Type__c</fullName>
+        <label>Sub-Type</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>CONV-Renewal</fullName>
+                    <default>false</default>
+                    <label>CONV-Renewal</label>
+                </value>
+                <value>
+                    <fullName>No Fee +</fullName>
+                    <default>false</default>
+                    <label>No Fee +</label>
+                </value>
+                <value>
+                    <fullName>Optimize</fullName>
+                    <default>false</default>
+                    <label>Optimize</label>
+                </value>
+                <value>
+                    <fullName>Standard</fullName>
+                    <default>false</default>
+                    <label>Standard</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>SyncedQuoteId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Term_Months__c</fullName>
+        <description>Previously Term Months</description>
+        <externalId>false</externalId>
+        <label>Contract Term Months</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Territory2Id</fullName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>TotalOpportunityQuantity</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Type</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>User_Is_Owner__c</fullName>
+        <description>Used for Ops Reporting to show &quot;My Opportunities&quot; if Owner.</description>
+        <externalId>false</externalId>
+        <formula>IF ( $User.Id =  Owner.Id  , 1, 0 )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used for Ops Reporting to show &quot;My Opportunities&quot; if Owner.</inlineHelpText>
+        <label>User Is Owner</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_is_Co_Salesperson__c</fullName>
+        <description>Used for Ops Reporting to show &quot;My Opportunities&quot; if Co Salesperson.</description>
+        <externalId>false</externalId>
+        <formula>IF ( $User.Id =  Co_Salesperson__r.Id , 1, 0 )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used for Ops Reporting to show &quot;My Opportunities&quot; if Co Salesperson</inlineHelpText>
+        <label>User is Co Salesperson</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Utility_Individual_Department_Allocation__c</fullName>
+        <label>Utility Individual Department Allocation</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Visits_Per_Month__c</fullName>
+        <externalId>false</externalId>
+        <label>Visits Per Month</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>1</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Water_Sewer__c</fullName>
+        <label>Water/Sewer</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Water_Treatment_Plants_Y_N__c</fullName>
+        <label>Water Treatment Plants (Y/N)</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Year_10_Gross_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 10 Gross Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_10_Net_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 10 Net Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_1_Gross_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 1 Gross Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_1_Net_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 1 Net Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_2_Gross_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 2 Gross Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_2_Net_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 2 Net Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_3_Gross_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 3 Gross Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_3_Net_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 3 Net Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_4_Gross_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 4 Gross Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_4_Net_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 4 Net Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_5_Gross_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 5 Gross Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_5_Net_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 5 Net Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_6_Gross_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 6 Gross Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_6_Net_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 6 Net Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_7_Gross_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 7 Gross Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_7_Net_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 7 Net Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_8_Gross_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 8 Gross Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_8_Net_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 8 Net Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_9_Gross_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 9 Gross Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_9_Net_Savings__c</fullName>
+        <defaultValue>(0)</defaultValue>
+        <label>Year 9 Net Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>aiesync__Easy_Sync_Quote_Formula__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>aiesync__Easy_Sync_Quote__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Easy Sync Quote Formula</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>aiesync__Easy_Sync_Quote__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <label>Easy Sync Quote</label>
+        <referenceTo>Quote</referenceTo>
+        <relationshipLabel>Opportunities</relationshipLabel>
+        <relationshipName>Opportunities</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>aiesync__TestCustomField_O__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>TestCustomField_O</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__Account_Plan__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <label>Account Plan</label>
+        <referenceTo>vsa__Account_Plan__c</referenceTo>
+        <relationshipLabel>Identified Opportunities</relationshipLabel>
+        <relationshipName>Identified_Opportunities</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>vsa__Business_Unit_RO__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>HYPERLINK( &quot;/&quot;&amp;  vsa__Account_Plan__r.vsa__Business_Unit__c ,vsa__Account_Plan__r.vsa__Business_Unit__r.Name)</formula>
+        <label>Business Unit</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__Count_of_Mutual_Plans__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This field is populated by a flow and displays the number of Mutual Plans that have been created for this Opportunity</description>
+        <externalId>false</externalId>
+        <label>Count of Mutual Plans</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__Count_of_Opportunity_Assessments_RO__c</fullName>
+        <deprecated>false</deprecated>
+        <label>Count of Opportunity Assessments</label>
+        <summaryForeignKey>vsa__Opportunity_Assessment__c.vsa__Opportunity_OAT__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>vsa__Count_of_Power_Map_Contacts__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Counts the number of Power Map Contacts for the Opportunity</description>
+        <externalId>false</externalId>
+        <label>Count of Power Map Contacts</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__Count_of_ValuePrompters__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Counts the number of ValuePrompter® records created for the Opportunity</description>
+        <externalId>false</externalId>
+        <label>Count of ValuePrompter® records</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__Mutual_Plans_RO__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This formula field uses the Count of Mutual Plans field to show a clickable icon that can be added to a Dashboard.</description>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(&quot;/lightning/r/&quot;&amp; CASESAFEID(Id) &amp;&quot;/related/vsa__Mutual_Plan_Opportunity__r/view&quot;,
+
+
+
+(CASE( vsa__Count_of_Mutual_Plans__c,
+0,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__NoMutualPlan&quot;, &quot;No Mutual Plan Exists&quot; , 50, 50)),
+1,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__MutualPlan1&quot;, &quot;1 Mutual Plan&quot; , 50, 50)),
+2,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__MutualPlan2&quot;, &quot;2 Mutual Plans&quot; , 50, 50)),
+3,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__MutualPlan3&quot;, &quot;3 Mutual Plans&quot; , 50, 50)),
+4,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__MutualPlan4&quot;, &quot;4 Mutual Plans&quot; , 50, 50)),
+5,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__MutualPlan5&quot;, &quot;5 Mutual Plans&quot; , 50, 50)),
+(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__MutualPlan6&quot;, &quot;More than 5 Mutual Plans&quot; , 50, 50))
+))
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Mutual Plans</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__Plan_Image_RO__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>if(   vsa__Plan__c  = true, (IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__Plan&quot;, &quot;Plan&quot; , 30, 30)),(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__RedPlan&quot;, &quot;No Plan&quot; , 30, 30)) )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Plan</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__Plan__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <label>Plan</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>vsa__PowerMapContacts_List_RO__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Clickable image to show the number of Power Map Contacts that launches the Opportunity</description>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(&quot;/lightning/r/&quot;&amp; CASESAFEID(Id) &amp;&quot;/view&quot;,
+(CASE( vsa__Count_of_Power_Map_Contacts__c,
+0,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__NoPowerMapIcon&quot;, &quot;No Power Map&quot; , 50, 50)),
+1,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__PowerMap1&quot;, &quot;1 Power Map Contact&quot; , 50, 50)),
+2,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__PowerMap2&quot;, &quot;2 Power Map Contacts&quot; , 50, 50)),
+3,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__PowerMap3&quot;, &quot;3 Power Map Contacts&quot; , 50, 50)),
+4,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__PowerMap4&quot;, &quot;4 Power Map Contacts&quot; , 50, 50)),
+5,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__PowerMap5&quot;, &quot;5 Power Map Contacts&quot; , 50, 50)),
+(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__PowerMap6&quot;, &quot;More than 5 Power Map Contacts&quot; , 50, 50))
+))
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Power Map Contacts</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__Power_Image_RO__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>if(  vsa__Power__c  = true, (IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__Power&quot;, &quot;Power&quot; , 30, 30)), (IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__RedPower&quot;, &quot;No Power&quot; , 30, 30)))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Power</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__Power__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <label>Power</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>vsa__QP_Formula_RO__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__X&quot;, &quot;None&quot;,0,0) &amp; &quot; &quot; &amp;
+
+IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__QP&quot;, &quot;Times&quot;,30,34) &amp; &quot; &quot; &amp;
+
+
+vsa__VisionMatch_Image_RO__c &amp;
+
+IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__X&quot;, &quot;Times&quot;,30,12) &amp; &quot; &quot; &amp;
+
+vsa__Value_Image_RO__c &amp;
+
+IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__X&quot;, &quot;Times&quot;,30,12) &amp; &quot; &quot; &amp;
+
+vsa__Power_Image_RO__c &amp;
+
+IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__X&quot;, &quot;Times&quot;,30,12) &amp; &quot; &quot; &amp;
+
+vsa__Plan_Image_RO__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>QP Formula</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__Reverse_Timeline_Template__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <label>Reverse Timeline Template</label>
+        <referenceTo>vsa__Reverse_Timeline_Template__c</referenceTo>
+        <relationshipLabel>Opportunities</relationshipLabel>
+        <relationshipName>Opportunities</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>vsa__VSA_Strategy__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>VSA Strategy</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__ValuePrompters_List_RO__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(&quot;/lightning/r/&quot;&amp;  CASESAFEID(Id) &amp;&quot;/related/vsa__ValuePrompter__r/view&quot;,
+
+
+
+(CASE(  vsa__Count_of_ValuePrompters__c,
+0,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__NoValuePrompterIcon&quot;, &quot;No ValuePrompter®&quot; , 50, 50)),
+1,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__ValuePrompters1&quot;, &quot;1 ValuePrompter®&quot; , 50, 50)),
+2,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__ValuePrompters2&quot;, &quot;2 ValuePrompters&quot; , 50, 50)),
+3,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__ValuePrompters3&quot;, &quot;3 ValuePrompters&quot; , 50, 50)),
+4,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__ValuePrompters4&quot;, &quot;4 ValuePrompters&quot; , 50, 50)),
+5,(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__ValuePrompters5&quot;, &quot;5 ValuePrompters&quot; , 50, 50)),
+(IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__ValuePrompters6&quot;, &quot;More than 5 ValuePrompters&quot; , 50, 50))
+))
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ValuePrompter®</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__Value_Image_RO__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>if( vsa__Value__c = true, (IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__Value&quot;, &quot;Value&quot; , 30, 30)), (IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__RedValue&quot;, &quot;No Value&quot; , 30, 30)))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Value</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__Value__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <label>Value</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>vsa__VisionMatch_Image_RO__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>if(  vsa__VisionMatch__c = true, (IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__VMd&quot;, &quot;VisionMatch Differentiated&quot; , 30, 30)), (IMAGE(LEFT($Api.Partner_Server_URL_560, FIND( &apos;/services&apos;,$Api.Partner_Server_URL_560))&amp;&quot;resource/vsa__RedVM&quot;, &quot;No VisionMatch&quot; , 30, 30)))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>VisionMatch™</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vsa__VisionMatch__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <label>VisionMatch™</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>vsa__White_Space_Analysis__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <label>White Space Analysis</label>
+        <referenceTo>vsa__White_Space_Analysis__c</referenceTo>
+        <relationshipLabel>Opportunities</relationshipLabel>
+        <relationshipName>Opportunities</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <listViews>
+        <fullName>AllOpportunities</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Org_Type__c</columns>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>OPPORTUNITY.CREATED_DATE</columns>
+        <columns>CORE.USERS.FULL_NAME</columns>
+        <columns>Actual_Close_Date__c</columns>
+        <columns>OPPORTUNITY.FORECAST_CATEGORY</columns>
+        <columns>OPPORTUNITY.PROBABILITY</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>OPPORTUNITY.WON</columns>
+        <columns>Loss_Reason__c</columns>
+        <columns>Legacy_Owner__c</columns>
+        <columns>RFP__c</columns>
+        <columns>OPPORTUNITY.LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All Opportunities</label>
+    </listViews>
+    <listViews>
+        <fullName>All_RFP</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>CORE.USERS.FULL_NAME</columns>
+        <columns>OPPORTUNITY.PROBABILITY</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>RFP__c</columns>
+        <columns>RFP_Stage__c</columns>
+        <columns>Response_Deadline__c</columns>
+        <columns>RFP_Shipped_Date__c</columns>
+        <columns>RFP_Website__c</columns>
+        <columns>RFP_Notes__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RFP__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>All RFP</label>
+    </listViews>
+    <listViews>
+        <fullName>ClosingNextMonth</fullName>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OPPORTUNITY.CLOSED</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.CLOSE_DATE</field>
+            <operation>equals</operation>
+            <value>NEXT_MONTH</value>
+        </filters>
+        <label>Closing Next Month</label>
+    </listViews>
+    <listViews>
+        <fullName>ClosingThisMonth</fullName>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OPPORTUNITY.CLOSED</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.CLOSE_DATE</field>
+            <operation>equals</operation>
+            <value>THIS_MONTH</value>
+        </filters>
+        <label>Closing This Month</label>
+    </listViews>
+    <listViews>
+        <fullName>Copy_of_Open_opportunities_by_owner</fullName>
+        <columns>CORE.USERS.FULL_NAME</columns>
+        <columns>Co_Salesperson__c</columns>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>Other__c</columns>
+        <columns>OPPORTUNITY.CLOSED</columns>
+        <columns>Actual_Close_Date__c</columns>
+        <columns>Loss_Reason__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OPPORTUNITY.STAGE_NAME</field>
+            <operation>notEqual</operation>
+            <value>Closed Won,Closed Lost</value>
+        </filters>
+        <filters>
+            <field>CORE.USERS.LAST_NAME</field>
+            <operation>equals</operation>
+            <value>van winkle</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.NAME</field>
+            <operation>notContain</operation>
+            <value>example</value>
+        </filters>
+        <label>Opportunities to Update to Closed</label>
+    </listViews>
+    <listViews>
+        <fullName>Default_Opportunity_Pipeline</fullName>
+        <booleanFilter>(1 OR 2)</booleanFilter>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>OPPORTUNITY.CLOSE_DATE</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>OPPORTUNITY.CLOSED</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.CLOSE_DATE</field>
+            <operation>greaterOrEqual</operation>
+            <value>LAST_N_DAYS:30</value>
+        </filters>
+        <label>My Opportunity Pipeline</label>
+    </listViews>
+    <listViews>
+        <fullName>Forecastable_Opportunities</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>CORE.USERS.FULL_NAME</columns>
+        <columns>OPPORTUNITY.CLOSED</columns>
+        <columns>OPPORTUNITY.CLOSE_DATE</columns>
+        <columns>Actual_Close_Date__c</columns>
+        <columns>OPPORTUNITY.FORECAST_CATEGORY</columns>
+        <columns>CORE.USERS.FIRST_NAME</columns>
+        <columns>OPPORTUNITY.PROBABILITY</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>OPPORTUNITY.WON</columns>
+        <columns>Loss_Reason__c</columns>
+        <columns>Loss_Reason_Note__c</columns>
+        <columns>OPPORTUNITY.LAST_STAGE_CHANGE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OPPORTUNITY.STAGE_NAME</field>
+            <operation>notEqual</operation>
+            <value>Closed Won,Closed Lost</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.STAGE_NAME</field>
+            <operation>notEqual</operation>
+            <value>Discovery</value>
+        </filters>
+        <label>Forecastable Opportunities</label>
+    </listViews>
+    <listViews>
+        <fullName>HigherED_Open_Oppty</fullName>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <columns>CORE.USERS.FULL_NAME</columns>
+        <columns>Co_Salesperson__c</columns>
+        <columns>Market_Consultant__c</columns>
+        <columns>Market_Consultant_2__c</columns>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>Org_Type__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OPPORTUNITY.STAGE_NAME</field>
+            <operation>notEqual</operation>
+            <value>Closed Won,Closed Lost</value>
+        </filters>
+        <filters>
+            <field>CORE.USERS.LAST_NAME</field>
+            <operation>equals</operation>
+            <value>Bernard</value>
+        </filters>
+        <label>HIgher Ed Open Oppty</label>
+    </listViews>
+    <listViews>
+        <fullName>Inspector</fullName>
+        <columns>CORE.USERS.FULL_NAME</columns>
+        <columns>Co_Salesperson__c</columns>
+        <columns>Market_Consultant__c</columns>
+        <columns>Market_Consultant_2__c</columns>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>Org_Type__c</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>ES_FT__c</columns>
+        <columns>ES_PT__c</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>OPPORTUNITY.LAST_ACTIVITY</columns>
+        <columns>Other__c</columns>
+        <columns>OPPORTUNITY.PROBABILITY</columns>
+        <columns>Funnel__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OPPORTUNITY.STAGE_NAME</field>
+            <operation>notEqual</operation>
+            <value>Closed Won,Closed Lost</value>
+        </filters>
+        <label>Inspector</label>
+    </listViews>
+    <listViews>
+        <fullName>MyOpportunities</fullName>
+        <booleanFilter>(1 OR 3) AND 2</booleanFilter>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>Co_Salesperson__c</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>Org_Type__c</columns>
+        <columns>OPPORTUNITY.TYPE</columns>
+        <columns>OPPORTUNITY.CLOSE_DATE</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>OPPORTUNITY.PROBABILITY</columns>
+        <columns>Market_Consultant__c</columns>
+        <columns>OPPORTUNITY.CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>User_Is_Owner__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.STAGE_NAME</field>
+            <operation>notEqual</operation>
+            <value>Closed Won,Closed Lost</value>
+        </filters>
+        <filters>
+            <field>User_is_Co_Salesperson__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>My Opportunities</label>
+    </listViews>
+    <listViews>
+        <fullName>My_K_12_Opportunities</fullName>
+        <booleanFilter>1 AND (2 OR 3) AND 4</booleanFilter>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>OPPORTUNITY.CLOSE_DATE</columns>
+        <columns>Actual_Close_Date__c</columns>
+        <columns>Org_Type__c</columns>
+        <columns>OPPORTUNITY.TYPE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>Market_Consultant__c</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>Org_Type__c</field>
+            <operation>equals</operation>
+            <value>K thru 12</value>
+        </filters>
+        <filters>
+            <field>User_Is_Owner__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>User_is_Co_Salesperson__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.STAGE_NAME</field>
+            <operation>notEqual</operation>
+            <value>Closed Won,Closed Lost</value>
+        </filters>
+        <label>My K-12 Opportunities (Open)</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Owned_MC_Opportunities</fullName>
+        <booleanFilter>1 OR 2 OR 3</booleanFilter>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>OPPORTUNITY.CLOSE_DATE</columns>
+        <columns>Actual_Close_Date__c</columns>
+        <columns>Co_Salesperson__c</columns>
+        <columns>Market_Consultant__c</columns>
+        <columns>Org_Type__c</columns>
+        <columns>CORE.USERS.FIRST_NAME</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Market_Consultant__c</field>
+            <operation>equals</operation>
+            <value>Rick Anderson</value>
+        </filters>
+        <filters>
+            <field>CORE.USERS.ALIAS</field>
+            <operation>equals</operation>
+            <value>Rick Anderson</value>
+        </filters>
+        <filters>
+            <field>Co_Salesperson__c</field>
+            <operation>equals</operation>
+            <value>Rick Anderson</value>
+        </filters>
+        <label>Rick Anderson - MC&apos;d or Owned opp.</label>
+    </listViews>
+    <listViews>
+        <fullName>NewThisWeek</fullName>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OPPORTUNITY.CREATED_DATE</field>
+            <operation>equals</operation>
+            <value>THIS_WEEK</value>
+        </filters>
+        <label>New This Week</label>
+    </listViews>
+    <listViews>
+        <fullName>Open_OpptyJEB</fullName>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <columns>CORE.USERS.FULL_NAME</columns>
+        <columns>Co_Salesperson__c</columns>
+        <columns>Market_Consultant__c</columns>
+        <columns>Market_Consultant_2__c</columns>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>Org_Type__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OPPORTUNITY.STAGE_NAME</field>
+            <operation>notEqual</operation>
+            <value>Closed Won,Closed Lost</value>
+        </filters>
+        <filters>
+            <field>CORE.USERS.LAST_NAME</field>
+            <operation>equals</operation>
+            <value>Bernard</value>
+        </filters>
+        <label>Open Oppty- JEB</label>
+    </listViews>
+    <listViews>
+        <fullName>Open_opportunities</fullName>
+        <columns>CORE.USERS.FULL_NAME</columns>
+        <columns>Co_Salesperson__c</columns>
+        <columns>Market_Consultant__c</columns>
+        <columns>Market_Consultant_2__c</columns>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>Org_Type__c</columns>
+        <columns>OPPORTUNITY.TYPE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OPPORTUNITY.STAGE_NAME</field>
+            <operation>notEqual</operation>
+            <value>Closed Won,Closed Lost</value>
+        </filters>
+        <label>Open opportunities</label>
+    </listViews>
+    <listViews>
+        <fullName>Opportunities_Specific_Close_Details</fullName>
+        <columns>CORE.USERS.FULL_NAME</columns>
+        <columns>Co_Salesperson__c</columns>
+        <columns>Market_Consultant__c</columns>
+        <columns>MC_Assigned_Date__c</columns>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>Actual_Close_Date__c</columns>
+        <columns>Loss_Reason__c</columns>
+        <columns>Loss_Reason_Note__c</columns>
+        <columns>OPPORTUNITY.CLOSED</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OPPORTUNITY.STAGE_NAME</field>
+            <operation>equals</operation>
+            <value>Closed Lost</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.NAME</field>
+            <operation>contains</operation>
+            <value>plano</value>
+        </filters>
+        <label>Opportunities-Specific Close Details</label>
+    </listViews>
+    <listViews>
+        <fullName>Renewal_Opportunities_open</fullName>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>CORE.USERS.FULL_NAME</columns>
+        <columns>Co_Salesperson__c</columns>
+        <columns>OPPORTUNITY.TYPE</columns>
+        <columns>Sub_Type__c</columns>
+        <columns>QS_Type__c</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>OPPORTUNITY.CLOSE_DATE</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OPPORTUNITY.TYPE</field>
+            <operation>equals</operation>
+            <value>Renewal</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.STAGE_NAME</field>
+            <operation>notEqual</operation>
+            <value>Closed Lost,Closed Won</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.NAME</field>
+            <operation>notContain</operation>
+            <value>Test,example</value>
+        </filters>
+        <label>Renewal Opportunities (open)</label>
+    </listViews>
+    <listViews>
+        <fullName>Targeted_Opportunities</fullName>
+        <columns>CORE.USERS.FULL_NAME</columns>
+        <columns>Co_Salesperson__c</columns>
+        <columns>Market_Consultant__c</columns>
+        <columns>Market_Consultant_2__c</columns>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>ES_FT__c</columns>
+        <columns>ES_PT__c</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>OPPORTUNITY.LAST_ACTIVITY</columns>
+        <columns>Other__c</columns>
+        <columns>OPPORTUNITY.PROBABILITY</columns>
+        <columns>Funnel__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OPPORTUNITY.STAGE_NAME</field>
+            <operation>equals</operation>
+            <value>Targeted Account</value>
+        </filters>
+        <label>Targeted_Opportunities</label>
+    </listViews>
+    <listViews>
+        <fullName>Tulsa_Targeted_Group</fullName>
+        <columns>CORE.USERS.FULL_NAME</columns>
+        <columns>Co_Salesperson__c</columns>
+        <columns>Market_Consultant__c</columns>
+        <columns>Market_Consultant_2__c</columns>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>ES_FT__c</columns>
+        <columns>ES_PT__c</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>OPPORTUNITY.LAST_ACTIVITY</columns>
+        <columns>Other__c</columns>
+        <columns>OPPORTUNITY.PROBABILITY</columns>
+        <columns>Funnel__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OPPORTUNITY.STAGE_NAME</field>
+            <operation>equals</operation>
+            <value>Targeted Account</value>
+        </filters>
+        <label>Tulsa Targeted Group</label>
+    </listViews>
+    <listViews>
+        <fullName>Won</fullName>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>OPPORTUNITY.CLOSE_DATE</columns>
+        <columns>Actual_Close_Date__c</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>OPPORTUNITY.PROBABILITY</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OPPORTUNITY.WON</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.CLOSED</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Won</label>
+    </listViews>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Opportunity</fullName>
+        <active>true</active>
+        <businessProcess>CEN Value Selling</businessProcess>
+        <description>Added as part of the eValue Prompter package.</description>
+        <label>Opportunity</label>
+        <picklistValues>
+            <picklist>Additional_Square_Footage_Planned__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Allocate_Plant_Costs__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Board_Vote__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Central_Heating_Cooling_Plant__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Church_Operated_School__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>ES_Employed_By__c</picklist>
+            <values>
+                <fullName>Cenergistic</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Client</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Electric_Company_Interval_Usage_Data__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Executive_Utilized__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Fee_Type__c</picklist>
+            <values>
+                <fullName>Fixed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fixed-ES</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Performance Fee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Split Fee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Turnkey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Turnkey-R</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Turnkey-S</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Var Fixed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Var Fixed-ES</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>ForecastCategoryName</picklist>
+            <values>
+                <fullName>Best Case</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Closed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Commit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Omitted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pipeline</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Funnel__c</picklist>
+            <values>
+                <fullName>Decision</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PD</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PPD</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Won</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Generate_Own_Power__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>GreenX_Utilized__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Included_All_Expenditures__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Interval_Data__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Advertisement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Employee Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>External Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Google AdWords</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Purchased List</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trade Show</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Webinar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Loss_Reason__c</picklist>
+            <values>
+                <fullName>Lost to Competitor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Budget %2F Lost Funding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Decision %2F Non-Responsive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Price</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Measure_Utilized__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Onsite_Electrical_Generation_Type__c</picklist>
+            <values>
+                <fullName>Cogeneration</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Generators</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>QS_Type__c</picklist>
+            <values>
+                <fullName>Delayed Billing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Quick Start</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Shorten Billing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Standard</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>RFP_Stage__c</picklist>
+            <values>
+                <fullName>Awarded RFP%2C but No Signed Contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Declined to Respond</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lost Bid</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lost Bid%2C No Action</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lost%2C Competition</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monitoring for Requirements Release</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Preparing Response</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prospect Received Response</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prospect Rescinded%2FCancelled RFP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RFP Response Rejected</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Requirements Received</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Shipped Response</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Withdrew Bid</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Won Bid</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Simulate_Utilized__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Smart_Meters__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Software_Type__c</picklist>
+            <values>
+                <fullName>ECAP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Measure</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Sub_Type__c</picklist>
+            <values>
+                <fullName>CONV-Renewal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Fee %2B</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Optimize</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Standard</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>Conservation Program</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Utility_Individual_Department_Allocation__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Water_Treatment_Plants_Y_N__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>OPPORTUNITY.NAME</customTabListAdditionalFields>
+        <customTabListAdditionalFields>ACCOUNT.NAME</customTabListAdditionalFields>
+        <customTabListAdditionalFields>OPPORTUNITY.CLOSE_DATE</customTabListAdditionalFields>
+        <excludedStandardButtons>OpenListInQuip</excludedStandardButtons>
+        <excludedStandardButtons>NewFromDocument</excludedStandardButtons>
+        <excludedStandardButtons>Import</excludedStandardButtons>
+        <excludedStandardButtons>New</excludedStandardButtons>
+        <excludedStandardButtons>PipelineInspection</excludedStandardButtons>
+        <excludedStandardButtons>PrintableListView</excludedStandardButtons>
+        <excludedStandardButtons>MassAddToActionableList</excludedStandardButtons>
+        <excludedStandardButtons>MassAssignRecordLabel</excludedStandardButtons>
+        <lookupDialogsAdditionalFields>OPPORTUNITY.NAME</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>ACCOUNT.NAME</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>OPPORTUNITY.NAME</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>ACCOUNT.NAME</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>OPPORTUNITY.NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>ACCOUNT.NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>OPPORTUNITY.STAGE_NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>OPPORTUNITY.CLOSE_DATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Active_Contract__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CORE.USERS.ALIAS</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>Read</sharingModel>
+    <validationRules>
+        <fullName>Closed_Won_Restriction</fullName>
+        <active>true</active>
+        <description>Only certain people can mark an Opportunity Closed Won</description>
+        <errorConditionFormula>AND (  ISPICKVAL ( StageName, &quot;Closed Won&quot; ) ,
+	NOT ( 
+		OR (  $Profile.Name = &quot;System Administrator&quot;,
+		$User.Email = &quot;dvanwinkle@cenergistic.com&quot;,
+		$User.Email = &quot;mdwivedi@cenergistic.com&quot;,
+		$User.Email = &quot;mcaruso@cenergistic.com&quot;
+		) 
+	)
+)</errorConditionFormula>
+        <errorMessage>Please contact Sales Operations and they will mark the Opportunity Closed Won</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Enter_Loss_Information</fullName>
+        <active>true</active>
+        <description>Require Loss fields to be completed when Stage goes to Closed Lost</description>
+        <errorConditionFormula>AND (
+	ISPICKVAL ( StageName , &quot;Closed Lost&quot;) ,
+	ISPICKVAL ( Loss_Reason__c , &quot;&quot; ) ,
+	ISBLANK ( Loss_Reason_Note__c)
+)</errorConditionFormula>
+        <errorMessage>Please select a Loss Reason and provide a short overview in the Loss Reason Notes.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Lock_Closed_Won_Loss_Except_SalesOps</fullName>
+        <active>true</active>
+        <description>Locks closed opportunities for everyone expect System Admin and Deb W (Sales Ops)</description>
+        <errorConditionFormula>AND ( PRIORVALUE ( IsClosed ) = True,
+	NOT ( 
+		OR (  $Profile.Name = &quot;System Administrator&quot;,
+		$User.Email = &quot;dvanwinkle@cenergistic.com&quot;,
+		$User.Email = &quot;mdwivedi@cenergistic.com&quot;,
+		$User.Email = &quot;ksyrus@cenergistic.com&quot;,
+		$User.Email = &quot;mcaruso@cenergistic.com&quot;
+		) 
+	)
+)</errorConditionFormula>
+        <errorMessage>This Opportunity is closed. Please contact Sales Operations or CRM Admin if you have any questions.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Set_Contract_Start_Date</fullName>
+        <active>true</active>
+        <description>Requires an entry in the Contract Start Date field when stage set to Closed Won</description>
+        <errorConditionFormula>AND (
+ISPICKVAL (  StageName , &quot;Closed Won&quot; ),
+ISBLANK (  Contract_Start_Date__c )
+)</errorConditionFormula>
+        <errorMessage>Enter the Contract Start Date.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>vsa__No_more_than_one_OAT</fullName>
+        <active>false</active>
+        <description>Only Allows one Opportunity Assessment per Opportunity</description>
+        <errorConditionFormula>vsa__Count_of_Opportunity_Assessments_RO__c &gt;1</errorConditionFormula>
+        <errorMessage>You have already created an Opportunity Assessment for this Opportunity.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>New_Opp</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>New Opp</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>/lightning/o/Opportunity/new?defaultFieldValues=StageName=Discovery,AccountId={!Account.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>aiesync__Easy_Add</fullName>
+        <availability>online</availability>
+        <description>Add a Quote using the Alpha Easy Sync App</description>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Easy Add</masterLabel>
+        <openType>sidebar</openType>
+        <page>aiesync__aivfp_AddQuote</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>aiesync__Easy_Sync</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Easy Sync</masterLabel>
+        <openType>sidebar</openType>
+        <page>aiesync__aivfp_SyncOpportunity</page>
+        <protected>false</protected>
+    </webLinks>
+</CustomObject>
