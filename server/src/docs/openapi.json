@@ -1,0 +1,37 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Cencore View Builder API",
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "http://localhost:4000" }],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/views/query": {
+      "post": {
+        "summary": "Execute dynamic view query",
+        "responses": { "200": { "description": "Query result" } }
+      }
+    },
+    "/api/views/saved": {
+      "get": { "summary": "List saved views" },
+      "post": { "summary": "Create saved view" }
+    },
+    "/api/views/saved/{id}": {
+      "get": { "summary": "Get saved view" },
+      "put": { "summary": "Update saved view" },
+      "delete": { "summary": "Delete saved view" }
+    },
+    "/api/views/export/csv": {
+      "post": { "summary": "Export query as CSV" }
+    },
+    "/api/views/export/xlsx": {
+      "post": { "summary": "Export query as XLSX" }
+    }
+  }
+}

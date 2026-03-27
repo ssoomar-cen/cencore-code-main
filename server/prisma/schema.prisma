@@ -1,0 +1,198 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  VIEWER
+}
+
+enum ShareScope {
+  PRIVATE
+  TEAM
+  ORG
+}
+
+model User {
+  id         String      @id @default(cuid())
+  name       String
+  email      String      @unique
+  role       UserRole
+  teamId     String      @map("team_id")
+  orgId      String      @map("org_id")
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+
+  ownedOpportunities Opportunity[] @relation("OpportunityOwner")
+  savedViews         SavedView[]
+  favorites          ViewFavorite[]
+  auditLogs          AuditLog[]
+
+  @@index([teamId])
+  @@index([orgId])
+  @@map("users")
+}
+
+model Account {
+  id          String        @id @default(cuid())
+  name        String
+  industry    String?
+  region      String?
+  teamId      String        @map("team_id")
+  orgId       String        @map("org_id")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  opportunities Opportunity[]
+  contacts      Contact[]
+
+  @@index([industry])
+  @@index([region])
+  @@index([teamId])
+  @@index([orgId])
+  @@map("accounts")
+}
+
+model Opportunity {
+  id          String      @id @default(cuid())
+  name        String
+  stage       String
+  amount      Decimal?    @db.Decimal(14, 2)
+  probability Decimal?    @db.Decimal(5, 2)
+  closeDate   DateTime?   @map("close_date")
+  accountId   String      @map("account_id")
+  ownerId     String      @map("owner_id")
+  teamId      String      @map("team_id")
+  orgId       String      @map("org_id")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  account     Account     @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  owner       User        @relation("OpportunityOwner", fields: [ownerId], references: [id], onDelete: Restrict)
+  products    OpportunityProduct[]
+
+  @@index([stage])
+  @@index([closeDate])
+  @@index([accountId])
+  @@index([ownerId])
+  @@index([teamId])
+  @@index([orgId])
+  @@index([stage, closeDate])
+  @@map("opportunities")
+}
+
+model Contact {
+  id         String      @id @default(cuid())
+  firstName  String      @map("first_name")
+  lastName   String      @map("last_name")
+  email      String
+  accountId  String      @map("account_id")
+  teamId     String      @map("team_id")
+  orgId      String      @map("org_id")
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+
+  account    Account     @relation(fields: [accountId], references: [id], onDelete: Restrict)
+
+  @@index([accountId])
+  @@index([email])
+  @@index([teamId])
+  @@index([orgId])
+  @@map("contacts")
+}
+
+model Product {
+  id         String      @id @default(cuid())
+  name       String
+  sku        String      @unique
+  family     String
+  teamId     String      @map("team_id")
+  orgId      String      @map("org_id")
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+
+  opportunities OpportunityProduct[]
+
+  @@index([family])
+  @@index([teamId])
+  @@index([orgId])
+  @@map("products")
+}
+
+model OpportunityProduct {
+  id            String       @id @default(cuid())
+  opportunityId String       @map("opportunity_id")
+  productId     String       @map("product_id")
+  quantity      Int
+  unitPrice     Decimal      @map("unit_price") @db.Decimal(14, 2)
+
+  opportunity   Opportunity  @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  product       Product      @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([opportunityId])
+  @@index([productId])
+  @@index([opportunityId, productId])
+  @@map("opportunity_products")
+}
+
+model SavedView {
+  id            String      @id @default(cuid())
+  baseEntity    String      @map("base_entity")
+  name          String
+  description   String?
+  scope         ShareScope
+  ownerId       String      @map("owner_id")
+  teamId        String      @map("team_id")
+  orgId         String      @map("org_id")
+  definition    Json
+  isDefault     Boolean     @default(false) @map("is_default")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  owner         User        @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  favorites     ViewFavorite[]
+
+  @@index([baseEntity])
+  @@index([ownerId])
+  @@index([scope])
+  @@index([teamId])
+  @@index([orgId])
+  @@map("saved_views")
+}
+
+model ViewFavorite {
+  id          String    @id @default(cuid())
+  viewId      String    @map("view_id")
+  userId      String    @map("user_id")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  view        SavedView @relation(fields: [viewId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([viewId, userId])
+  @@index([userId])
+  @@map("view_favorites")
+}
+
+model AuditLog {
+  id          String    @id @default(cuid())
+  actorId     String    @map("actor_id")
+  action      String
+  entity      String
+  entityId    String?   @map("entity_id")
+  payload     Json?
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  actor       User      @relation(fields: [actorId], references: [id], onDelete: Cascade)
+
+  @@index([actorId])
+  @@index([entity, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
