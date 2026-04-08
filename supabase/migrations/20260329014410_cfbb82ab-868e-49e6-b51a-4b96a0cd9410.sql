@@ -1,0 +1,1 @@
+CREATE POLICY "Public can view branding" ON public.branding_settings FOR SELECT TO anon USING (true);

@@ -3,13 +3,13 @@ import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-tabl
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { QueryResponse, ViewColumn } from "../types/viewBuilder";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface DataGridProps {
   columns: ViewColumn[];
   result?: QueryResponse;
   isLoading: boolean;
   locale?: string;
-  conditionalRules?: Array<{ path: string; op: "gt" | "lt" | "eq"; value: number; color: string }>;
 }
 
 const fmtNumber = (value: unknown, locale: string) => {
@@ -17,7 +17,7 @@ const fmtNumber = (value: unknown, locale: string) => {
   return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(value);
 };
 
-export function DataGrid({ columns, result, isLoading, locale = "en-US", conditionalRules = [] }: DataGridProps) {
+export function DataGrid({ columns, result, isLoading, locale = "en-US" }: DataGridProps) {
   const rows = result?.rows ?? [];
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -25,12 +25,12 @@ export function DataGrid({ columns, result, isLoading, locale = "en-US", conditi
     () =>
       columns.map((column) => ({
         id: column.id,
-        accessorFn: (row: Record<string, unknown>) => row[column.id],
+        accessorFn: (row: Record<string, unknown>) => row[column.id] ?? row[column.path],
         header: column.label ?? column.path,
         size: column.width ?? 180,
         cell: ({ getValue }: { getValue: () => unknown }) => {
           const value = getValue();
-          if (value === null || value === undefined || value === "") return <span className="text-muted-foreground">-</span>;
+          if (value === null || value === undefined || value === "") return <span className="text-muted-foreground">—</span>;
           if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value)) {
             return new Intl.DateTimeFormat(locale).format(new Date(value));
           }
@@ -50,75 +50,69 @@ export function DataGrid({ columns, result, isLoading, locale = "en-US", conditi
     count: rows.length,
     getScrollElement: () => containerRef.current,
     estimateSize: () => 40,
-    overscan: 8,
+    overscan: 10,
   });
 
-  const virtualItems = virtualizer.getVirtualItems();
-
-  const highlightClass = (row: Record<string, unknown>) => {
-    for (const rule of conditionalRules) {
-      const raw = row[rule.path];
-      if (typeof raw !== "number") continue;
-      if (rule.op === "gt" && raw > rule.value) return rule.color;
-      if (rule.op === "lt" && raw < rule.value) return rule.color;
-      if (rule.op === "eq" && raw === rule.value) return rule.color;
-    }
-    return "";
-  };
-
-  return (
-    <div className="flex h-full flex-col overflow-hidden rounded-2xl border bg-card/70 shadow-sm">
-      <div className="flex items-center justify-between border-b px-4 py-2 text-xs text-muted-foreground">
-        <div className="flex items-center gap-2">
-          <Badge variant="secondary">{result?.pageInfo.totalRows ?? 0} rows</Badge>
-          <span>{result?.diagnostics.executionMs ?? 0} ms</span>
-        </div>
-        {result?.diagnostics.warnings?.[0] ? <span>{result.diagnostics.warnings[0]}</span> : null}
-      </div>
-
-      <div className="grid grid-cols-1 border-b bg-muted/30 text-sm font-medium" style={{ gridTemplateColumns: columns.map((c) => `${c.width ?? 180}px`).join(" ") }}>
-        {table.getHeaderGroups()[0]?.headers.map((header) => (
-          <div key={header.id} className="truncate border-r px-3 py-2 last:border-r-0" title={String(header.column.columnDef.header)}>
-            {flexRender(header.column.columnDef.header, header.getContext())}
-          </div>
+  if (isLoading) {
+    return (
+      <div className="space-y-2 p-4">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <Skeleton key={i} className="h-10 w-full" />
         ))}
       </div>
+    );
+  }
 
-      <div ref={containerRef} className="relative flex-1 overflow-auto">
-        {isLoading ? (
-          <div className="p-6 text-sm text-muted-foreground">Loading list data...</div>
-        ) : rows.length === 0 ? (
-          <div className="p-6 text-sm text-muted-foreground">No rows match the current view definition.</div>
-        ) : (
-          <div style={{ height: `${virtualizer.getTotalSize()}px`, position: "relative" }}>
-            {virtualItems.map((item) => {
-              const row = table.getRowModel().rows[item.index];
-              return (
-                <div
-                  key={row.id}
-                  className={`absolute left-0 top-0 grid w-full border-b text-sm ${highlightClass(row.original as Record<string, unknown>)}`}
-                  style={{
-                    transform: `translateY(${item.start}px)`,
-                    gridTemplateColumns: columns.map((c) => `${c.width ?? 180}px`).join(" "),
-                  }}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <div key={cell.id} className="truncate border-r px-3 py-2 last:border-r-0" title={String(cell.getValue() ?? "")}> 
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </div>
-                  ))}
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-
-      {result?.summaries.grandTotals && Object.keys(result.summaries.grandTotals).length > 0 ? (
-        <div className="border-t bg-muted/20 px-4 py-2 text-xs">
-          Totals: {Object.entries(result.summaries.grandTotals).map(([key, value]) => `${key}: ${String(value)}`).join(" | ")}
+  if (!rows.length) {
+    return (
+      <div className="flex items-center justify-center py-20 text-muted-foreground">
+        <div className="text-center space-y-2">
+          <p className="text-lg font-medium">No data found</p>
+          <p className="text-sm">Try adjusting your filters or columns</p>
         </div>
-      ) : null}
+      </div>
+    );
+  }
+
+  return (
+    <div ref={containerRef} className="overflow-auto flex-1 border rounded-md" style={{ maxHeight: "calc(100vh - 220px)" }}>
+      <table className="w-full text-sm border-collapse">
+        <thead className="sticky top-0 z-10 bg-muted/80 backdrop-blur">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th
+                  key={header.id}
+                  className="px-3 py-2.5 text-left font-medium text-muted-foreground border-b whitespace-nowrap"
+                  style={{ width: header.getSize() }}
+                >
+                  {flexRender(header.column.columnDef.header, header.getContext())}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {virtualizer.getVirtualItems().map((virtualRow) => {
+            const row = table.getRowModel().rows[virtualRow.index];
+            if (!row) return null;
+            return (
+              <tr key={row.id} className="border-b hover:bg-muted/30 transition-colors">
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="px-3 py-2 whitespace-nowrap" style={{ width: cell.column.getSize() }}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      {result?.pageInfo && (
+        <div className="sticky bottom-0 bg-muted/60 backdrop-blur border-t px-3 py-1.5 text-xs text-muted-foreground">
+          {result.pageInfo.totalRows.toLocaleString()} total rows
+        </div>
+      )}
     </div>
   );
 }

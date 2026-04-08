@@ -11,11 +11,6 @@ node_modules
 dist
 dist-ssr
 *.local
-package-lock.json
-bun.lockb
-
-# Supabase local binaries (these are development tools, not for production)
-supabase/
 
 # Editor directories and files
 .vscode/*
@@ -27,7 +22,3 @@ supabase/
 *.njsproj
 *.sln
 *.sw?
-*.csv
-
-# Cloudflare
-.wrangler/

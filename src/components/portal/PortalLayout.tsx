@@ -1,235 +1,216 @@
+import { useEffect, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { PortalSidebar } from "./PortalSidebar";
-import { NotificationsPopover } from "./NotificationsPopover";
-import { ImpersonationBanner } from "./ImpersonationBanner";
-import { BrandingProvider } from "./BrandingProvider";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import type { User } from "@supabase/supabase-js";
-import { Search, LayoutList } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { useBranding } from "@/components/BrandingProvider";
+import { useAuth } from "@/hooks/useAuth";
+import { Bell, LogOut, TableProperties, ArrowUpDown, Search } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useTenantBranding } from "@/hooks/useTenantBranding";
-import cenergisticLogoWhite from "@/assets/cenergistic-logo.svg";
+import GlobalSearch from "@/components/GlobalSearch";
+import TenantSwitcher from "@/components/TenantSwitcher";
+import { useIsMobile } from "@/hooks/use-mobile";
 
-const CENERGISTIC_LOGO = cenergisticLogoWhite;
-
-interface PortalLayoutProps {
-  children: React.ReactNode;
-}
-
-function isAllowedBrandAssetUrl(url: string | null | undefined): boolean {
-  if (!url) return false;
-  if (url.startsWith("/") || url.startsWith("data:") || url.startsWith("blob:")) return true;
-  try {
-    const parsed = new URL(url);
-    const host = parsed.hostname.toLowerCase();
-    return (
-      host === window.location.hostname ||
-      host.endsWith(".supabase.co") ||
-      host === "storage.googleapis.com" ||
-      host.endsWith(".googleusercontent.com")
-    );
-  } catch {
-    return false;
-  }
-}
-
-export function PortalLayout({ children }: PortalLayoutProps) {
+export function PortalLayout() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [unreadCount, setUnreadCount] = useState(0);
-  const { data: branding } = useTenantBranding();
-  const resolvedLogoSrc = isAllowedBrandAssetUrl(branding?.logo_url)
-    ? (branding?.logo_url as string)
-    : CENERGISTIC_LOGO;
+  const { user, session, loading } = useAuth();
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const branding = useBranding();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null);
-        if (!session?.user) {
-          navigate("/auth");
-        }
-        setLoading(false);
-      }
-    );
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      if (!session?.user) {
-        navigate("/auth");
-      }
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
-
-  useEffect(() => {
-    if (!user) return;
-
-    const fetchUnreadNotifications = async () => {
-      const { data } = await supabase
-        .from("notifications")
-        .select("id")
-        .eq("read", false)
-        .limit(10);
-      
-      setUnreadCount(data?.length || 0);
-    };
-
-    fetchUnreadNotifications();
-
-    const channel = supabase
-      .channel("notifications-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "notifications",
-          filter: `user_id=eq.${user.id}`,
-        },
-        () => {
-          fetchUnreadNotifications();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [user]);
-
-  const getListBuilderUrl = () => {
-    const path = location.pathname;
-    if (path.startsWith("/crm/accounts")) return "/views/accounts";
-    if (path.startsWith("/crm/contacts")) return "/views/contacts";
-    if (path.startsWith("/crm/leads")) return "/views/leads";
-    if (path.startsWith("/crm/quotes")) return "/views/quotes";
-    if (path.startsWith("/crm/contracts")) return "/views/contracts";
-    if (path.startsWith("/crm/invoices")) return "/views/invoices";
-    if (path.startsWith("/crm/measures")) return "/views/measures";
-    if (path.startsWith("/crm/buildings")) return "/views/buildings";
-    if (path.startsWith("/crm/activities")) return "/views/activities";
-    if (path.startsWith("/crm/connections")) return "/views/connections";
-    if (path.startsWith("/crm/commission-splits")) return "/views/commission_splits";
-    if (path.startsWith("/crm/energy-programs") || path.startsWith("/projects")) return "/views/projects";
-    return "/views/opportunities";
-  };
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/crm/search?q=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery("");
+    if (!loading && !session) {
+      navigate("/auth");
     }
-  };
+  }, [loading, session, navigate]);
 
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
-        </div>
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     );
   }
 
-  if (!user) {
-    return null;
-  }
+  if (!session) return null;
+
+  const userEmail = user?.email ?? null;
+  const hasBranding = !!branding.secondary_color;
+  const headerTextColor = hasBranding ? '#ffffff' : undefined;
 
   return (
-    <BrandingProvider>
-      <SidebarProvider defaultOpen={true}>
-        <div className="flex min-h-screen w-full bg-background flex-col">
-          <ImpersonationBanner />
-          <div className="flex flex-1">
-            <PortalSidebar />
-            <main className="flex-1 flex flex-col">
-              <header className="sticky top-0 z-50 flex h-16 items-center gap-2 sm:gap-4 border-b border-primary/10 bg-gradient-to-r from-primary to-primary/90 shadow-lg shadow-primary/20 backdrop-blur-lg px-3 sm:px-4 md:px-6">
-                <SidebarTrigger className="z-10 shrink-0 text-white hover:bg-white/20 rounded-md transition-all duration-200 hover:shadow-md" />
-                
-                <div className="flex items-center gap-2 flex-shrink-0 min-w-0">
-                  <div className="h-8 w-px bg-white/30" />
-                  <img 
-                    src={resolvedLogoSrc}
-                    alt={branding?.company_name || "Cenergistic"} 
-                    className="h-8 w-auto shrink-0 drop-shadow-md"
-                    onError={(e) => {
-                      const img = e.currentTarget;
-                      if (img.src !== CENERGISTIC_LOGO) {
-                        img.src = CENERGISTIC_LOGO;
-                      }
-                    }}
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full bg-background">
+        <PortalSidebar />
+        <div className="flex-1 flex flex-col min-w-0">
+          <header
+            className="sticky top-0 z-50 h-14 flex items-center px-2 sm:px-4 gap-2 sm:gap-4 border-b border-border/40 backdrop-blur-md"
+            style={{
+              backgroundColor: hasBranding
+                ? branding.secondary_color!
+                : 'hsl(var(--background) / 0.85)',
+            }}
+          >
+            <div className="flex items-center flex-shrink-0 gap-2">
+              <SidebarTrigger className="flex-shrink-0" style={{ color: headerTextColor }} />
+              <div className="flex items-center gap-2">
+                {branding.logo_url && (
+                  <img
+                    src={branding.logo_url}
+                    alt={branding.company_name}
+                    className="h-6 sm:h-7 w-auto object-contain"
                   />
-                  
-                  <div className="hidden sm:flex items-center gap-3">
-                    <div className="h-5 w-px bg-white/30" />
-                    <h1 className="text-base font-semibold text-white tracking-tight">
-                      CenCore
-                    </h1>
-                  </div>
-                </div>
-            
-                <form onSubmit={handleSearch} className="flex-1 min-w-0 max-w-none sm:max-w-lg mx-1 sm:mx-2">
-                  <div className="relative group">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/60 group-focus-within:text-white/90 transition-colors duration-200" />
-                    <Input
-                      type="search"
-                      placeholder="Search accounts, contacts..."
-                      className="w-full pl-9 pr-4 h-8 sm:h-9 text-sm bg-white/15 border-white/30 text-white placeholder:text-white/50 rounded-lg focus:outline-none focus:bg-white/20 focus:border-white/50 focus:ring-2 focus:ring-white/30 transition-all duration-200 backdrop-blur-sm"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
-                </form>
-
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => navigate(getListBuilderUrl())}
-                        className="shrink-0 text-white hover:bg-white/20 hover:text-white"
-                      >
-                        <LayoutList className="h-5 w-5" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>List Builder</TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-
-                <div className="flex items-center gap-3 ml-auto">
-                  <NotificationsPopover
-                    unreadCount={unreadCount}
-                    onUnreadCountChange={setUnreadCount}
-                  />
-                  <span className="hidden lg:inline text-sm text-white/80 truncate max-w-[180px] font-medium">{user?.email}</span>
-                </div>
-              </header>
-              <div className="flex-1 overflow-auto p-4 md:p-6">
-                {children}
+                )}
+                <span
+                  className="hidden md:inline text-sm font-bold leading-tight"
+                  style={{ color: headerTextColor }}
+                >
+                  CenCore
+                </span>
               </div>
-            </main>
-          </div>
-          
-          {branding?.show_powered_by && (
-            <footer className="border-t border-border py-2 px-4 text-center text-xs text-muted-foreground">
-              Powered by {branding.company_name || "M&S Dynamics"}
-            </footer>
+            </div>
+
+            <div className="hidden sm:block flex-shrink-0">
+              <TenantSwitcher brandingColor={branding.secondary_color} />
+            </div>
+
+            {isMobile ? (
+              <div className="flex-1" />
+            ) : (
+              <GlobalSearch brandingColor={branding.secondary_color} />
+            )}
+
+            {!isMobile && <div className="flex-1" />}
+
+            <div className="flex items-center gap-0.5 sm:gap-1 flex-shrink-0">
+              {isMobile && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+                  style={{ color: headerTextColor }}
+                >
+                  <Search className="h-4 w-4" />
+                </Button>
+              )}
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hidden sm:flex h-8 w-8"
+                onClick={() => navigate("/views")}
+                title="List Builder"
+                style={{ color: headerTextColor }}
+              >
+                <TableProperties className="h-4 w-4" />
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hidden sm:flex h-8 w-8"
+                onClick={() => navigate("/import-export")}
+                title="Import / Export"
+                style={{ color: headerTextColor }}
+              >
+                <ArrowUpDown className="h-4 w-4" />
+              </Button>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="relative h-8 w-8"
+                    style={{ color: headerTextColor }}
+                  >
+                    <Bell className="h-4 w-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="end" className="w-72 sm:w-80">
+                  <div className="flex flex-col gap-2">
+                    <h4 className="font-semibold text-sm">Notifications</h4>
+                    <p className="text-sm text-muted-foreground">No new notifications</p>
+                  </div>
+                </PopoverContent>
+              </Popover>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="flex items-center gap-1.5 px-1.5 sm:px-2 h-8"
+                    style={{ color: headerTextColor }}
+                  >
+                    <Avatar className="h-6 w-6 sm:h-7 sm:w-7">
+                      <AvatarFallback
+                        className="text-xs bg-primary/20 text-primary-foreground"
+                        style={{
+                          backgroundColor: hasBranding ? 'rgba(255,255,255,0.2)' : undefined,
+                          color: headerTextColor,
+                        }}
+                      >
+                        {userEmail ? userEmail.charAt(0).toUpperCase() : "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm hidden lg:inline max-w-[120px] truncate">
+                      {userEmail ?? "User"}
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel className="font-normal">
+                    <p className="text-sm font-medium truncate">{userEmail}</p>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {isMobile && (
+                    <>
+                      <DropdownMenuItem onClick={() => navigate("/views")}>
+                        <TableProperties className="mr-2 h-4 w-4" />
+                        List Builder
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate("/import-export")}>
+                        <ArrowUpDown className="mr-2 h-4 w-4" />
+                        Import / Export
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
+                  <DropdownMenuItem onClick={async () => { await supabase.auth.signOut(); navigate("/auth"); }}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </header>
+
+          {isMobile && mobileSearchOpen && (
+            <div className="px-2 py-2 border-b border-border bg-background animate-in slide-in-from-top-2 duration-200">
+              <GlobalSearch brandingColor={null} />
+            </div>
           )}
+
+          <main className="flex-1 p-3 sm:p-4 md:p-6 overflow-auto">
+            <Outlet />
+          </main>
         </div>
-      </SidebarProvider>
-    </BrandingProvider>
+      </div>
+    </SidebarProvider>
   );
 }

@@ -1,91 +1,130 @@
-// M&S Dynamics Business Center
-import { Toaster } from "@/components/ui/toaster";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { ImpersonationProvider } from "./contexts/ImpersonationContext";
-import { PortalLayout } from "./components/portal/PortalLayout";
+import { BrandingProvider } from "@/components/BrandingProvider";
+import { TenantProvider } from "@/hooks/useTenant";
+import { AuthProvider } from "@/hooks/useAuth";
+import { PortalLayout } from "@/components/portal/PortalLayout";
 import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
-import CRM from "./pages/CRM";
-import Calendar from "./pages/Calendar";
-
-import Support from "./pages/Support";
+import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import SetupIntegration from "./pages/SetupIntegration";
-import WorkflowAutomation from "./pages/WorkflowAutomation";
-import AuditLog from "./pages/AuditLog";
-import SqlConsole from "./pages/admin/SqlConsole";
 
-import ImportExport from "./pages/ImportExport";
-import Documents from "./pages/Documents";
-import GlobalSearch from "./pages/GlobalSearch";
-import Demo from "./pages/Demo";
+// CRM Pages
+import AccountsPage from "./pages/crm/AccountsPage";
+import ContactsPage from "./pages/crm/ContactsPage";
+import LeadsPage from "./pages/crm/LeadsPage";
+import OpportunitiesPage from "./pages/crm/OpportunitiesPage";
+import QuotesPage from "./pages/crm/QuotesPage";
+import ContractsPage from "./pages/crm/ContractsPage";
+import InvoicesPage from "./pages/crm/InvoicesPage";
+
+
+import CommissionSplitsPage from "./pages/crm/CommissionSplitsPage";
+import ActivitiesPage from "./pages/crm/ActivitiesPage";
+import BuildingsPage from "./pages/crm/BuildingsPage";
+import ConnectionsPage from "./pages/crm/ConnectionsPage";
+
+// Project Management
+import ProjectsPage from "./pages/projects/ProjectsPage";
+import ProjectDetailPage from "./pages/projects/ProjectDetailPage";
+
+// Energy Audits
+import EnergyAuditsPage from "./pages/audits/EnergyAuditsPage";
+
+// Marketing
+import CampaignsPage from "./pages/marketing/CampaignsPage";
+
+// Finance
+import BudgetTrackingPage from "./pages/finance/BudgetTrackingPage";
+
+// Admin & Operations Pages
+import ImportExportPage from "./pages/admin/ImportExportPage";
+import AuditLogPage from "./pages/admin/AuditLogPage";
+import WorkflowAutomationPage from "./pages/admin/WorkflowAutomationPage";
+import SupportPage from "./pages/admin/SupportPage";
+import SetupPage from "./pages/admin/SetupPage";
+import SettingsPage from "./pages/admin/SettingsPage";
+import CalendarPage from "./pages/CalendarPage";
+import ReportingPage from "./pages/ReportingPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
 import ViewBuilderPage from "./pages/ViewBuilderPage";
 
-import Preferences from "./pages/Preferences";
-import Profile from "./pages/preferences/Profile";
-import EmailTemplates from "./pages/preferences/EmailTemplates";
-import { MyConnections } from "./components/setup/MyConnections";
-import Reporting from "./pages/Reporting";
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60_000,
-      gcTime: 15 * 60_000,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      retry: 1,
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="light">
-      <ImpersonationProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/demo/*" element={<Demo />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path="/crm/*" element={<PortalLayout><CRM /></PortalLayout>} />
-              <Route path="/calendar" element={<PortalLayout><Calendar /></PortalLayout>} />
-              <Route path="/projects" element={<Navigate to="/crm/projects" replace />} />
-              <Route path="/projects/:id" element={<Navigate to="/crm/projects" replace />} />
-              <Route path="/tasks/:id" element={<Navigate to="/crm/projects" replace />} />
-              <Route path="/support" element={<PortalLayout><Support /></PortalLayout>} />
-              <Route path="/setup" element={<PortalLayout><SetupIntegration /></PortalLayout>} />
-              <Route path="/workflow-automation" element={<PortalLayout><WorkflowAutomation /></PortalLayout>} />
-              <Route path="/audit-log" element={<PortalLayout><AuditLog /></PortalLayout>} />
-              <Route path="/admin/sql-console" element={<PortalLayout><SqlConsole /></PortalLayout>} />
-              <Route path="/crm/import-export" element={<PortalLayout><ImportExport /></PortalLayout>} />
-              <Route path="/crm/documents" element={<PortalLayout><Documents /></PortalLayout>} />
-              <Route path="/crm/search" element={<PortalLayout><GlobalSearch /></PortalLayout>} />
-              <Route path="/views/:entity" element={<PortalLayout><ViewBuilderPage /></PortalLayout>} />
-              <Route path="/crm/views/:entity" element={<PortalLayout><ViewBuilderPage /></PortalLayout>} />
-              <Route path="/settings" element={<PortalLayout><Preferences /></PortalLayout>}>
-                <Route index element={<Profile />} />
-              </Route>
-              <Route path="/preferences/email-templates" element={<PortalLayout><Preferences /></PortalLayout>}>
-                <Route index element={<EmailTemplates />} />
-              </Route>
-              <Route path="/preferences/connections" element={<PortalLayout><Preferences /></PortalLayout>}>
-                <Route index element={<MyConnections />} />
-              </Route>
-              <Route path="/reporting" element={<PortalLayout><Reporting /></PortalLayout>} />
-              <Route path="/" element={<PortalLayout><CRM /></PortalLayout>} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </ImpersonationProvider>
+      <BrandingProvider>
+      <AuthProvider>
+      <TenantProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+
+            <Route element={<PortalLayout />}>
+              <Route path="/" element={<Index />} />
+
+              {/* CRM - Sales */}
+              <Route path="/crm/leads" element={<LeadsPage />} />
+              <Route path="/crm/accounts" element={<AccountsPage />} />
+              <Route path="/crm/contacts" element={<ContactsPage />} />
+              <Route path="/crm/connections" element={<ConnectionsPage />} />
+              <Route path="/crm/opportunities" element={<OpportunitiesPage />} />
+              <Route path="/crm/quotes" element={<QuotesPage />} />
+              <Route path="/crm/commission-splits" element={<CommissionSplitsPage />} />
+
+              {/* Operations */}
+              <Route path="/crm/activities" element={<ActivitiesPage />} />
+              <Route path="/calendar" element={<CalendarPage />} />
+              
+              <Route path="/crm/contracts" element={<ContractsPage />} />
+              <Route path="/crm/invoices" element={<InvoicesPage />} />
+              
+              <Route path="/crm/buildings" element={<BuildingsPage />} />
+              <Route path="/reporting" element={<ReportingPage />} />
+              <Route path="/analytics" element={<AnalyticsPage />} />
+
+              {/* Project Management */}
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/projects/:id" element={<ProjectDetailPage />} />
+
+              {/* Energy Audits */}
+              <Route path="/energy-audits" element={<EnergyAuditsPage />} />
+
+              {/* Marketing */}
+              <Route path="/campaigns" element={<CampaignsPage />} />
+
+              {/* Finance */}
+              <Route path="/budget" element={<BudgetTrackingPage />} />
+
+              {/* View Builder */}
+              <Route path="/views/:entity" element={<ViewBuilderPage />} />
+              <Route path="/views" element={<ViewBuilderPage />} />
+
+              {/* Administration */}
+              <Route path="/import-export" element={<ImportExportPage />} />
+              <Route path="/audit-log" element={<AuditLogPage />} />
+              <Route path="/workflow-automation" element={<WorkflowAutomationPage />} />
+              <Route path="/support" element={<SupportPage />} />
+              <Route path="/setup" element={<SetupPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+            </Route>
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+      </TenantProvider>
+      </AuthProvider>
+      </BrandingProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );
