@@ -1,0 +1,1 @@
+DELETE FROM public.integrations WHERE lower(provider) IN ('twilio', 'sendgrid') OR lower(name) IN ('twilio', 'sendgrid');

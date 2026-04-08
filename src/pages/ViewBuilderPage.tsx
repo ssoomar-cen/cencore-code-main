@@ -4,7 +4,7 @@ import { ViewBuilder } from "@/features/views/components/ViewBuilder";
 import { BaseEntity } from "@/features/views/types/viewBuilder";
 
 const entities: BaseEntity[] = [
-  "opportunities", "accounts", "contacts", "projects",
+  "opportunities", "accounts", "contacts",
   "leads", "quotes", "contracts", "invoices",
   "measures", "buildings", "activities", "connections", "commission_splits",
 ];

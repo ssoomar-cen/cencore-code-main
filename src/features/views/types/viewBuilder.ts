@@ -2,11 +2,11 @@ export type BaseEntity =
   | "opportunities"
   | "accounts"
   | "contacts"
-  | "projects"
   | "leads"
   | "quotes"
   | "contracts"
   | "invoices"
+  
   | "measures"
   | "buildings"
   | "activities"
@@ -19,12 +19,7 @@ export type Aggregation =
   | "sum"
   | "avg"
   | "min"
-  | "max"
-  | "median"
-  | "percentile25"
-  | "percentile50"
-  | "percentile75"
-  | "stddev";
+  | "max";
 
 export interface ViewColumn {
   id: string;
@@ -42,7 +37,7 @@ export interface ViewSort {
 
 export interface FilterRule {
   path: string;
-  op: "eq" | "neq" | "contains" | "in" | "between" | "gt" | "gte" | "lt" | "lte" | "isNull" | "notNull" | "dateRange";
+  op: "eq" | "neq" | "contains" | "in" | "between" | "gt" | "gte" | "lt" | "lte" | "isNull" | "notNull";
   value?: unknown;
 }
 
@@ -73,20 +68,10 @@ export interface QueryRequest {
 
 export interface QueryResponse {
   rows: Record<string, unknown>[];
-  summaries: {
-    groups: Record<string, unknown>[];
-    grandTotals: Record<string, unknown>;
-  };
   pageInfo: {
     page: number;
     pageSize: number;
     totalRows: number;
-  };
-  diagnostics: {
-    executionMs: number;
-    prunedColumns: string[];
-    warnings: string[];
-    joinCount: number;
   };
 }
 
@@ -105,11 +90,6 @@ export interface SavedView {
   description?: string;
   scope: ViewSharing;
   definition: QueryRequest;
-  ownerId: string;
-  teamId: string;
-  orgId: string;
-  isDefault: boolean;
   starred?: boolean;
   createdAt: string;
-  updatedAt: string;
 }

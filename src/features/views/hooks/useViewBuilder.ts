@@ -56,9 +56,10 @@ export function useSaveView() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, ...payload }: Parameters<typeof updateSavedView>[1] & { id: string }) => updateSavedView(id, payload),
+    mutationFn: ({ id, ...payload }: Parameters<typeof updateSavedView>[1] & { id: string }) =>
+      updateSavedView(id, payload),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["saved-views", variables.baseEntity] });
+      queryClient.invalidateQueries({ queryKey: ["saved-views", (variables as any).baseEntity] });
     },
   });
 
@@ -87,6 +88,7 @@ export function useSaveView() {
 
 export function useExportView() {
   return useMutation({
-    mutationFn: ({ type, payload }: { type: "csv" | "xlsx"; payload: QueryRequest }) => exportView(type, payload),
+    mutationFn: ({ type, payload }: { type: "csv" | "xlsx"; payload: QueryRequest }) =>
+      exportView(type, payload),
   });
 }
