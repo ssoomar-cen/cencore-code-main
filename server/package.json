@@ -16,9 +16,6 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.4.2",
-    "@prisma/client": "^6.4.1",
-    "@types/pg": "^8.18.0",
     "compression": "^1.7.5",
     "cors": "^2.8.5",
     "csv-stringify": "^6.5.2",
@@ -38,8 +35,8 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.13.1",
+    "@types/pg": "^8.20.0",
     "cross-env": "^7.0.3",
-    "prisma": "^6.4.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "vite": "^5.4.19",

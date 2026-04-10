@@ -40,22 +40,40 @@ model User {
 }
 
 model Account {
-  id          String        @id @default(cuid())
+  id          String          @id @default(cuid())
   name        String
   industry    String?
   region      String?
-  teamId      String        @map("team_id")
-  orgId       String        @map("org_id")
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @updatedAt @map("updated_at")
+  teamId      String          @map("team_id")
+  orgId       String          @map("org_id")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
 
-  opportunities Opportunity[]
-  contacts      Contact[]
+  // Salesforce fields
+  salesforceId        String?       @unique @map("salesforce_id")
+  orgLegalName        String?       @map("org_legal_name")
+  orgType             String?       @map("org_type")
+  billingStreet       String?       @map("billing_street")
+  billingCity         String?       @map("billing_city")
+  billingState        String?       @map("billing_state")
+  billingPostalCode   String?       @map("billing_postal_code")
+  billingCountry      String?       @map("billing_country")
+  phone               String?
+  website             String?
+  status              String?
+  contractStatus      String?       @map("contract_status")
+
+  opportunities       Opportunity[]
+  contacts            Contact[]
+  contracts           Contract[]
+  energyPrograms      EnergyProgram[]
+  invoices            Invoice[]
 
   @@index([industry])
   @@index([region])
   @@index([teamId])
   @@index([orgId])
+  @@index([salesforceId])
   @@map("accounts")
 }
 
@@ -195,4 +213,263 @@ model AuditLog {
   @@index([entity, entityId])
   @@index([createdAt])
   @@map("audit_logs")
+}
+
+// ============================================================================
+// CONTRACT & ENERGY PROGRAM MODELS
+// ============================================================================
+
+model Contract {
+  id                      String              @id @default(cuid()) @map("contract_id")
+  salesforceId            String?             @unique @map("salesforce_id")
+  name                    String
+  accountId               String              @map("account_id")
+  
+  // Contract Fields
+  contractStatus          String?             @map("contract_status")
+  contractType            String?             @map("contract_type")
+  contractTerm            String?             @map("contract_term")
+  contractStartDate       DateTime?           @map("contract_start_date")
+  billingScheduleEndDate  DateTime?           @map("billing_schedule_end_date")
+  
+  // Client Management
+  clientManager           String?             @map("client_manager")
+  serviceStatus           String?             @map("service_status")
+  
+  // System Fields
+  createdAt               DateTime            @default(now()) @map("created_at")
+  updatedAt               DateTime            @updatedAt @map("updated_at")
+  
+  // Relations
+  account                 Account             @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  invoices                Invoice[]
+  
+  @@index([accountId])
+  @@index([salesforceId])
+  @@index([contractStatus])
+  @@map("contract")
+}
+
+model EnergyProgram {
+  id                      String              @id @default(cuid()) @map("energy_program_id")
+  salesforceId            String?             @unique @map("salesforce_id")
+  name                    String
+  accountId               String              @map("account_id")
+  
+  // Program Fields
+  status                  String?
+  pgmId                   String?             @map("pgm_id")
+  
+  // Technical Details
+  technicalLead           String?             @map("technical_lead")
+  implementationConsultant String?            @map("implementation_consultant")
+  
+  // Dates
+  contractStartDate       DateTime?           @map("contract_start_date")
+  billingScheduleEndDate  DateTime?           @map("billing_schedule_end_date")
+  
+  // System Fields
+  createdAt               DateTime            @default(now()) @map("created_at")
+  updatedAt               DateTime            @updatedAt @map("updated_at")
+  
+  // Relations
+  account                 Account             @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  invoices                Invoice[]
+  
+  @@index([accountId])
+  @@index([salesforceId])
+  @@index([status])
+  @@map("energy_program")
+}
+
+// ============================================================================
+// INVOICE DOMAIN MODELS
+// ============================================================================
+
+model Invoice {
+  id                    String              @id @default(cuid()) @map("invoice_id")
+  tenantId              String              @map("tenant_id")
+  accountId             String?             @map("account_id")
+  contractId            String?             @map("contract_id")
+  energyProgramId       String?             @map("energy_program_id")
+
+  // Naming fields
+  name                  String?
+  invoiceName           String?             @map("invoice_name")
+  invoiceNameTk         String?             @map("invoice_name_tk")
+  invoiceNumber         String?             @map("invoice_number")
+  invoiceSfNumber       String?             @map("invoice_sf_number")  // Invoice_ID__c from Salesforce
+  itemId                String?             @map("item_id")
+  customerId            String?             @map("customer_id")
+
+  // Document type
+  documentType          String?             @map("document_type")  // Invoice | Credit Memo | Debit Memo
+  
+  // Dates
+  issueDate             DateTime?           @map("issue_date")
+  dueDate               DateTime?           @map("due_date")
+  billMonth             DateTime?           @map("bill_month")
+  postDate              DateTime?           @map("post_date")
+  scheduledDate         DateTime?           @map("scheduled_date")
+  cycleEndDate          DateTime?           @map("cycle_end_date")
+  dateDelivered         DateTime?           @map("date_delivered")
+  appliedPaymentDate    DateTime?           @map("applied_payment_date")
+
+  // Financials
+  contractAmount        Decimal?            @db.Decimal(18, 0) @map("contract_amount")
+  invoiceTotal          Decimal?            @db.Decimal(18, 0) @map("invoice_total")
+  appliedAmount         Decimal?            @db.Decimal(18, 0) @map("applied_amount")
+  creditTotal           Decimal?            @db.Decimal(18, 0) @map("credit_total")
+  subtotalAmount        Decimal?            @default(0) @db.Decimal(15, 2) @map("subtotal_amount")
+  taxAmount             Decimal?            @default(0) @db.Decimal(15, 2) @map("tax_amount")
+  totalAmount           Decimal?            @db.Decimal(15, 2) @map("total_amount")
+  currency              String?             @default("USD")
+
+  // Status & Workflow
+  status                String?             @default("Draft")
+  intacctStatus         String?             @map("intacct_status")  // Paid | Partially Paid | Open | etc
+  intacctState          String?             @map("intacct_state")   // Pending | Closed
+  billingWizard         String?             @map("billing_wizard")  // Yes | No
+  readyForBilling       String?             @map("ready_for_billing")  // Yes | No
+  runReconciliation     String?             @map("run_reconciliation")  // Yes | No
+
+  // External IDs
+  generatedExternalId   String?             @unique @map("generated_external_id")
+  salesforceId          String?             @map("salesforce_id")
+  salesforceAccountId   String?             @map("salesforce_account_id")
+  salesforceContractId  String?             @map("salesforce_contract_id")
+  salesforceProjectId   String?             @map("salesforce_project_id")
+  salesforceEnergyProgramId String?         @map("salesforce_energy_program_id")
+  d365ContractId        String?             @map("d365_contract_id")
+  d365EnergyProgramId   String?             @map("d365_energy_program_id")
+  crgbiInvoiceId        String?             @map("crgbi_invoice_id")
+  legacySource          String?             @map("legacy_source")
+
+  // Business Central Integration
+  bcId                  String?             @map("bc_id")
+  bcNumber              String?             @map("bc_number")
+  bcSyncStatus          String?             @default("pending") @map("bc_sync_status")
+  bcLastSyncedAt        DateTime?           @map("bc_last_synced_at")
+
+  // Misc
+  notes                 String?
+  description           String?
+  salesforceRaw         String?             @map("salesforce_raw")  // JSON
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
+
+  // Relations
+  items                 InvoiceItem[]
+  reconciliations       InvoiceRecon[]
+  account               Account?            @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  contract              Contract?           @relation(fields: [contractId], references: [id], onDelete: SetNull)
+  energyProgram         EnergyProgram?      @relation(fields: [energyProgramId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId])
+  @@index([accountId])
+  @@index([contractId])
+  @@index([energyProgramId])
+  @@index([invoiceSfNumber])
+  @@index([documentType])
+  @@index([status])
+  @@index([intacctStatus])
+  @@unique([salesforceId])
+  @@map("invoice")
+}
+
+model InvoiceItem {
+  id                        String              @id @default(cuid()) @map("invoice_item_id")
+  tenantId                  String              @map("tenant_id")
+  invoiceId                 String              @map("invoice_id")  // MasterDetail → invoice
+  projectId                 String?             @map("project_id")
+  energyProgramId           String?             @map("energy_program_id")
+
+  // Naming
+  name                      String?
+
+  // Classification
+  invoiceItemType           String?             @map("invoice_item_type")
+
+  // Dates
+  periodDate                DateTime?           @map("period_date")
+
+  // Financials (all from Invoice_Item_CEN__c)
+  feeAmount                 Decimal?            @db.Decimal(17, 2) @map("fee_amount")
+  credit                    Decimal?            @db.Decimal(17, 2)
+  currentCostAvoidance      Decimal?            @db.Decimal(17, 2) @map("current_cost_avoidance")
+  previousCostAvoidance     Decimal?            @db.Decimal(17, 2) @map("previous_cost_avoidance")
+  specialSavings            Decimal?            @db.Decimal(17, 2) @map("special_savings")
+  previousSpecialSavings    Decimal?            @db.Decimal(17, 2) @map("previous_special_savings")
+  currentLessPrevious       Decimal?            @db.Decimal(17, 2) @map("current_less_previous")
+  savings                   Decimal?            @db.Decimal(18, 8)
+
+  // External IDs
+  salesforceId              String?             @map("salesforce_id")
+  salesforceInvoiceId       String?             @map("salesforce_invoice_id")
+  salesforceProjectId       String?             @map("salesforce_project_id")
+  salesforceEnergyProgramId String?             @map("salesforce_energy_program_id")
+  d365InvoiceItemGuid       String?             @unique @map("d365_invoice_item_guid")
+
+  salesforceRaw             String?             @map("salesforce_raw")  // JSON
+  createdAt                 DateTime            @default(now()) @map("created_at")
+  updatedAt                 DateTime            @updatedAt @map("updated_at")
+
+  // Relations
+  invoice                   Invoice             @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  reconciliations           InvoiceRecon[]
+
+  @@index([tenantId])
+  @@index([invoiceId])
+  @@index([projectId])
+  @@index([energyProgramId])
+  @@unique([salesforceId])
+  @@map("invoice_item")
+}
+
+model InvoiceRecon {
+  id                      String              @id @default(cuid()) @map("invoice_recon_id")
+  tenantId                String              @map("tenant_id")
+  invoiceItemId           String              @map("invoice_item_id")  // FK to invoice_item
+  invoiceId               String?             @map("invoice_id")  // Denormalized for query efficiency
+
+  // Organization / Location
+  orgName                 String?             @map("org_name")
+  placeInfo               String?             @map("place_info")
+  logicalDeviceCode       String?             @map("logical_device_code")
+
+  // Dates
+  reportDate              DateTime?           @map("report_date")
+  beginDate               DateTime?           @map("begin_date")
+
+  // Classification
+  category                String?             // New | Old | etc
+
+  // Financial Data
+  currentBatcc            Decimal?            @db.Decimal(15, 2) @map("current_batcc")
+  previousBatcc           Decimal?            @db.Decimal(15, 2) @map("previous_batcc")
+  currentActualCost       Decimal?            @db.Decimal(15, 2) @map("current_actual_cost")
+  previousActualCost      Decimal?            @db.Decimal(15, 2) @map("previous_actual_cost")
+  currentCa               Decimal?            @db.Decimal(15, 2) @map("current_ca")
+  previousCa              Decimal?            @db.Decimal(15, 2) @map("previous_ca")
+
+  // References
+  energyProgramId         String?             @map("energy_program_id")
+  salesDocName            String?             @map("sales_doc_name")
+  placeId                 String?             @map("place_id")
+  invoiceItemName         String?             @map("invoice_item_name")
+  salesforceId            String?             @map("salesforce_id")
+
+  createdAt               DateTime            @default(now()) @map("created_at")
+  updatedAt               DateTime            @updatedAt @map("updated_at")
+
+  // Relations
+  invoiceItem             InvoiceItem         @relation(fields: [invoiceItemId], references: [id], onDelete: Cascade)
+  invoice                 Invoice?            @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId])
+  @@index([invoiceItemId])
+  @@index([invoiceId])
+  @@index([reportDate])
+  @@index([energyProgramId])
+  @@map("invoice_recon")
 }
