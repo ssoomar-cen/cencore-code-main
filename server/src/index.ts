@@ -14,6 +14,8 @@ import { exportRouter } from "./routes/exportRoutes.js";
 import { queryRouter } from "./routes/queryRoutes.js";
 import { savedViewsRouter } from "./routes/savedViewRoutes.js";
 import { ms365Router } from "./routes/ms365Routes.js";
+import { invoiceRouter } from "./routes/invoiceRoutes.js";
+import accountRoutes from "./routes/accountRoutes.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -97,6 +99,8 @@ app.get("/auth/dev-token", (req, res) => {
 app.use("/api/views", requireAuth, queryRouter);
 app.use("/api/views/saved", requireAuth, savedViewsRouter);
 app.use("/api/views/export", requireAuth, exportRateLimit, exportRouter);
+app.use("/api/invoices", requireAuth, invoiceRouter);
+app.use("/api/accounts", requireAuth, accountRoutes);
 app.use("/api/ms365", ms365Router);
 
 async function attachFrontend() {
