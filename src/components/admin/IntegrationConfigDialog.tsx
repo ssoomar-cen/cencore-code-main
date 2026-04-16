@@ -187,13 +187,13 @@ export default function IntegrationConfigDialog({ open, onOpenChange, integratio
 
     const instanceUrl = config.instance_url?.trim().replace(/\/+$/, "");
     const clientId = config.client_id?.trim();
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const redirectUri = `${supabaseUrl}/functions/v1/salesforce-auth-callback`;
+    const redirectUri = `${window.location.origin}/api/salesforce/callback`;
 
     const state = btoa(JSON.stringify({
       integration_id: integration.id,
       redirect_url: window.location.origin + window.location.pathname,
       code_verifier: verifier,
+      redirect_uri: redirectUri,
     }));
 
     const authorizeUrl = `${instanceUrl}/services/oauth2/authorize?` +
@@ -325,7 +325,7 @@ export default function IntegrationConfigDialog({ open, onOpenChange, integratio
                 <p className="font-medium">Setup Instructions:</p>
                 <p>1. In your Salesforce External Client App, set the <strong>Callback URL</strong> to:</p>
                 <code className="text-[10px] block bg-background p-1.5 rounded border break-all select-all">
-                  {import.meta.env.VITE_SUPABASE_URL}/functions/v1/salesforce-auth-callback
+                  {window.location.origin}/api/salesforce/callback
                 </code>
                 <p>2. Enable OAuth scopes: <strong>Full access (full)</strong> and <strong>Perform requests at any time (refresh_token, offline_access)</strong>.</p>
                 <p>3. Enter the Consumer Key and Secret above, then click "Authorize with Salesforce".</p>

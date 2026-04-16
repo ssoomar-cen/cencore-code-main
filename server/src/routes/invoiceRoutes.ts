@@ -3,6 +3,63 @@ import { db } from "../utils/prisma.js";
 
 export const invoiceRouter = Router();
 
+// GET /api/invoices - List all invoices (no auth required — registered before requireAuth in index.ts)
+export const invoiceListRouter = Router();
+invoiceListRouter.get("/", async (_req: Request, res: Response) => {
+  try {
+    const invoices = await db.query(`
+      SELECT i.*,
+             i.invoice_id AS id,
+             i.invoice_sf_number AS invoice_number,
+             i.invoice_total AS total,
+             i.intacct_status AS status,
+             i.bill_month AS issue_date,
+             json_build_object('name', a.name) AS accounts
+      FROM invoice i
+      LEFT JOIN accounts a ON i.account_id = a.id
+      ORDER BY i.created_at DESC
+    `);
+    res.json(invoices);
+  } catch (error) {
+    console.error("Error fetching invoices:", error);
+    res.status(500).json({ error: "Failed to fetch invoices" });
+  }
+});
+
+// GET /api/invoices/items - All invoice items (no auth required)
+invoiceListRouter.get("/items", async (_req: Request, res: Response) => {
+  try {
+    const items = await db.query(`
+      SELECT ii.*,
+             ii.invoice_item_id AS id
+      FROM invoice_item ii
+      ORDER BY ii.period_date DESC NULLS LAST
+      LIMIT 10000
+    `);
+    res.json(items);
+  } catch (error) {
+    console.error("Error fetching invoice items:", error);
+    res.status(500).json({ error: "Failed to fetch invoice items" });
+  }
+});
+
+// GET /api/invoices/recons - All reconciliation records (no auth required)
+invoiceListRouter.get("/recons", async (_req: Request, res: Response) => {
+  try {
+    const recons = await db.query(`
+      SELECT ir.*,
+             ir.invoice_recon_id AS id
+      FROM invoice_recon ir
+      ORDER BY ir.report_date DESC NULLS LAST
+      LIMIT 50000
+    `);
+    res.json(recons);
+  } catch (error) {
+    console.error("Error fetching invoice reconciliations:", error);
+    res.status(500).json({ error: "Failed to fetch invoice reconciliations" });
+  }
+});
+
 // GET /api/invoices/:invoiceId/items
 invoiceRouter.get("/:invoiceId/items", async (req: Request, res: Response, next) => {
   try {

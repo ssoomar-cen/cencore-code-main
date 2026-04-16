@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CenCore — Table Relationship Diagram</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      margin: 0;
+      padding: 24px;
+    }
+    h1 { font-size: 1.4rem; margin: 0 0 4px; color: #f8fafc; }
+    p  { font-size: 0.85rem; color: #94a3b8; margin: 0 0 20px; }
+    .legend {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      margin-bottom: 18px; font-size: 0.78rem;
+    }
+    .legend span { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .blue   { background: #3b82f6; }
+    .green  { background: #22c55e; }
+    .amber  { background: #f59e0b; }
+    .purple { background: #a855f7; }
+    .rose   { background: #f43f5e; }
+    .slate  { background: #64748b; }
+    #diagram {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 24px;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>CenCore — Table Relationship Diagram</h1>
+  <p>Core business tables only · admin / config / audit tables omitted for clarity</p>
+
+  <div class="legend">
+    <span><span class="dot blue"></span>   CRM &amp; Sales</span>
+    <span><span class="dot green"></span>  Energy Programs</span>
+    <span><span class="dot amber"></span>  Projects</span>
+    <span><span class="dot purple"></span> Finance &amp; Invoicing</span>
+    <span><span class="dot rose"></span>   Activities &amp; Support</span>
+    <span><span class="dot slate"></span>  Multi-tenancy</span>
+  </div>
+
+  <div id="diagram">
+    <pre class="mermaid">
+erDiagram
+
+  %% ── Multi-tenancy ─────────────────────────────────────────
+  tenants {
+    uuid id PK
+    string name
+    string domain
+    string status
+    string plan
+  }
+  tenant_members {
+    uuid id PK
+    uuid tenant_id FK
+    uuid user_id FK
+    string role
+  }
+  tenants ||--o{ tenant_members : "has"
+
+  %% ── CRM Core ──────────────────────────────────────────────
+  accounts {
+    uuid id PK
+    uuid tenant_id FK
+    uuid parent_account_id FK
+    string name
+    string account_number
+    string industry
+    string account_type
+    string status
+    string phone
+    string email
+    string address_city
+    string address_state
+  }
+  tenants    ||--o{ accounts : "owns"
+  accounts   ||--o{ accounts : "parent >"
+
+  contacts {
+    uuid id PK
+    uuid tenant_id FK
+    uuid account_id FK
+    uuid original_lead_id FK
+    string first_name
+    string last_name
+    string email
+    string phone
+    string job_title
+  }
+  accounts ||--o{ contacts : "has"
+
+  leads {
+    uuid id PK
+    uuid tenant_id FK
+    uuid converted_account_id FK
+    uuid converted_contact_id FK
+    string first_name
+    string last_name
+    string email
+    string company
+    string status
+    string lead_source
+  }
+  leads |o--o| accounts  : "converts to"
+  leads |o--o| contacts  : "converts to"
+
+  connections {
+    uuid id PK
+    uuid contact_id FK
+    uuid connected_contact_id FK
+    string relationship_type
+  }
+  contacts ||--o{ connections : "from"
+  contacts ||--o{ connections : "to"
+
+  %% ── Sales Pipeline ────────────────────────────────────────
+  opportunities {
+    uuid id PK
+    uuid tenant_id FK
+    uuid account_id FK
+    uuid contact_id FK
+    string name
+    string stage
+    decimal amount
+    int probability
+    date close_date
+    string status
+  }
+  accounts     ||--o{ opportunities : "has"
+  contacts     ||--o{ opportunities : "primary contact"
+
+  quotes {
+    uuid id PK
+    uuid tenant_id FK
+    uuid account_id FK
+    uuid opportunity_id FK
+    string name
+    string quote_number
+    string status
+    decimal total
+  }
+  opportunities ||--o{ quotes : "generates"
+  accounts      ||--o{ quotes : "billed to"
+
+  products {
+    uuid id PK
+    uuid tenant_id FK
+    string name
+    string sku
+    decimal unit_price
+    string type
+  }
+
+  quote_lines {
+    uuid id PK
+    uuid quote_id FK
+    uuid product_id FK
+    int quantity
+    decimal unit_price
+    decimal total_price
+  }
+  quotes    ||--o{ quote_lines : "contains"
+  products  ||--o{ quote_lines : "priced via"
+
+  commission_splits {
+    uuid id PK
+    uuid tenant_id FK
+    uuid opportunity_id FK
+    uuid contract_id FK
+    uuid contact_id FK
+    decimal split_percentage
+    decimal amount
+    string role
+    string status
+  }
+  opportunities ||--o{ commission_splits : "splits"
+  contacts      ||--o{ commission_splits : "assigned to"
+
+  %% ── Contracts & Energy ────────────────────────────────────
+  contracts {
+    uuid id PK
+    uuid tenant_id FK
+    uuid account_id FK
+    uuid opportunity_id FK
+    uuid parent_contract_id FK
+    string name
+    string contract_number
+    string contract_type
+    string contract_status
+    string service_status
+    decimal value
+    date contract_start_date
+    date billing_schedule_end_date
+  }
+  accounts      ||--o{ contracts     : "has"
+  opportunities ||--o{ contracts     : "closes as"
+  contracts     ||--o{ contracts     : "parent >"
+
+  energy_programs {
+    uuid id PK
+    uuid tenant_id FK
+    uuid account_id FK
+    uuid opportunity_id FK
+    string name
+    string pgm_id
+    string salesforce_id
+    string status
+    date contract_start_date
+    date billing_schedule_end_date
+  }
+  accounts      ||--o{ energy_programs : "enrolled in"
+  opportunities ||--o{ energy_programs : "leads to"
+  contracts     ||--o{ energy_programs : "governs"
+
+  measures {
+    uuid id PK
+    uuid tenant_id FK
+    uuid energy_program_id FK
+    uuid account_id FK
+    string name
+    string measure_type
+    string status
+    decimal estimated_savings
+    decimal actual_savings
+  }
+  energy_programs ||--o{ measures : "includes"
+
+  %% ── Projects ──────────────────────────────────────────────
+  projects {
+    uuid id PK
+    uuid tenant_id FK
+    uuid account_id FK
+    uuid contract_id FK
+    uuid energy_program_id FK
+    string name
+    string status
+    string priority
+    decimal budget
+    int progress_percent
+    date start_date
+    date end_date
+  }
+  accounts        ||--o{ projects : "owns"
+  contracts       ||--o{ projects : "under"
+  energy_programs ||--o{ projects : "executes"
+
+  project_milestones {
+    uuid id PK
+    uuid project_id FK
+    string name
+    date due_date
+    string status
+    int sort_order
+  }
+  projects ||--o{ project_milestones : "has"
+
+  project_tasks {
+    uuid id PK
+    uuid project_id FK
+    uuid milestone_id FK
+    uuid parent_task_id FK
+    string name
+    string status
+    string priority
+    decimal estimated_hours
+    decimal actual_hours
+  }
+  projects           ||--o{ project_tasks       : "has"
+  project_milestones ||--o{ project_tasks       : "groups"
+  project_tasks      ||--o{ project_tasks       : "subtask >"
+
+  buildings {
+    uuid id PK
+    uuid tenant_id FK
+    uuid account_id FK
+    uuid energy_program_id FK
+    uuid project_id FK
+    string name
+    string building_type
+    string address_city
+    string address_state
+    int square_footage
+    int energy_star_score
+    string status
+  }
+  accounts        ||--o{ buildings : "owns"
+  energy_programs ||--o{ buildings : "covers"
+  projects        ||--o{ buildings : "scoped to"
+
+  %% ── Finance & Invoicing ───────────────────────────────────
+  invoices {
+    uuid id PK
+    uuid tenant_id FK
+    uuid account_id FK
+    uuid contract_id FK
+    uuid energy_program_id FK
+    string invoice_number
+    string name
+    string status
+    decimal total
+    decimal amount_paid
+    date issue_date
+    date due_date
+    date bill_month
+  }
+  accounts        ||--o{ invoices : "billed to"
+  contracts       ||--o{ invoices : "under"
+  energy_programs ||--o{ invoices : "for"
+
+  invoice_items {
+    uuid id PK
+    uuid tenant_id FK
+    uuid invoice_id FK
+    uuid energy_program_id FK
+    string name
+    string invoice_item_type
+    date period_date
+    decimal fee_amount
+    decimal savings
+    decimal current_cost_avoidance
+    decimal credit
+  }
+  invoices        ||--o{ invoice_items : "has"
+  energy_programs ||--o{ invoice_items : "relates to"
+
+  invoice_recon {
+    uuid id PK
+    uuid tenant_id FK
+    uuid invoice_id FK
+    uuid invoice_item_id FK
+    string org_name
+    date report_date
+    string category
+    decimal current_ca
+    decimal previous_ca
+    decimal current_batcc
+  }
+  invoices       ||--o{ invoice_recon : "reconciles"
+  invoice_items  ||--o{ invoice_recon : "details"
+
+  budget_items {
+    uuid id PK
+    uuid tenant_id FK
+    uuid project_id FK
+    uuid energy_program_id FK
+    string category
+    decimal budgeted_amount
+    decimal actual_amount
+    string status
+  }
+  projects        ||--o{ budget_items : "tracks"
+  energy_programs ||--o{ budget_items : "tracks"
+
+  %% ── Activities & Support ──────────────────────────────────
+  activities {
+    uuid id PK
+    uuid tenant_id FK
+    uuid account_id FK
+    uuid contact_id FK
+    uuid opportunity_id FK
+    uuid contract_id FK
+    uuid project_id FK
+    string activity_type
+    string subject
+    string status
+    date due_date
+  }
+  accounts      ||--o{ activities : "logged on"
+  contacts      ||--o{ activities : "with"
+  opportunities ||--o{ activities : "for"
+  contracts     ||--o{ activities : "for"
+  projects      ||--o{ activities : "for"
+
+  support_tickets {
+    uuid id PK
+    uuid tenant_id FK
+    uuid account_id FK
+    uuid contact_id FK
+    string subject
+    string category
+    string priority
+    string status
+    string case_number
+  }
+  accounts ||--o{ support_tickets : "raises"
+  contacts ||--o{ support_tickets : "submits"
+
+    </pre>
+  </div>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      er: {
+        diagramPadding: 30,
+        layoutDirection: 'TB',
+        minEntityWidth: 100,
+        minEntityHeight: 75,
+        entityPadding: 15,
+        useMaxWidth: false,
+      },
+      themeVariables: {
+        primaryColor:        '#1e40af',
+        primaryTextColor:    '#e2e8f0',
+        primaryBorderColor:  '#3b82f6',
+        lineColor:           '#475569',
+        secondaryColor:      '#064e3b',
+        tertiaryColor:       '#1e293b',
+        background:          '#1e293b',
+        mainBkg:             '#1e293b',
+        nodeBorder:          '#475569',
+        clusterBkg:          '#0f172a',
+        titleColor:          '#f8fafc',
+        edgeLabelBackground: '#1e293b',
+        attributeBackgroundColorEven: '#1e3a5f',
+        attributeBackgroundColorOdd:  '#1e293b',
+      }
+    });
+  </script>
+</body>
+</html>

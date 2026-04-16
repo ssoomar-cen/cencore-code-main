@@ -10,6 +10,19 @@ export function useAccounts() {
   const query = useQuery({
     queryKey: ["accounts", activeTenantId],
     queryFn: async () => {
+      try {
+        // Try local PostgreSQL API first
+        const response = await fetch("/api/accounts");
+        
+        if (response.ok) {
+          const result = await response.json();
+          return result.data || [];
+        }
+      } catch (err) {
+        console.warn("Local API failed, falling back to Supabase:", err);
+      }
+      
+      // Fallback to Supabase
       let q = supabase.from("accounts").select("*").order("created_at", { ascending: false });
       if (activeTenantId) q = q.eq("tenant_id", activeTenantId);
       const { data, error } = await q;

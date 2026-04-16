@@ -34,7 +34,7 @@ export function CrmToolbar({
     <div className="flex flex-col gap-2 sm:gap-3">
       {/* Row 1: Search + Filters (scrollable on mobile) */}
       <div className="flex flex-col sm:flex-row gap-2">
-        <div className="relative flex-shrink-0 w-full sm:w-48">
+        <div className="relative flex-shrink-0 w-full sm:w-64">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search..."

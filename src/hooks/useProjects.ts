@@ -10,6 +10,10 @@ export function useProjects() {
   const query = useQuery({
     queryKey: ["projects", activeTenantId],
     queryFn: async () => {
+      try {
+        const response = await fetch("/api/energy-programs");
+        if (response.ok) return await response.json();
+      } catch (_) {}
       let q = (supabase as any).from("projects").select("*, contracts(name), accounts(name)").order("created_at", { ascending: false });
       if (activeTenantId) q = q.eq("tenant_id", activeTenantId);
       const { data, error } = await q;

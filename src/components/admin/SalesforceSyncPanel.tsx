@@ -412,20 +412,18 @@ export default function SalesforceSyncPanel({ integrationId, config, onDisconnec
       setSyncProgress({ current: obj, done: i, total: objects.length });
 
       try {
-        const { data, error } = await supabase.functions.invoke("salesforce-sync", {
-          body: { integration_id: integrationId, direction, objects: [obj], tenant_id: activeTenant.id },
+        const res = await fetch("/api/salesforce/sync", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ integration_id: integrationId, direction, objects: [obj], tenant_id: activeTenant.id }),
         });
-
-        if (error) throw error;
-
-        if (data?.reports) {
-          allReports.push(...(data.reports as SyncReport[]));
-        }
-      } catch (error) {
-        const parsedError = await parseSyncError(error);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.error || "Sync failed");
+        if (data?.reports) allReports.push(...(data.reports as SyncReport[]));
+      } catch (error: any) {
         allReports.push({
           object: obj, created: 0, updated: 0, skipped: 0,
-          errors: [parsedError.message, ...parsedError.hints],
+          errors: [error?.message || "Sync failed"],
         });
       }
     }

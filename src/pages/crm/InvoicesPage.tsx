@@ -1,9 +1,9 @@
-import { useInvoices, useContracts } from "@/hooks/useCrmEntities";
+import { useInvoices, useContracts, useAllInvoiceItems, useAllInvoiceRecons } from "@/hooks/useCrmEntities";
 import { useAccounts } from "@/hooks/useAccounts";
 import { usePicklistSelectOptions } from "@/hooks/usePicklistOptions";
 import { CrmDataTable, Column, FormField, KanbanConfig } from "@/components/crm/CrmDataTable";
 import { FilterConfig } from "@/components/crm/CrmToolbar";
-import { LookupLink } from "@/components/crm/CrmRecordDetail";
+import { LookupLink, RelatedTab } from "@/components/crm/CrmRecordDetail";
 import { Badge } from "@/components/ui/badge";
 import { useMemo } from "react";
 
@@ -25,6 +25,8 @@ export default function InvoicesPage() {
   const { data, isLoading, create, update, remove } = useInvoices();
   const { data: accounts } = useAccounts();
   const { data: contracts } = useContracts();
+  const { data: invoiceItems } = useAllInvoiceItems();
+  const { data: invoiceRecons } = useAllInvoiceRecons();
 
   const { options: invoiceStatusOptions } = usePicklistSelectOptions("invoices", "status");
   const statusOpts = invoiceStatusOptions.length ? invoiceStatusOptions : [
@@ -87,6 +89,68 @@ export default function InvoicesPage() {
     { key: "contract_id", route: "/crm/contracts", data: contracts || [], labelFn: (c) => c.name },
   ], [accounts, contracts]);
 
+  const relatedTabs: RelatedTab[] = useMemo(() => [
+    {
+      key: "invoice_items",
+      label: "Invoice Items",
+      foreignKey: "invoice_id",
+      panel: "left" as const,
+      data: invoiceItems || [],
+      columns: [
+        { key: "name", label: "Name" },
+        { key: "invoice_item_type", label: "Type" },
+        { key: "period_date", label: "Period", render: (v: any) => v ? new Date(v).toLocaleDateString() : "—" },
+        { key: "fee_amount", label: "Fee", render: (v: any) => v != null ? `$${Number(v).toLocaleString()}` : "—" },
+        { key: "savings", label: "Savings", render: (v: any) => v != null ? `$${Number(v).toLocaleString()}` : "—" },
+        { key: "current_cost_avoidance", label: "Current CA", render: (v: any) => v != null ? `$${Number(v).toLocaleString()}` : "—" },
+        { key: "credit", label: "Credit", render: (v: any) => v != null ? `$${Number(v).toLocaleString()}` : "—" },
+      ],
+      drillDown: {
+        entityLabel: "Invoice Item",
+        titleField: "name",
+        formFields: [
+          { key: "name", label: "Name", section: "Item Details" },
+          { key: "invoice_item_type", label: "Type", section: "Item Details" },
+          { key: "period_date", label: "Period Date", type: "date", section: "Item Details" },
+          { key: "fee_amount", label: "Fee Amount", type: "number", section: "Financials" },
+          { key: "savings", label: "Savings", type: "number", section: "Financials" },
+          { key: "current_cost_avoidance", label: "Current Cost Avoidance", type: "number", section: "Financials" },
+          { key: "previous_cost_avoidance", label: "Previous Cost Avoidance", type: "number", section: "Financials" },
+          { key: "special_savings", label: "Special Savings", type: "number", section: "Financials" },
+          { key: "previous_special_savings", label: "Previous Special Savings", type: "number", section: "Financials" },
+          { key: "current_less_previous", label: "Current Less Previous", type: "number", section: "Financials" },
+          { key: "credit", label: "Credit", type: "number", section: "Financials" },
+        ],
+        headerFields: [
+          { key: "invoice_item_type", label: "Type" },
+          { key: "period_date", label: "Period" },
+          { key: "fee_amount", label: "Fee" },
+        ],
+        relatedTabs: [
+          {
+            key: "reconciliations",
+            label: "Reconciliations",
+            foreignKey: "invoice_item_id",
+            panel: "left" as const,
+            data: invoiceRecons || [],
+            columns: [
+              { key: "report_date", label: "Report Date", render: (v: any) => v ? new Date(v).toLocaleDateString() : "—" },
+              { key: "begin_date", label: "Begin Date", render: (v: any) => v ? new Date(v).toLocaleDateString() : "—" },
+              { key: "category", label: "Category" },
+              { key: "org_name", label: "Organization" },
+              { key: "place_info", label: "Place" },
+              { key: "current_batcc", label: "Current BATCC", render: (v: any) => v != null ? `$${Number(v).toLocaleString()}` : "—" },
+              { key: "previous_batcc", label: "Prev BATCC", render: (v: any) => v != null ? `$${Number(v).toLocaleString()}` : "—" },
+              { key: "current_ca", label: "Current CA", render: (v: any) => v != null ? `$${Number(v).toLocaleString()}` : "—" },
+              { key: "previous_ca", label: "Prev CA", render: (v: any) => v != null ? `$${Number(v).toLocaleString()}` : "—" },
+              { key: "current_actual_cost", label: "Actual Cost", render: (v: any) => v != null ? `$${Number(v).toLocaleString()}` : "—" },
+            ],
+          },
+        ],
+      },
+    },
+  ], [invoiceItems, invoiceRecons]);
+
   return (
     <CrmDataTable title="Invoices" description="Manage invoices and billing"
       entityLabel="Invoice"
@@ -95,6 +159,7 @@ export default function InvoicesPage() {
       onCreate={(d) => create.mutate(d)} onUpdate={(d) => update.mutate(d)} onDelete={(id) => remove.mutate(id)}
       createLabel="Add Invoice" filters={filters} kanban={kanban}
       lookupLinks={lookupLinks}
+      relatedTabs={relatedTabs}
       headerFields={[
         { key: "invoice_number", label: "Invoice #" },
         { key: "account_id", label: "Organization" },

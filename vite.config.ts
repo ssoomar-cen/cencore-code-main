@@ -16,6 +16,7 @@ function autoStartBackend() {
         cwd: serverDir,
         stdio: "inherit",
         shell: true,
+        env: { ...process.env, SERVE_FRONTEND: "false" },
       });
       backendProcess.on("error", (err) => {
         console.error("[vite] Failed to start backend:", err.message);
