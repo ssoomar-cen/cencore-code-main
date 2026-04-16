@@ -9,11 +9,8 @@ import { Progress } from "@/components/ui/progress";
 import { useMemo } from "react";
 
 const statusColors: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-  planning: "secondary",
-  active: "default",
-  on_hold: "outline",
-  completed: "default",
-  cancelled: "destructive",
+  Active: "default",
+  Inactive: "secondary",
 };
 
 const columns: Column[] = [
@@ -21,7 +18,7 @@ const columns: Column[] = [
   { key: "accounts", label: "Organization", render: (v: any) => v?.name || "—" },
   { key: "program_type", label: "Type" },
   { key: "utility", label: "Utility" },
-  { key: "status", label: "Status", render: (v: any) => <Badge variant={statusColors[v] || "outline"}>{v}</Badge> },
+  { key: "status", label: "Service Status", render: (v: any) => <Badge variant={statusColors[v] || "outline"}>{v}</Badge> },
   { key: "priority", label: "Priority", render: (v: any) => <Badge variant="outline">{v}</Badge> },
   { key: "progress_percent", label: "Progress", render: (v: any) => (
     <div className="flex items-center gap-2 min-w-24">
@@ -35,10 +32,9 @@ const columns: Column[] = [
 ];
 
 const filters: FilterConfig[] = [
-  { key: "status", label: "Status", options: [
-    { label: "Planning", value: "planning" }, { label: "Active", value: "active" },
-    { label: "On Hold", value: "on_hold" }, { label: "Completed", value: "completed" },
-    { label: "Cancelled", value: "cancelled" },
+  { key: "status", label: "Service Status", options: [
+    { label: "Active", value: "Active" },
+    { label: "Inactive", value: "Inactive" },
   ]},
   { key: "priority", label: "Priority", options: [
     { label: "Low", value: "low" }, { label: "Medium", value: "medium" },
@@ -49,8 +45,8 @@ const filters: FilterConfig[] = [
 const kanban: KanbanConfig = {
   groupField: "status",
   columns: [
-    { value: "planning", label: "Planning" }, { value: "active", label: "Active" },
-    { value: "on_hold", label: "On Hold" }, { value: "completed", label: "Completed" },
+    { value: "Active", label: "Active" },
+    { value: "Inactive", label: "Inactive" },
   ],
   titleField: "name",
   subtitleField: "accounts",
@@ -71,10 +67,9 @@ export default function ProjectsPage() {
     { key: "contract_id", label: "Contract", type: "select", options: (contracts || []).map((c: any) => ({ label: c.name, value: c.id })) },
     { key: "program_type", label: "Program Type" },
     { key: "utility", label: "Utility" },
-    { key: "status", label: "Status", type: "select", options: [
-      { label: "Planning", value: "planning" }, { label: "Active", value: "active" },
-      { label: "On Hold", value: "on_hold" }, { label: "Completed", value: "completed" },
-      { label: "Cancelled", value: "cancelled" },
+    { key: "status", label: "Service Status", type: "select", options: [
+      { label: "Active", value: "Active" },
+      { label: "Inactive", value: "Inactive" },
     ]},
     { key: "priority", label: "Priority", type: "select", options: [
       { label: "Low", value: "low" }, { label: "Medium", value: "medium" },
@@ -135,7 +130,7 @@ export default function ProjectsPage() {
       headerFields={[
         { key: "account_id", label: "Organization" },
         { key: "contract_id", label: "Contract" },
-        { key: "status", label: "Status" },
+        { key: "status", label: "Service Status" },
         { key: "program_type", label: "Type" },
         { key: "utility", label: "Utility" },
         { key: "budget", label: "Budget" },

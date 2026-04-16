@@ -21,6 +21,17 @@ export interface LookupLink {
   labelFn: (item: any) => string;
 }
 
+export interface DrillDownConfig {
+  /** Entity label shown in the detail header (e.g. "Invoice Item") */
+  entityLabel?: string;
+  /** Which field on the row to use as the detail page title */
+  titleField?: string;
+  formFields: FormField[];
+  headerFields?: { key: string; label: string }[];
+  relatedTabs?: RelatedTab[];
+  lookupLinks?: LookupLink[];
+}
+
 export interface RelatedTab {
   key: string;
   label: string;
@@ -29,6 +40,8 @@ export interface RelatedTab {
   data: any[];
   panel?: "left" | "right";
   route?: string;
+  /** When set, clicking a row opens an inline drill-down detail instead of navigating away */
+  drillDown?: DrillDownConfig;
   /** Form fields for creating a new related record inline */
   createFields?: FormField[];
   /** Called when a new related record is created */
@@ -54,12 +67,14 @@ interface CrmRecordDetailProps {
   relatedTabs?: RelatedTab[];
   lookupLinks?: LookupLink[];
   businessProcessFlow?: BusinessProcessFlow;
+  /** Called when a related-tab row with drillDown config is clicked */
+  onDrillDown?: (row: any, config: DrillDownConfig) => void;
 }
 
 export function CrmRecordDetail({
   record, formFields, title, entityLabel, onSave, onBack, isNew,
   headerFields = [], relatedTabs = [], lookupLinks = [],
-  businessProcessFlow,
+  businessProcessFlow, onDrillDown,
 }: CrmRecordDetailProps) {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<Record<string, any>>(() => {
@@ -279,9 +294,11 @@ export function CrmRecordDetail({
                 {rows.map((row, idx) => (
                   <TableRow
                     key={row.id || idx}
-                    className={tab.route ? "cursor-pointer hover:bg-accent/50 transition-colors" : ""}
+                    className={(tab.route || tab.drillDown) ? "cursor-pointer hover:bg-accent/50 transition-colors" : ""}
                     onClick={() => {
-                      if (tab.route && row.id) {
+                      if (tab.drillDown && onDrillDown) {
+                        onDrillDown(row, tab.drillDown);
+                      } else if (tab.route && row.id) {
                         navigate(`${tab.route}?open=${row.id}`);
                       }
                     }}

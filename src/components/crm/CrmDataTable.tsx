@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Pencil, Trash2, Check, X, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 import { CrmToolbar, FilterConfig } from "./CrmToolbar";
 import { CrmKanbanView } from "./CrmKanbanView";
-import { CrmRecordDetail, RelatedTab, LookupLink, BusinessProcessFlow } from "./CrmRecordDetail";
+import { CrmRecordDetail, RelatedTab, LookupLink, BusinessProcessFlow, DrillDownConfig } from "./CrmRecordDetail";
 
 export interface Column {
   key: string;
@@ -90,6 +90,20 @@ function InlineEditCell({ field, value, onChange }: { field: FormField | undefin
   );
 }
 
+// Recursively flatten any value to a searchable string.
+// Objects are unwrapped via common display keys (name, label, value),
+// arrays are joined, and primitives are stringified.
+function toSearchable(val: any): string {
+  if (val == null) return "";
+  if (Array.isArray(val)) return val.map(toSearchable).join(" ");
+  if (typeof val === "object") {
+    const display = val.name ?? val.label ?? val.value;
+    if (display != null) return String(display);
+    return Object.values(val).map(toSearchable).join(" ");
+  }
+  return String(val);
+}
+
 export function CrmDataTable({
   title, description, columns, data, isLoading, formFields,
   onCreate, onUpdate, onDelete, createLabel = "Add New",
@@ -103,6 +117,8 @@ export function CrmDataTable({
   const [createOpen, setCreateOpen] = useState(false);
   const [editRowId, setEditRowId] = useState<string | null>(null);
   const [detailRecord, setDetailRecord] = useState<any>(null);
+  const [childRecord, setChildRecord] = useState<any>(null);
+  const [childDrillConfig, setChildDrillConfig] = useState<DrillDownConfig | null>(null);
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [filterValues, setFilterValues] = useState<Record<string, string>>({});
   const [view, setView] = useState<"list" | "kanban">("list");
@@ -138,12 +154,12 @@ export function CrmDataTable({
   const fieldMap = new Map(formFields.map((f) => [f.key, f]));
 
   const filtered = useMemo(() => {
+    const needle = search.trim().toLowerCase();
     let result = (data || []).filter((row) => {
-      if (search) {
-        const match = columns.some((col) => {
-          const val = row[col.key];
-          return val && String(val).toLowerCase().includes(search.toLowerCase());
-        });
+      if (needle) {
+        const match = columns.some((col) =>
+          toSearchable(row[col.key]).toLowerCase().includes(needle)
+        );
         if (!match) return false;
       }
       for (const f of filters) {
@@ -235,6 +251,26 @@ export function CrmDataTable({
     );
   }
 
+  // If a child record is open (drill-down from a related tab)
+  if (detailRecord && childRecord && childDrillConfig) {
+    const childTitle = childDrillConfig.titleField
+      ? (childRecord[childDrillConfig.titleField] || "Record")
+      : (childRecord[childDrillConfig.formFields?.[0]?.key] || "Record");
+    return (
+      <CrmRecordDetail
+        record={childRecord}
+        formFields={childDrillConfig.formFields}
+        title={childTitle}
+        entityLabel={childDrillConfig.entityLabel || "Record"}
+        headerFields={childDrillConfig.headerFields}
+        relatedTabs={childDrillConfig.relatedTabs}
+        lookupLinks={childDrillConfig.lookupLinks}
+        onSave={() => {}}
+        onBack={() => { setChildRecord(null); setChildDrillConfig(null); }}
+      />
+    );
+  }
+
   // If a record is open in detail view
   if (detailRecord) {
     return (
@@ -249,6 +285,7 @@ export function CrmDataTable({
         businessProcessFlow={businessProcessFlow}
         onSave={onUpdate}
         onBack={() => setDetailRecord(null)}
+        onDrillDown={(row, config) => { setChildRecord(row); setChildDrillConfig(config); }}
       />
     );
   }
