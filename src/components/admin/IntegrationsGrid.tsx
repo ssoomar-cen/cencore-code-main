@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Loader2, Plug, Search, Settings } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import IntacctSettings from "./IntacctSettings";
 import IntegrationConfigDialog from "./IntegrationConfigDialog";
@@ -47,22 +46,21 @@ export default function IntegrationsGrid() {
 
   const loadIntegrations = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("integrations")
-      .select("*")
-      .order("category")
-      .order("name");
-    if (data) setIntegrations(data as any);
+    try {
+      const res = await fetch("/api/integrations");
+      if (res.ok) setIntegrations(await res.json());
+    } catch { /* silently ignore */ }
     setLoading(false);
   };
 
   const toggleIntegration = async (integration: Integration) => {
     setToggling(integration.id);
-    const { error } = await supabase
-      .from("integrations")
-      .update({ is_enabled: !integration.is_enabled } as any)
-      .eq("id", integration.id);
-    if (error) toast.error("Failed to update");
+    const res = await fetch(`/api/integrations/${integration.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ is_enabled: !integration.is_enabled }),
+    });
+    if (!res.ok) toast.error("Failed to update");
     else {
       setIntegrations(prev =>
         prev.map(i => i.id === integration.id ? { ...i, is_enabled: !i.is_enabled } : i)

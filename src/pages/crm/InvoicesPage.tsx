@@ -1,11 +1,13 @@
-import { useInvoices, useContracts, useAllInvoiceItems, useAllInvoiceRecons } from "@/hooks/useCrmEntities";
+import { useState, useEffect, useMemo } from "react";
+import { useInvoices, useInvoicesList, useContracts, useAllInvoiceItems, useAllInvoiceRecons } from "@/hooks/useCrmEntities";
 import { useAccounts } from "@/hooks/useAccounts";
 import { usePicklistSelectOptions } from "@/hooks/usePicklistOptions";
 import { CrmDataTable, Column, FormField, KanbanConfig } from "@/components/crm/CrmDataTable";
 import { FilterConfig } from "@/components/crm/CrmToolbar";
 import { LookupLink, RelatedTab } from "@/components/crm/CrmRecordDetail";
 import { Badge } from "@/components/ui/badge";
-import { useMemo } from "react";
+
+const PAGE_SIZE = 250;
 
 const columns: Column[] = [
   { key: "invoice_number", label: "Invoice #" },
@@ -22,7 +24,18 @@ const columns: Column[] = [
 ];
 
 export default function InvoicesPage() {
-  const { data, isLoading, create, update, remove } = useInvoices();
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    const t = setTimeout(() => { setDebouncedSearch(search); setPage(1); }, 300);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  const { data: listResult, isLoading } = useInvoicesList({ search: debouncedSearch, page, limit: PAGE_SIZE });
+
+  const { create, update, remove } = useInvoices();
   const { data: accounts } = useAccounts();
   const { data: contracts } = useContracts();
   const { data: invoiceItems } = useAllInvoiceItems();
@@ -99,7 +112,7 @@ export default function InvoicesPage() {
       columns: [
         { key: "name", label: "Name" },
         { key: "invoice_item_type", label: "Type" },
-        { key: "period_date", label: "Period", render: (v: any) => v ? new Date(v).toLocaleDateString() : "—" },
+        { key: "period_date", label: "Period", render: (v: any) => v ? new Date(v).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" }) : "—" },
         { key: "fee_amount", label: "Fee", render: (v: any) => v != null ? `$${Number(v).toLocaleString()}` : "—" },
         { key: "savings", label: "Savings", render: (v: any) => v != null ? `$${Number(v).toLocaleString()}` : "—" },
         { key: "current_cost_avoidance", label: "Current CA", render: (v: any) => v != null ? `$${Number(v).toLocaleString()}` : "—" },
@@ -134,8 +147,8 @@ export default function InvoicesPage() {
             panel: "left" as const,
             data: invoiceRecons || [],
             columns: [
-              { key: "report_date", label: "Report Date", render: (v: any) => v ? new Date(v).toLocaleDateString() : "—" },
-              { key: "begin_date", label: "Begin Date", render: (v: any) => v ? new Date(v).toLocaleDateString() : "—" },
+              { key: "report_date", label: "Report Date", render: (v: any) => v ? new Date(v).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" }) : "—" },
+              { key: "begin_date", label: "Begin Date", render: (v: any) => v ? new Date(v).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" }) : "—" },
               { key: "category", label: "Category" },
               { key: "org_name", label: "Organization" },
               { key: "place_info", label: "Place" },
@@ -154,7 +167,7 @@ export default function InvoicesPage() {
   return (
     <CrmDataTable title="Invoices" description="Manage invoices and billing"
       entityLabel="Invoice"
-      columns={columns} data={data || []}
+      columns={columns} data={listResult?.data || []}
       isLoading={isLoading} formFields={formFields}
       onCreate={(d) => create.mutate(d)} onUpdate={(d) => update.mutate(d)} onDelete={(id) => remove.mutate(id)}
       createLabel="Add Invoice" filters={filters} kanban={kanban}
@@ -167,6 +180,14 @@ export default function InvoicesPage() {
         { key: "status", label: "Status" },
         { key: "total", label: "Total" },
       ]}
+      serverSide={{
+        search,
+        onSearchChange: setSearch,
+        page,
+        pageSize: PAGE_SIZE,
+        total: listResult?.total ?? 0,
+        onPageChange: setPage,
+      }}
     />
   );
 }

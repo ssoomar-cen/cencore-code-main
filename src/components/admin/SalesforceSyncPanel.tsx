@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from "react";
-import { FunctionsFetchError, FunctionsHttpError, FunctionsRelayError } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -11,7 +10,6 @@ import {
   Loader2, RefreshCw, AlertTriangle, ArrowRight, ArrowLeft, ArrowLeftRight,
   ChevronDown, ChevronRight, Pause, Play, Unplug, Clock, Settings2
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useTenant } from "@/hooks/useTenant";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -58,6 +56,8 @@ const SYNC_OBJECTS = [
   { key: "energy_programs", label: "Energy Programs", icon: "⚡" },
   { key: "connections", label: "Connections", icon: "🔗" },
   { key: "invoices", label: "Invoices", icon: "🧾" },
+  { key: "invoice_items", label: "Invoice Items", icon: "📑" },
+  { key: "buildings", label: "Buildings", icon: "🏗️" },
   { key: "commission_splits", label: "Commission Splits", icon: "💵" },
 ];
 
@@ -284,24 +284,6 @@ type Props = {
   onDisconnect?: () => void;
 };
 
-async function parseSyncError(error: unknown) {
-  if (error instanceof FunctionsHttpError) {
-    const rawText = await error.context.text().catch(() => "");
-    let payload: any = null;
-    try { payload = rawText ? JSON.parse(rawText) : null; } catch { payload = null; }
-    return {
-      message: payload?.error || rawText || "Sync failed",
-      hints: Array.isArray(payload?.details?.hints)
-        ? payload.details.hints.filter((hint: unknown): hint is string => typeof hint === "string")
-        : [],
-    };
-  }
-  if (error instanceof FunctionsRelayError || error instanceof FunctionsFetchError) {
-    return { message: "Couldn't reach the sync service. Please try again in a moment.", hints: [] as string[] };
-  }
-  if (error instanceof Error) return { message: error.message, hints: [] as string[] };
-  return { message: "Sync failed", hints: [] as string[] };
-}
 
 export default function SalesforceSyncPanel({ integrationId, config, onDisconnect }: Props) {
   const { activeTenant } = useTenant();
@@ -332,18 +314,17 @@ export default function SalesforceSyncPanel({ integrationId, config, onDisconnec
   const loadSchedule = useCallback(async () => {
     if (!activeTenant?.id) return;
     setScheduleLoading(true);
-    const { data } = await (supabase as any)
-      .from("sync_schedules")
-      .select("*")
-      .eq("integration_id", integrationId)
-      .eq("tenant_id", activeTenant.id)
-      .maybeSingle();
-
-    if (data) {
-      setSchedule(data);
-      setAutoSyncEnabled(data.is_active);
-      setIntervalMinutes(String(data.interval_minutes));
-    }
+    try {
+      const res = await fetch(`/api/integrations/${integrationId}/schedule?tenant_id=${encodeURIComponent(activeTenant.id)}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data) {
+          setSchedule(data);
+          setAutoSyncEnabled(data.is_active);
+          setIntervalMinutes(String(data.interval_minutes));
+        }
+      }
+    } catch { /* ignore */ }
     setScheduleLoading(false);
   }, [integrationId, activeTenant?.id]);
 
@@ -369,16 +350,11 @@ export default function SalesforceSyncPanel({ integrationId, config, onDisconnec
       updated_at: new Date().toISOString(),
     };
 
-    if (schedule) {
-      await (supabase as any)
-        .from("sync_schedules")
-        .update(scheduleData)
-        .eq("id", schedule.id);
-    } else {
-      await (supabase as any)
-        .from("sync_schedules")
-        .insert(scheduleData);
-    }
+    await fetch(`/api/integrations/${integrationId}/schedule`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(scheduleData),
+    });
 
     await loadSchedule();
     setSavingSchedule(false);
@@ -445,24 +421,23 @@ export default function SalesforceSyncPanel({ integrationId, config, onDisconnec
     if (!activeTenant?.id) return;
 
     // Delete schedule
-    await (supabase as any)
-      .from("sync_schedules")
-      .delete()
-      .eq("integration_id", integrationId)
-      .eq("tenant_id", activeTenant.id);
+    await fetch(`/api/integrations/${integrationId}/schedule?tenant_id=${encodeURIComponent(activeTenant.id)}`, {
+      method: "DELETE",
+    });
 
-    // Clear integration config (remove SF tokens)
-    await (supabase as any)
-      .from("integrations")
-      .update({
+    // Clear integration config (remove SF tokens, keep credentials)
+    await fetch(`/api/integrations/${integrationId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
         config: {
           client_id: config.client_id,
           client_secret: config.client_secret,
           instance_url: config.instance_url,
         },
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", integrationId);
+        is_configured: false,
+      }),
+    });
 
     toast.success("Salesforce disconnected");
     onDisconnect?.();

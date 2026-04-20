@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, X, Building2, UserSquare2, UserPlus, TrendingUp, Zap, ScrollText, Receipt, Gauge, FolderKanban, CalendarDays, FileText, SplitSquareHorizontal, ClipboardList } from "lucide-react";
+import { Search, X, Building2, UserSquare2, TrendingUp, ScrollText, Receipt, FolderKanban, CalendarDays, ClipboardList } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
 type SearchResult = {
@@ -14,45 +13,26 @@ type SearchResult = {
   icon: React.ElementType;
 };
 
-type EntityConfig = {
-  table: string;
-  label: string;
-  icon: React.ElementType;
-  url: string;
-  fields: string[];
-  titleField?: string;
-  titleFn?: (r: any) => string;
-  subtitleField?: string;
+const TYPE_ICON: Record<string, React.ElementType> = {
+  Account: Building2,
+  Contact: UserSquare2,
+  Opportunity: TrendingUp,
+  Contract: ScrollText,
+  "Energy Program": ClipboardList,
+  Invoice: Receipt,
+  Building: FolderKanban,
+  Activity: CalendarDays,
 };
-
-const ENTITY_CONFIG: EntityConfig[] = [
-  { table: "accounts", label: "Account", icon: Building2, url: "/crm/accounts", fields: ["name", "email", "phone", "industry"], titleField: "name", subtitleField: "industry" },
-  { table: "contacts", label: "Contact", icon: UserSquare2, url: "/crm/contacts", fields: ["first_name", "last_name", "email", "phone"], titleFn: (r: any) => `${r.first_name} ${r.last_name}`, subtitleField: "email" },
-  { table: "leads", label: "Lead", icon: UserPlus, url: "/crm/leads", fields: ["first_name", "last_name", "email", "company"], titleFn: (r: any) => `${r.first_name} ${r.last_name}`, subtitleField: "company" },
-  { table: "opportunities", label: "Opportunity", icon: TrendingUp, url: "/crm/opportunities", fields: ["name", "stage", "description"], titleField: "name", subtitleField: "stage" },
-  { table: "contracts", label: "Contract", icon: ScrollText, url: "/crm/contracts", fields: ["name", "contract_number", "status"], titleField: "name", subtitleField: "contract_number" },
-  { table: "invoices", label: "Invoice", icon: Receipt, url: "/crm/invoices", fields: ["invoice_number", "status"], titleField: "invoice_number", subtitleField: "status" },
-  { table: "projects", label: "Program", icon: ClipboardList, url: "/projects", fields: ["name", "program_type", "utility", "status"], titleField: "name", subtitleField: "program_type" },
-  { table: "measures", label: "Measure", icon: Gauge, url: "/crm/measures", fields: ["name", "measure_type", "status"], titleField: "name", subtitleField: "measure_type" },
-  { table: "buildings", label: "Building", icon: FolderKanban, url: "/crm/buildings", fields: ["name", "building_type", "address_city"], titleField: "name", subtitleField: "building_type" },
-  { table: "activities", label: "Activity", icon: CalendarDays, url: "/crm/activities", fields: ["subject", "activity_type", "status"], titleField: "subject", subtitleField: "activity_type" },
-  { table: "quotes", label: "Quote", icon: FileText, url: "/crm/quotes", fields: ["name", "quote_number", "status"], titleField: "name", subtitleField: "quote_number" },
-  { table: "commission_splits", label: "Commission", icon: SplitSquareHorizontal, url: "/crm/commission-splits", fields: ["sales_rep_name", "sales_rep_email", "status"], titleField: "sales_rep_name", subtitleField: "status" },
-];
 
 const entityColors: Record<string, string> = {
   Account: "bg-blue-500/15 text-blue-700 dark:text-blue-300",
   Contact: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
-  Lead: "bg-amber-500/15 text-amber-700 dark:text-amber-300",
   Opportunity: "bg-violet-500/15 text-violet-700 dark:text-violet-300",
   Contract: "bg-cyan-500/15 text-cyan-700 dark:text-cyan-300",
+  "Energy Program": "bg-teal-500/15 text-teal-700 dark:text-teal-300",
   Invoice: "bg-rose-500/15 text-rose-700 dark:text-rose-300",
-  Program: "bg-teal-500/15 text-teal-700 dark:text-teal-300",
-  Measure: "bg-orange-500/15 text-orange-700 dark:text-orange-300",
   Building: "bg-indigo-500/15 text-indigo-700 dark:text-indigo-300",
   Activity: "bg-pink-500/15 text-pink-700 dark:text-pink-300",
-  Quote: "bg-lime-500/15 text-lime-700 dark:text-lime-300",
-  Commission: "bg-fuchsia-500/15 text-fuchsia-700 dark:text-fuchsia-300",
 };
 
 interface GlobalSearchProps {
@@ -78,23 +58,19 @@ export default function GlobalSearch({ brandingColor }: GlobalSearchProps) {
       return;
     }
     setLoading(true);
-    const searchTerm = `%${q}%`;
     try {
-      const promises = ENTITY_CONFIG.map(async (entity) => {
-        const orFilters = entity.fields.map(f => `${f}.ilike.${searchTerm}`).join(",");
-        const { data } = await (supabase.from(entity.table as any).select("*").or(orFilters).limit(5) as any);
-        if (!data || data.length === 0) return [];
-        return data.map((row: any): SearchResult => ({
-          id: row.id,
-          title: entity.titleFn ? entity.titleFn(row) : row[entity.titleField || "name"] || "Untitled",
-          subtitle: entity.subtitleField ? (row[entity.subtitleField] || "") : "",
-          entity: entity.label,
-          url: entity.url,
-          icon: entity.icon,
-        }));
-      });
-      const allResults = (await Promise.all(promises)).flat();
-      setResults(allResults.slice(0, 25));
+      const qs = new URLSearchParams({ q, limit: "25" });
+      const response = await fetch(`/api/search?${qs}`);
+      if (!response.ok) throw new Error("Search failed");
+      const data: Array<{ id: string; type: string; title: string; subtitle?: string; description?: string; url: string }> = await response.json();
+      setResults(data.map((r) => ({
+        id: r.id,
+        title: r.title,
+        subtitle: r.subtitle || r.description || "",
+        entity: r.type,
+        url: r.url,
+        icon: TYPE_ICON[r.type] ?? Building2,
+      })));
       setSelectedIndex(0);
     } catch {
       setResults([]);
@@ -131,7 +107,7 @@ export default function GlobalSearch({ brandingColor }: GlobalSearchProps) {
   }, []);
 
   const selectResult = (result: SearchResult) => {
-    navigate(result.url);
+    navigate(result.id ? `${result.url}?open=${result.id}` : result.url);
     setQuery("");
     setFocused(false);
     inputRef.current?.blur();
@@ -184,7 +160,7 @@ export default function GlobalSearch({ brandingColor }: GlobalSearchProps) {
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setFocused(true)}
           onKeyDown={handleKeyDown}
-          placeholder="Search accounts, contacts..."
+          placeholder="Search accounts, contracts..."
           className="flex-1 bg-transparent border-0 outline-none text-sm placeholder:opacity-60"
           style={{
             color: hasBranding ? '#ffffff' : 'hsl(var(--foreground))',

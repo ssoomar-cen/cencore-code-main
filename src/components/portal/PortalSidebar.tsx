@@ -1,13 +1,13 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import {
-  LayoutDashboard, LogOut, HeadphonesIcon, ScrollText,
-  Workflow, Wrench, ChevronDown, Settings, Calendar,
+  LayoutDashboard, LogOut, ScrollText,
+  ChevronDown, Settings, Calendar,
   FileText, CalendarDays, Building2, UserSquare2, TrendingUp,
-  FolderKanban, Link, Zap, BarChart2, Receipt, UserPlus, Gauge,
+  FolderKanban, Link, Zap, Receipt, UserPlus,
   SplitSquareHorizontal, UserCheck, DollarSign, Sun, Moon,
-  ClipboardList, Target, Megaphone, Wallet, Search as SearchIcon,
-  PieChart, Briefcase,
+  ClipboardList, Megaphone, Wallet, Search as SearchIcon,
+  Briefcase,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -29,7 +29,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTheme } from "@/components/theme-provider";
 import { useBranding } from "@/components/BrandingProvider";
-import { useUserRole } from "@/hooks/useUserRole";
 import { cn } from "@/lib/utils";
 
 function hexToHsl(hex?: string | null): string | null {
@@ -172,19 +171,6 @@ const financeSection: NavSectionItem[] = [
   { title: "Budget Tracking", url: "/budget", icon: Wallet },
 ];
 
-// ── Insights ──
-const insightsSection: NavSectionItem[] = [
-  { title: "Reporting", url: "/reporting", icon: BarChart2 },
-  { title: "Analytics", url: "/analytics", icon: PieChart },
-];
-
-// ── Administration (admin only) ──
-const administrationItems: NavLeafItem[] = [
-  { title: "Audit Log", url: "/audit-log", icon: ScrollText },
-  { title: "Workflow Automation", url: "/workflow-automation", icon: Workflow },
-  { title: "Support", url: "/support", icon: HeadphonesIcon },
-  { title: "Setup & Integration", url: "/setup", icon: Wrench },
-];
 
 function getLeafUrls(items: NavSectionItem[]): string[] {
   return items.flatMap(item =>
@@ -200,21 +186,17 @@ export function PortalSidebar() {
   const currentPath = location.pathname;
   const { theme, setTheme } = useTheme();
   const branding = useBranding();
-  const { isAdmin, isLoading: isRoleLoading } = useUserRole();
   const [user, setUser] = useState<any>(null);
   const [disabledFeatures, setDisabledFeatures] = useState<Set<string>>(new Set());
 
-  const [crmSalesOpen, setCrmSalesOpen] = useState(false);
-  const [operationsOpen, setOperationsOpen] = useState(false);
+  const [crmSalesOpen, setCrmSalesOpen] = useState(true);
+  const [operationsOpen, setOperationsOpen] = useState(true);
   const [marketingOpen, setMarketingOpen] = useState(false);
   const [financeOpen, setFinanceOpen] = useState(false);
-  const [insightsOpen, setInsightsOpen] = useState(false);
-  const [administrationOpen, setAdministrationOpen] = useState(false);
-
-  const [customersOpen, setCustomersOpen] = useState(false);
-  const [pipelineOpen, setPipelineOpen] = useState(false);
-  const [programsOpen, setProgramsOpen] = useState(false);
-  const [scheduleOpen, setScheduleOpen] = useState(false);
+  const [customersOpen, setCustomersOpen] = useState(true);
+  const [pipelineOpen, setPipelineOpen] = useState(true);
+  const [programsOpen, setProgramsOpen] = useState(true);
+  const [scheduleOpen, setScheduleOpen] = useState(true);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => setUser(user));
@@ -248,8 +230,6 @@ export function PortalSidebar() {
   const filteredOperations = filterItems(operationsSection);
   const filteredMarketing = filterItems(marketingSection);
   const filteredFinance = filterItems(financeSection);
-  const filteredInsights = filterItems(insightsSection);
-  const filteredAdmin = filterItems(administrationItems.map(i => i as NavSectionItem)) as NavLeafItem[];
 
   const sidebarStyle = useMemo(() => {
     const primaryHsl = hexToHsl(branding.primary_color);
@@ -273,17 +253,13 @@ export function PortalSidebar() {
     // Auto-expand sections based on current route
     const crmSalesUrls = getLeafUrls(crmSalesSection);
     const opsUrls = getLeafUrls(operationsSection);
-    const adminUrls = administrationItems.map(i => i.url);
     const marketingUrls = getLeafUrls(marketingSection);
     const financeUrls = getLeafUrls(financeSection);
-    const insightsUrls = getLeafUrls(insightsSection);
 
     if (crmSalesUrls.some(isActive)) setCrmSalesOpen(true);
     if (opsUrls.some(isActive)) setOperationsOpen(true);
-    if (adminUrls.some(isActive)) setAdministrationOpen(true);
     if (marketingUrls.some(isActive)) setMarketingOpen(true);
     if (financeUrls.some(isActive)) setFinanceOpen(true);
-    if (insightsUrls.some(isActive)) setInsightsOpen(true);
 
     // Auto-expand sub-groups
     const customerUrls = ["/crm/leads", "/crm/accounts", "/crm/contacts", "/crm/connections"];
@@ -509,12 +485,6 @@ export function PortalSidebar() {
         )}
         {filteredFinance.length > 0 && (
           <CollapsibleSection title="Finance" icon={Wallet} items={filteredFinance} isOpen={financeOpen} onOpenChange={setFinanceOpen} />
-        )}
-        {filteredInsights.length > 0 && (
-          <CollapsibleSection title="Insights" icon={PieChart} items={filteredInsights} isOpen={insightsOpen} onOpenChange={setInsightsOpen} />
-        )}
-        {isAdmin && (
-          <CollapsibleSection title="Administration" icon={Wrench} items={filteredAdmin} isOpen={administrationOpen} onOpenChange={setAdministrationOpen} />
         )}
       </SidebarContent>
 

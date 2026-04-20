@@ -3,49 +3,73 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useTenant } from "@/hooks/useTenant";
 
+export function useEnergyProgramById(id?: string) {
+  return useQuery({
+    queryKey: ["energy-program", id],
+    enabled: !!id,
+    queryFn: async () => {
+      const res = await fetch(`/api/energy-programs/${id}`);
+      if (!res.ok) return null;
+      return res.json();
+    },
+  });
+}
+
+export function useProjectsList(params: { search: string; page: number; limit: number }) {
+  const { search, page, limit } = params;
+  return useQuery({
+    queryKey: ["projects-list", search, page, limit],
+    queryFn: async () => {
+      const qs = new URLSearchParams({ page: String(page), limit: String(limit) });
+      if (search) qs.set("search", search);
+      const response = await fetch(`/api/energy-programs?${qs}`);
+      if (!response.ok) throw new Error("Failed to fetch energy programs");
+      const result = await response.json();
+      return { data: (result.data || []) as any[], total: (result.total || 0) as number };
+    },
+    placeholderData: (prev) => prev,
+  });
+}
+
 export function useProjects() {
-  const { activeTenantId } = useTenant();
   const queryClient = useQueryClient();
 
   const query = useQuery({
-    queryKey: ["projects", activeTenantId],
+    queryKey: ["projects"],
     queryFn: async () => {
-      try {
-        const response = await fetch("/api/energy-programs");
-        if (response.ok) return await response.json();
-      } catch (_) {}
-      let q = (supabase as any).from("projects").select("*, contracts(name), accounts(name)").order("created_at", { ascending: false });
-      if (activeTenantId) q = q.eq("tenant_id", activeTenantId);
-      const { data, error } = await q;
-      if (error) throw error;
-      return data as any[];
+      const response = await fetch("/api/energy-programs?limit=500");
+      if (!response.ok) throw new Error("Failed to fetch energy programs");
+      const result = await response.json();
+      return Array.isArray(result) ? result : (result.data || []);
     },
   });
 
   const create = useMutation({
     mutationFn: async (item: any) => {
-      const { data: { user } } = await supabase.auth.getUser();
-      const { data, error } = await (supabase as any).from("projects").insert({ ...item, user_id: user?.id, tenant_id: activeTenantId }).select().single();
-      if (error) throw error;
-      return data;
+      const res = await fetch("/api/energy-programs", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(item) });
+      if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.error || "Failed to create program"); }
+      return res.json();
     },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["projects", activeTenantId] }); toast.success("Program created"); },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["projects"] }); queryClient.invalidateQueries({ queryKey: ["projects-list"] }); toast.success("Program created"); },
     onError: (e: Error) => toast.error(e.message),
   });
 
   const update = useMutation({
     mutationFn: async ({ id, ...updates }: any) => {
-      const { data, error } = await (supabase as any).from("projects").update(updates).eq("id", id).select().single();
-      if (error) throw error;
-      return data;
+      const res = await fetch(`/api/energy-programs/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updates) });
+      if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.error || "Failed to update program"); }
+      return res.json();
     },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["projects", activeTenantId] }); toast.success("Program updated"); },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["projects"] }); queryClient.invalidateQueries({ queryKey: ["projects-list"] }); queryClient.invalidateQueries({ queryKey: ["energy-program"] }); toast.success("Program updated"); },
     onError: (e: Error) => toast.error(e.message),
   });
 
   const remove = useMutation({
-    mutationFn: async (id: string) => { const { error } = await (supabase as any).from("projects").delete().eq("id", id); if (error) throw error; },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["projects", activeTenantId] }); toast.success("Program deleted"); },
+    mutationFn: async (id: string) => {
+      const res = await fetch(`/api/energy-programs/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete program");
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["projects"] }); queryClient.invalidateQueries({ queryKey: ["projects-list"] }); toast.success("Program deleted"); },
     onError: (e: Error) => toast.error(e.message),
   });
 

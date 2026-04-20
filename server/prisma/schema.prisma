@@ -78,23 +78,25 @@ model Account {
 }
 
 model Opportunity {
-  id          String      @id @default(cuid())
-  name        String
-  stage       String
-  amount      Decimal?    @db.Decimal(14, 2)
-  probability Decimal?    @db.Decimal(5, 2)
-  closeDate   DateTime?   @map("close_date")
-  accountId   String      @map("account_id")
-  ownerId     String      @map("owner_id")
-  teamId      String      @map("team_id")
-  orgId       String      @map("org_id")
-  createdAt   DateTime    @default(now()) @map("created_at")
-  updatedAt   DateTime    @updatedAt @map("updated_at")
+  id           String      @id @default(cuid())
+  salesforceId String?     @unique @map("salesforce_id")
+  name         String
+  stage        String
+  amount       Decimal?    @db.Decimal(14, 2)
+  probability  Decimal?    @db.Decimal(5, 2)
+  closeDate    DateTime?   @map("close_date")
+  accountId    String      @map("account_id")
+  ownerId      String?     @map("owner_id")
+  teamId       String      @map("team_id")
+  orgId        String      @map("org_id")
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
 
-  account     Account     @relation(fields: [accountId], references: [id], onDelete: Restrict)
-  owner       User        @relation("OpportunityOwner", fields: [ownerId], references: [id], onDelete: Restrict)
-  products    OpportunityProduct[]
+  account      Account     @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  owner        User?       @relation("OpportunityOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  products     OpportunityProduct[]
 
+  @@index([salesforceId])
   @@index([stage])
   @@index([closeDate])
   @@index([accountId])

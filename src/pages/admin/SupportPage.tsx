@@ -95,7 +95,7 @@ export default function SupportPage() {
                   <TableCell><Badge variant="outline">{t.category}</Badge></TableCell>
                   <TableCell><Badge variant={priorityColors[t.priority] || "outline"}>{t.priority}</Badge></TableCell>
                   <TableCell><Badge variant={statusColors[t.status] || "outline"}>{t.status}</Badge></TableCell>
-                  <TableCell className="text-xs text-muted-foreground">{new Date(t.created_at).toLocaleDateString()}</TableCell>
+                  <TableCell className="text-xs text-muted-foreground">{new Date(t.created_at).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" })}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

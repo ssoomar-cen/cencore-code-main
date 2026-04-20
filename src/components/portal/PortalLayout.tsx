@@ -5,7 +5,8 @@ import { PortalSidebar } from "./PortalSidebar";
 import { supabase } from "@/integrations/supabase/client";
 import { useBranding } from "@/components/BrandingProvider";
 import { useAuth } from "@/hooks/useAuth";
-import { Bell, LogOut, TableProperties, ArrowUpDown, Search } from "lucide-react";
+import { Bell, LogOut, TableProperties, ArrowUpDown, Search, BarChart2, PieChart, Settings, Workflow, HeadphonesIcon, ScrollText, Wrench } from "lucide-react";
+import { useUserRole } from "@/hooks/useUserRole";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -31,6 +32,7 @@ export function PortalLayout() {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const branding = useBranding();
   const isMobile = useIsMobile();
+  const { isAdmin } = useUserRole();
 
   useEffect(() => {
     if (!loading && !session) {
@@ -120,6 +122,32 @@ export function PortalLayout() {
                 <TableProperties className="h-4 w-4" />
               </Button>
 
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="hidden sm:flex h-8 w-8"
+                    title="Insights"
+                    style={{ color: headerTextColor }}
+                  >
+                    <BarChart2 className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel className="text-xs font-semibold">Insights</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate("/reporting")}>
+                    <BarChart2 className="mr-2 h-4 w-4" />
+                    Reporting
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/analytics")}>
+                    <PieChart className="mr-2 h-4 w-4" />
+                    Analytics
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
               <Button
                 variant="ghost"
                 size="icon"
@@ -149,6 +177,42 @@ export function PortalLayout() {
                   </div>
                 </PopoverContent>
               </Popover>
+
+              {isAdmin && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="hidden sm:flex h-8 w-8"
+                      title="Administration"
+                      style={{ color: headerTextColor }}
+                    >
+                      <Settings className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel className="text-xs font-semibold">Administration</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => navigate("/audit-log")}>
+                      <ScrollText className="mr-2 h-4 w-4" />
+                      Audit Log
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate("/workflow-automation")}>
+                      <Workflow className="mr-2 h-4 w-4" />
+                      Workflow Automation
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate("/support")}>
+                      <HeadphonesIcon className="mr-2 h-4 w-4" />
+                      Support
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate("/setup")}>
+                      <Wrench className="mr-2 h-4 w-4" />
+                      Setup & Integration
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -184,6 +248,26 @@ export function PortalLayout() {
                         <TableProperties className="mr-2 h-4 w-4" />
                         List Builder
                       </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate("/reporting")}>
+                        <BarChart2 className="mr-2 h-4 w-4" />
+                        Reporting
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate("/analytics")}>
+                        <PieChart className="mr-2 h-4 w-4" />
+                        Analytics
+                      </DropdownMenuItem>
+                      {isAdmin && (
+                        <>
+                          <DropdownMenuItem onClick={() => navigate("/audit-log")}>
+                            <ScrollText className="mr-2 h-4 w-4" />
+                            Audit Log
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => navigate("/setup")}>
+                            <Wrench className="mr-2 h-4 w-4" />
+                            Setup & Integration
+                          </DropdownMenuItem>
+                        </>
+                      )}
                       <DropdownMenuItem onClick={() => navigate("/import-export")}>
                         <ArrowUpDown className="mr-2 h-4 w-4" />
                         Import / Export

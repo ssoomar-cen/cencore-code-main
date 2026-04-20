@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useContacts } from "@/hooks/useContacts";
+import { useState, useEffect, useMemo } from "react";
+import { useContacts, useContactsList } from "@/hooks/useContacts";
 import { useAccounts } from "@/hooks/useAccounts";
 import { useOpportunities } from "@/hooks/useOpportunities";
 import { useActivities, useConnections, useCredentials } from "@/hooks/useCrmEntities";
@@ -15,7 +15,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { RefreshCw, Download, Upload, Users, Mail, Phone, Building2 } from "lucide-react";
 import { toast } from "sonner";
-import { useMemo } from "react";
+
+const PAGE_SIZE = 250;
 
 const columns: Column[] = [
   { key: "first_name", label: "First Name" },
@@ -29,14 +30,25 @@ const columns: Column[] = [
 ];
 
 export default function ContactsPage() {
-  const { data, isLoading, create, update, remove } = useContacts();
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [showOutlookPanel, setShowOutlookPanel] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => { setDebouncedSearch(search); setPage(1); }, 300);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  const { data: listResult, isLoading } = useContactsList({ search: debouncedSearch, page, limit: PAGE_SIZE });
+
+  const { data, create, update, remove } = useContacts();
   const { data: accounts } = useAccounts();
   const { data: opportunities, create: createOpp } = useOpportunities();
   const { data: activities, create: createActivity } = useActivities();
   const { data: connections } = useConnections();
   const { data: credentials, create: createCredential } = useCredentials();
   const { outlookContacts, loadingContacts, refetchContacts, importContact, pushToOutlook, isM365Configured } = useOutlookContacts();
-  const [showOutlookPanel, setShowOutlookPanel] = useState(false);
 
   const { options: contactTypeOptions } = usePicklistSelectOptions("contacts", "contact_type");
   const { options: statusOptions } = usePicklistSelectOptions("contacts", "status");
@@ -219,7 +231,7 @@ export default function ContactsPage() {
         description="Manage your contacts"
         entityLabel="Contact"
         columns={columns}
-        data={data || []}
+        data={listResult?.data || []}
         isLoading={isLoading}
         formFields={formFields}
         onCreate={(d) => create.mutate(d)}
@@ -238,7 +250,14 @@ export default function ContactsPage() {
           { key: "status", label: "Status" },
         ]}
         relatedTabs={relatedTabs}
-        
+        serverSide={{
+          search,
+          onSearchChange: setSearch,
+          page,
+          pageSize: PAGE_SIZE,
+          total: listResult?.total ?? 0,
+          onPageChange: setPage,
+        }}
         rowActions={isM365Configured ? (row: any) => (
           <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); handlePushToOutlook(row); }} title="Sync to Outlook">
             <Upload className="h-4 w-4" />

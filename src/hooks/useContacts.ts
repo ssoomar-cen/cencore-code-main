@@ -31,6 +31,7 @@ export function useContacts() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contacts", activeTenantId] });
+      queryClient.invalidateQueries({ queryKey: ["contacts-list"] });
       toast.success("Contact created");
     },
     onError: (e: Error) => toast.error(e.message),
@@ -44,6 +45,7 @@ export function useContacts() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contacts", activeTenantId] });
+      queryClient.invalidateQueries({ queryKey: ["contacts-list"] });
       toast.success("Contact updated");
     },
     onError: (e: Error) => toast.error(e.message),
@@ -56,10 +58,27 @@ export function useContacts() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contacts", activeTenantId] });
+      queryClient.invalidateQueries({ queryKey: ["contacts-list"] });
       toast.success("Contact deleted");
     },
     onError: (e: Error) => toast.error(e.message),
   });
 
   return { ...query, create, update, remove };
+}
+
+export function useContactsList(params: { search: string; page: number; limit: number }) {
+  const { search, page, limit } = params;
+  return useQuery({
+    queryKey: ["contacts-list", search, page, limit],
+    queryFn: async () => {
+      const qs = new URLSearchParams({ page: String(page), limit: String(limit) });
+      if (search) qs.set("search", search);
+      const response = await fetch(`/api/contacts?${qs}`);
+      if (!response.ok) throw new Error("Failed to fetch contacts");
+      const result = await response.json();
+      return { data: (result.data || []) as any[], total: (result.total || 0) as number };
+    },
+    placeholderData: (prev) => prev,
+  });
 }

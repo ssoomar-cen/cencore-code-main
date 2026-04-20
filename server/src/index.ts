@@ -20,6 +20,13 @@ import { importRouter } from "./routes/importRoutes.js";
 import { contractRouter } from "./routes/contractRoutes.js";
 import { energyProgramRouter } from "./routes/energyProgramRoutes.js";
 import { salesforceRouter } from "./routes/salesforceRoutes.js";
+import { integrationRouter } from "./routes/integrationRoutes.js";
+import { searchRouter } from "./routes/searchRoutes.js";
+import { buildingRouter } from "./routes/buildingRoutes.js";
+import { contactRouter } from "./routes/contactRoutes.js";
+import { activityRouter } from "./routes/activityRoutes.js";
+import { dashboardRouter } from "./routes/dashboardRoutes.js";
+import { opportunityRouter } from "./routes/opportunityRoutes.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -111,6 +118,13 @@ app.use("/api/energy-programs", energyProgramRouter);
 app.use("/api/import", importRouter);
 app.use("/api/ms365", ms365Router);
 app.use("/api/salesforce", salesforceRouter);
+app.use("/api/integrations", integrationRouter);
+app.use("/api/search", searchRouter);
+app.use("/api/buildings", buildingRouter);
+app.use("/api/contacts", contactRouter);
+app.use("/api/activities", activityRouter);
+app.use("/api/dashboard", dashboardRouter);
+app.use("/api/opportunities", opportunityRouter);
 
 async function attachFrontend() {
   if (!serveFrontend) {

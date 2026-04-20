@@ -11,9 +11,7 @@ export function useAccounts() {
     queryKey: ["accounts", activeTenantId],
     queryFn: async () => {
       try {
-        // Try local PostgreSQL API first
         const response = await fetch("/api/accounts");
-        
         if (response.ok) {
           const result = await response.json();
           return result.data || [];
@@ -21,8 +19,7 @@ export function useAccounts() {
       } catch (err) {
         console.warn("Local API failed, falling back to Supabase:", err);
       }
-      
-      // Fallback to Supabase
+
       let q = supabase.from("accounts").select("*").order("created_at", { ascending: false });
       if (activeTenantId) q = q.eq("tenant_id", activeTenantId);
       const { data, error } = await q;
@@ -44,6 +41,7 @@ export function useAccounts() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["accounts", activeTenantId] });
+      queryClient.invalidateQueries({ queryKey: ["accounts-list"] });
       toast.success("Organization created");
     },
     onError: (e: Error) => toast.error(e.message),
@@ -62,6 +60,7 @@ export function useAccounts() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["accounts", activeTenantId] });
+      queryClient.invalidateQueries({ queryKey: ["accounts-list"] });
       toast.success("Organization updated");
     },
     onError: (e: Error) => toast.error(e.message),
@@ -74,10 +73,27 @@ export function useAccounts() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["accounts", activeTenantId] });
+      queryClient.invalidateQueries({ queryKey: ["accounts-list"] });
       toast.success("Organization deleted");
     },
     onError: (e: Error) => toast.error(e.message),
   });
 
   return { ...query, create, update, remove };
+}
+
+export function useAccountsList(params: { search: string; page: number; limit: number }) {
+  const { search, page, limit } = params;
+  return useQuery({
+    queryKey: ["accounts-list", search, page, limit],
+    queryFn: async () => {
+      const qs = new URLSearchParams({ page: String(page), limit: String(limit) });
+      if (search) qs.set("search", search);
+      const response = await fetch(`/api/accounts?${qs}`);
+      if (!response.ok) throw new Error("Failed to fetch accounts");
+      const result = await response.json();
+      return { data: (result.data || []) as any[], total: (result.total || 0) as number };
+    },
+    placeholderData: (prev) => prev,
+  });
 }

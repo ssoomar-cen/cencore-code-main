@@ -1,4 +1,5 @@
-import { useProjects } from "@/hooks/useProjects";
+import { useState, useEffect, useMemo } from "react";
+import { useProjects, useProjectsList } from "@/hooks/useProjects";
 import { useAccounts } from "@/hooks/useAccounts";
 import { useContracts, useBuildings, useActivities } from "@/hooks/useCrmEntities";
 import { CrmDataTable, Column, FormField, KanbanConfig } from "@/components/crm/CrmDataTable";
@@ -6,19 +7,15 @@ import { FilterConfig } from "@/components/crm/CrmToolbar";
 import { RelatedTab, LookupLink } from "@/components/crm/CrmRecordDetail";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useMemo } from "react";
 
-const statusColors: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-  Active: "default",
-  Inactive: "secondary",
-};
+const PAGE_SIZE = 250;
 
 const columns: Column[] = [
   { key: "name", label: "Program Name" },
   { key: "accounts", label: "Organization", render: (v: any) => v?.name || "—" },
   { key: "program_type", label: "Type" },
   { key: "utility", label: "Utility" },
-  { key: "status", label: "Service Status", render: (v: any) => <Badge variant={statusColors[v] || "outline"}>{v}</Badge> },
+  { key: "status", label: "Service Status", render: (v: any) => <Badge variant="outline">{v || "—"}</Badge> },
   { key: "priority", label: "Priority", render: (v: any) => <Badge variant="outline">{v}</Badge> },
   { key: "progress_percent", label: "Progress", render: (v: any) => (
     <div className="flex items-center gap-2 min-w-24">
@@ -33,19 +30,23 @@ const columns: Column[] = [
 
 const filters: FilterConfig[] = [
   { key: "status", label: "Service Status", options: [
-    { label: "Active", value: "Active" },
+    { label: "IC (In Contract)", value: "IC" },
+    { label: "OOC (Out of Contract)", value: "OOC" },
+    { label: "Suspended", value: "Suspended" },
+    { label: "Terminated", value: "Terminated" },
+    { label: "Draft", value: "Draft" },
     { label: "Inactive", value: "Inactive" },
-  ]},
-  { key: "priority", label: "Priority", options: [
-    { label: "Low", value: "low" }, { label: "Medium", value: "medium" },
-    { label: "High", value: "high" }, { label: "Critical", value: "critical" },
   ]},
 ];
 
 const kanban: KanbanConfig = {
   groupField: "status",
   columns: [
-    { value: "Active", label: "Active" },
+    { value: "IC", label: "IC" },
+    { value: "OOC", label: "OOC" },
+    { value: "Suspended", label: "Suspended" },
+    { value: "Terminated", label: "Terminated" },
+    { value: "Draft", label: "Draft" },
     { value: "Inactive", label: "Inactive" },
   ],
   titleField: "name",
@@ -54,7 +55,18 @@ const kanban: KanbanConfig = {
 };
 
 export default function ProjectsPage() {
-  const { data, isLoading, create, update, remove } = useProjects();
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    const t = setTimeout(() => { setDebouncedSearch(search); setPage(1); }, 300);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  const { data: listResult, isLoading } = useProjectsList({ search: debouncedSearch, page, limit: PAGE_SIZE });
+
+  const { data, create, update, remove } = useProjects();
   const { data: accounts } = useAccounts();
   const { data: contracts } = useContracts();
   const { data: buildings } = useBuildings();
@@ -116,7 +128,7 @@ export default function ProjectsPage() {
       description="Manage energy conservation programs from contract to completion"
       entityLabel="Energy Program"
       columns={columns}
-      data={data || []}
+      data={listResult?.data || []}
       isLoading={isLoading}
       formFields={formFields}
       onCreate={(d) => create.mutate(d)}
@@ -136,6 +148,14 @@ export default function ProjectsPage() {
         { key: "budget", label: "Budget" },
       ]}
       relatedTabs={relatedTabs}
+      serverSide={{
+        search,
+        onSearchChange: setSearch,
+        page,
+        pageSize: PAGE_SIZE,
+        total: listResult?.total ?? 0,
+        onPageChange: setPage,
+      }}
     />
   );
 }

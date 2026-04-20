@@ -8,7 +8,6 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2, Eye, EyeOff, CheckCircle2, AlertCircle } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 type IntacctConfig = {
@@ -61,24 +60,24 @@ export default function IntacctSettings({ open, onOpenChange, integrationId }: I
   }, [open, integrationId]);
 
   const loadConfig = async () => {
-    const { data } = await supabase
-      .from("integrations")
-      .select("config")
-      .eq("id", integrationId)
-      .single();
-    if (data?.config && typeof data.config === "object" && Object.keys(data.config as object).length > 0) {
-      setConfig({ ...DEFAULT_CONFIG, ...(data.config as Partial<IntacctConfig>) });
+    const res = await fetch(`/api/integrations/${integrationId}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data?.config && typeof data.config === "object" && Object.keys(data.config as object).length > 0) {
+        setConfig({ ...DEFAULT_CONFIG, ...(data.config as Partial<IntacctConfig>) });
+      }
     }
   };
 
   const saveConfig = async () => {
     setSaving(true);
     const isConfigured = !!(config.company_id && config.sender_id && config.user_id);
-    const { error } = await supabase
-      .from("integrations")
-      .update({ config: config as any, is_configured: isConfigured } as any)
-      .eq("id", integrationId);
-    if (error) toast.error("Failed to save configuration");
+    const res = await fetch(`/api/integrations/${integrationId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ config, is_configured: isConfigured }),
+    });
+    if (!res.ok) toast.error("Failed to save configuration");
     else {
       toast.success("Sage Intacct configuration saved");
       onOpenChange(false);

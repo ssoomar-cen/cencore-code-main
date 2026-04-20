@@ -1,4 +1,5 @@
-import { useContracts, useInvoices, useActivities, useCommissionSplits } from "@/hooks/useCrmEntities";
+import { useState, useEffect, useMemo } from "react";
+import { useContracts, useContractsList, useInvoices, useActivities, useCommissionSplits } from "@/hooks/useCrmEntities";
 import { useAccounts } from "@/hooks/useAccounts";
 import { useOpportunities } from "@/hooks/useOpportunities";
 import { usePicklistSelectOptions } from "@/hooks/usePicklistOptions";
@@ -6,7 +7,8 @@ import { CrmDataTable, Column, FormField, KanbanConfig } from "@/components/crm/
 import { FilterConfig } from "@/components/crm/CrmToolbar";
 import { RelatedTab, LookupLink } from "@/components/crm/CrmRecordDetail";
 import { Badge } from "@/components/ui/badge";
-import { useMemo } from "react";
+
+const PAGE_SIZE = 250;
 
 const columns: Column[] = [
   { key: "contract_number", label: "Contract #" },
@@ -21,7 +23,18 @@ const columns: Column[] = [
 ];
 
 export default function ContractsPage() {
-  const { data, isLoading, create, update, remove } = useContracts();
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    const t = setTimeout(() => { setDebouncedSearch(search); setPage(1); }, 300);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  const { data: listResult, isLoading } = useContractsList({ search: debouncedSearch, page, limit: PAGE_SIZE });
+
+  const { data, create, update, remove } = useContracts();
   const { data: accounts } = useAccounts();
   const { data: opportunities } = useOpportunities();
   const { data: invoices } = useInvoices();
@@ -154,7 +167,6 @@ export default function ContractsPage() {
     { key: "parent_contract_id", route: "/crm/contracts", data: data || [], labelFn: (c) => c.name || c.contract_number },
   ], [accounts, opportunities, data]);
 
-
   const relatedTabs: RelatedTab[] = useMemo(() => [
     {
       key: "invoices", label: "Invoices", foreignKey: "contract_id", panel: "left" as const,
@@ -191,7 +203,7 @@ export default function ContractsPage() {
   return (
     <CrmDataTable title="Contracts" description="Manage contracts"
       entityLabel="Contract"
-      columns={columns} data={data || []}
+      columns={columns} data={listResult?.data || []}
       isLoading={isLoading} formFields={formFields}
       onCreate={(d) => create.mutate(d)} onUpdate={(d) => update.mutate(d)} onDelete={(id) => remove.mutate(id)}
       createLabel="Add Contract" filters={filters} kanban={kanban}
@@ -207,7 +219,14 @@ export default function ContractsPage() {
         { key: "end_date", label: "End" },
       ]}
       relatedTabs={relatedTabs}
-      
+      serverSide={{
+        search,
+        onSearchChange: setSearch,
+        page,
+        pageSize: PAGE_SIZE,
+        total: listResult?.total ?? 0,
+        onPageChange: setPage,
+      }}
     />
   );
 }

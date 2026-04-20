@@ -281,12 +281,12 @@ function ContractsTable({
                   <TableCell>{contract.contractType || "N/A"}</TableCell>
                   <TableCell>
                     {contract.contractStartDate
-                      ? new Date(contract.contractStartDate).toLocaleDateString()
+                      ? new Date(contract.contractStartDate).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" })
                       : "N/A"}
                   </TableCell>
                   <TableCell>
                     {contract.billingScheduleEndDate
-                      ? new Date(contract.billingScheduleEndDate).toLocaleDateString()
+                      ? new Date(contract.billingScheduleEndDate).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" })
                       : "N/A"}
                   </TableCell>
                   <TableCell className="text-right">{contract._count?.invoices || 0}</TableCell>
@@ -362,7 +362,7 @@ function EnergyProgramsTable({
                   <TableCell>{program.technicalLead || "N/A"}</TableCell>
                   <TableCell>
                     {program.contractStartDate
-                      ? new Date(program.contractStartDate).toLocaleDateString()
+                      ? new Date(program.contractStartDate).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" })
                       : "N/A"}
                   </TableCell>
                   <TableCell className="text-right">{program._count?.invoices || 0}</TableCell>
@@ -421,10 +421,10 @@ function InvoicesTable({ invoices, loading }: { invoices: any[]; loading: boolea
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    {invoice.billMonth ? new Date(invoice.billMonth).toLocaleDateString() : "N/A"}
+                    {invoice.billMonth ? new Date(invoice.billMonth).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" }) : "N/A"}
                   </TableCell>
                   <TableCell>
-                    {invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString() : "N/A"}
+                    {invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" }) : "N/A"}
                   </TableCell>
                   <TableCell className="text-right">{invoice._count?.items || 0}</TableCell>
                 </TableRow>
