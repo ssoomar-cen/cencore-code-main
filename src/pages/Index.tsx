@@ -249,7 +249,8 @@ export default function Index() {
                 </TableBody>
               </Table>
             ) : (
-              <div className="flex items-center justify-center h-[180px] text-muted-foreground text-sm">
+              <div className="flex flex-col items-center justify-center h-[180px] gap-2 text-muted-foreground text-sm">
+                <img src="/img/robot-thumbsup.jpg" alt="" aria-hidden className="w-16 h-16 object-cover rounded-lg shadow-sm" />
                 No opportunities yet
               </div>
             )}
@@ -299,7 +300,8 @@ export default function Index() {
                 </TableBody>
               </Table>
             ) : (
-              <div className="flex items-center justify-center h-[140px] text-muted-foreground text-sm">
+              <div className="flex flex-col items-center justify-center h-[140px] gap-2 text-muted-foreground text-sm">
+                <img src="/img/robot-thumbsup.jpg" alt="" aria-hidden className="w-12 h-12 object-cover rounded-lg shadow-sm" />
                 No appointments this week
               </div>
             )}
@@ -346,7 +348,8 @@ export default function Index() {
                 </TableBody>
               </Table>
             ) : (
-              <div className="flex items-center justify-center h-[140px] text-muted-foreground text-sm">
+              <div className="flex flex-col items-center justify-center h-[140px] gap-2 text-muted-foreground text-sm">
+                <img src="/img/robot-thumbsup.jpg" alt="" aria-hidden className="w-12 h-12 object-cover rounded-lg shadow-sm" />
                 No appointments in the past 14 days
               </div>
             )}

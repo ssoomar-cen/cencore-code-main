@@ -382,8 +382,11 @@ export function CrmDataTable({
                 </TableRow>
               ) : filtered.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={columns.length + 1} className="text-center py-8 text-muted-foreground">
-                    No records found. Click "{createLabel}" to add one.
+                  <TableCell colSpan={columns.length + 1} className="py-12">
+                    <div className="flex flex-col items-center gap-3 text-muted-foreground">
+                      <img src="/img/robot-thinking.jpg" alt="" aria-hidden className="w-20 h-20 object-cover rounded-full opacity-90 shadow-md" />
+                      <p className="text-sm">No records found. Click &ldquo;{createLabel}&rdquo; to add one.</p>
+                    </div>
                   </TableCell>
                 </TableRow>
               ) : (
