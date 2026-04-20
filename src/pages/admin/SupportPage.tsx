@@ -52,9 +52,12 @@ export default function SupportPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight text-foreground">Support</h2>
-          <p className="text-muted-foreground">Submit and track support tickets</p>
+        <div className="flex items-center gap-4">
+          <img src="/img/robot-support.jpg" alt="" aria-hidden className="w-16 h-16 object-contain hidden sm:block" />
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight text-foreground">Support</h2>
+            <p className="text-muted-foreground">Submit and track support tickets</p>
+          </div>
         </div>
         <Button onClick={() => setDialogOpen(true)}>
           <Plus className="mr-2 h-4 w-4" /> New Ticket
