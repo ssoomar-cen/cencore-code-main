@@ -1,4 +1,5 @@
-import { useAccounts } from "@/hooks/useAccounts";
+import { useState, useEffect, useMemo } from "react";
+import { useAccounts, useAccountsList } from "@/hooks/useAccounts";
 import { useContacts } from "@/hooks/useContacts";
 import { useOpportunities } from "@/hooks/useOpportunities";
 import { useContracts, useActivities, useBuildings, useInvoices, useEnergyPrograms } from "@/hooks/useCrmEntities";
@@ -7,7 +8,8 @@ import { CrmDataTable, Column, FormField, KanbanConfig } from "@/components/crm/
 import { FilterConfig } from "@/components/crm/CrmToolbar";
 import { RelatedTab } from "@/components/crm/CrmRecordDetail";
 import { Badge } from "@/components/ui/badge";
-import { useMemo } from "react";
+
+const PAGE_SIZE = 250;
 
 const columns: Column[] = [
   { key: "name", label: "Name" },
@@ -22,7 +24,27 @@ const columns: Column[] = [
 ];
 
 export default function AccountsPage() {
-  const { data, isLoading, create, update, remove } = useAccounts();
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setDebouncedSearch(search);
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  const { data: listResult, isLoading } = useAccountsList({
+    search: debouncedSearch,
+    page,
+    limit: PAGE_SIZE,
+  });
+
+  // useAccounts for lookup data (parent account dropdowns, related tab lookups)
+  const { data, create, update, remove } = useAccounts();
+
   const { data: contacts, create: createContact } = useContacts();
   const { data: opportunities, create: createOpp } = useOpportunities();
   const { data: contracts, create: createContract } = useContracts();
@@ -289,7 +311,7 @@ export default function AccountsPage() {
       description="Manage client organizations and accounts"
       entityLabel="Organization"
       columns={columns}
-      data={data || []}
+      data={listResult?.data || []}
       isLoading={isLoading}
       formFields={formFields}
       onCreate={(d) => create.mutate(d)}
@@ -301,6 +323,14 @@ export default function AccountsPage() {
       headerFields={headerFields}
       relatedTabs={relatedTabs}
       lookupLinks={lookupLinks}
+      serverSide={{
+        search,
+        onSearchChange: setSearch,
+        page,
+        pageSize: PAGE_SIZE,
+        total: listResult?.total ?? 0,
+        onPageChange: setPage,
+      }}
     />
   );
 }

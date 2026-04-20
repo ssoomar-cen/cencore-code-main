@@ -139,7 +139,7 @@ export default function WorkflowAutomationPage() {
                   <TableCell>
                     <Switch checked={rule.is_active} onCheckedChange={(v) => toggleActive.mutate({ id: rule.id, is_active: v })} />
                   </TableCell>
-                  <TableCell className="text-xs text-muted-foreground">{new Date(rule.created_at).toLocaleDateString()}</TableCell>
+                  <TableCell className="text-xs text-muted-foreground">{new Date(rule.created_at).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" })}</TableCell>
                   <TableCell>
                     <div className="flex gap-1">
                       <Button variant="ghost" size="icon" onClick={() => openEdit(rule)}><Pencil className="h-4 w-4" /></Button>

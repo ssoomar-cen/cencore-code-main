@@ -3,26 +3,47 @@ import { db } from "../utils/prisma.js";
 
 export const invoiceRouter = Router();
 
-// GET /api/invoices - List all invoices (no auth required — registered before requireAuth in index.ts)
+// GET /api/invoices - List invoices with pagination + search (no auth required)
 export const invoiceListRouter = Router();
-invoiceListRouter.get("/", async (_req: Request, res: Response) => {
+invoiceListRouter.get("/", async (req: Request, res: Response) => {
+  const { search = "", page = "1", limit = "250" } = req.query as Record<string, string>;
+  const lim = Math.min(parseInt(limit) || 250, 500);
+  const pageNum = Math.max(1, parseInt(page) || 1);
+  const offset = (pageNum - 1) * lim;
+
+  const params: any[] = [];
+  let where = "";
+  if (search.trim()) {
+    params.push(`%${search.trim().toLowerCase()}%`);
+    where = `WHERE (LOWER(i.name) LIKE $1 OR LOWER(i.invoice_sf_number) LIKE $1 OR LOWER(i.intacct_status) LIKE $1 OR LOWER(a.name) LIKE $1)`;
+  }
+
   try {
-    const invoices = await db.query(`
-      SELECT i.*,
-             i.invoice_id AS id,
-             i.invoice_sf_number AS invoice_number,
-             i.invoice_total AS total,
-             i.intacct_status AS status,
-             i.bill_month AS issue_date,
-             json_build_object('name', a.name) AS accounts
-      FROM invoice i
-      LEFT JOIN accounts a ON i.account_id = a.id
-      ORDER BY i.created_at DESC
-    `);
-    res.json(invoices);
+    const [countResult, rows] = await Promise.all([
+      db.query<{ count: string }>(
+        `SELECT COUNT(*) FROM invoice i LEFT JOIN accounts a ON i.account_id = a.id ${where}`,
+        params,
+      ),
+      db.query(
+        `SELECT i.*,
+                i.invoice_id AS id,
+                i.invoice_sf_number AS invoice_number,
+                i.invoice_total AS total,
+                i.intacct_status AS status,
+                i.bill_month AS issue_date,
+                json_build_object('name', a.name) AS accounts
+         FROM invoice i
+         LEFT JOIN accounts a ON i.account_id = a.id
+         ${where}
+         ORDER BY i.created_at DESC
+         LIMIT $${params.length + 1} OFFSET $${params.length + 2}`,
+        [...params, lim, offset],
+      ),
+    ]);
+    return res.json({ data: rows, total: parseInt(countResult[0]?.count ?? "0"), page: pageNum, limit: lim });
   } catch (error) {
     console.error("Error fetching invoices:", error);
-    res.status(500).json({ error: "Failed to fetch invoices" });
+    return res.status(500).json({ error: "Failed to fetch invoices" });
   }
 });
 
@@ -68,7 +89,7 @@ invoiceRouter.get("/:invoiceId/items", async (req: Request, res: Response, next)
 
     const items = await db.query(
       `SELECT * FROM invoice_item WHERE invoice_id = $1 AND tenant_id = $2 ORDER BY period_date DESC`,
-      [invoiceId, tenantId]
+      [invoiceId, tenantId],
     );
 
     res.json(items);
@@ -87,7 +108,7 @@ invoiceRouter.get("/:invoiceId/items/:itemId", async (req: Request, res: Respons
       `SELECT ii.*, i.name as invoice_name, i.invoice_number FROM invoice_item ii
        LEFT JOIN invoice i ON ii.invoice_id = i.invoice_id
        WHERE ii.invoice_item_id = $1 AND ii.tenant_id = $2`,
-      [itemId, tenantId]
+      [itemId, tenantId],
     );
 
     const item = items[0];
@@ -109,7 +130,7 @@ invoiceRouter.get("/:invoiceId/items/:itemId/reconciliations", async (req: Reque
 
     const reconciliations = await db.query(
       `SELECT * FROM invoice_recon WHERE invoice_item_id = $1 AND tenant_id = $2 ORDER BY report_date DESC`,
-      [itemId, tenantId]
+      [itemId, tenantId],
     );
 
     res.json(reconciliations);
@@ -128,7 +149,7 @@ invoiceRouter.get("/:invoiceId/items/:itemId/reconciliations/:reconId", async (r
       `SELECT ir.*, ii.name as item_name FROM invoice_recon ir
        LEFT JOIN invoice_item ii ON ir.invoice_item_id = ii.invoice_item_id
        WHERE ir.invoice_recon_id = $1 AND ir.tenant_id = $2`,
-      [reconId, tenantId]
+      [reconId, tenantId],
     );
 
     const recon = recons[0];

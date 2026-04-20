@@ -1,4 +1,5 @@
-import { useBuildings, useActivities } from "@/hooks/useCrmEntities";
+import { useState, useEffect, useMemo } from "react";
+import { useBuildings, useBuildingsList, useActivities } from "@/hooks/useCrmEntities";
 import { useAccounts } from "@/hooks/useAccounts";
 import { useEnergyAudits } from "@/hooks/useEnergyAudits";
 import { usePicklistSelectOptions } from "@/hooks/usePicklistOptions";
@@ -6,7 +7,8 @@ import { CrmDataTable, Column, FormField, KanbanConfig } from "@/components/crm/
 import { FilterConfig } from "@/components/crm/CrmToolbar";
 import { RelatedTab, LookupLink } from "@/components/crm/CrmRecordDetail";
 import { Badge } from "@/components/ui/badge";
-import { useMemo } from "react";
+
+const PAGE_SIZE = 250;
 
 const columns: Column[] = [
   { key: "name", label: "Name" },
@@ -20,7 +22,18 @@ const columns: Column[] = [
 ];
 
 export default function BuildingsPage() {
-  const { data, isLoading, create, update, remove } = useBuildings();
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    const t = setTimeout(() => { setDebouncedSearch(search); setPage(1); }, 300);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  const { data: listResult, isLoading } = useBuildingsList({ search: debouncedSearch, page, limit: PAGE_SIZE });
+
+  const { create, update, remove } = useBuildings();
   const { data: accounts } = useAccounts();
   const { data: energyAudits } = useEnergyAudits();
   const { data: activities, create: createActivity } = useActivities();
@@ -118,7 +131,7 @@ export default function BuildingsPage() {
   return (
     <CrmDataTable title="Buildings" description="Manage building records"
       entityLabel="Building"
-      columns={columns} data={data || []}
+      columns={columns} data={listResult?.data || []}
       isLoading={isLoading} formFields={formFields}
       onCreate={(d) => create.mutate(d)} onUpdate={(d) => update.mutate(d)} onDelete={(id) => remove.mutate(id)}
       createLabel="Add Building" filters={filters} kanban={kanban}
@@ -131,6 +144,14 @@ export default function BuildingsPage() {
         { key: "energy_star_score", label: "Energy Star" },
       ]}
       relatedTabs={relatedTabs}
+      serverSide={{
+        search,
+        onSearchChange: setSearch,
+        page,
+        pageSize: PAGE_SIZE,
+        total: listResult?.total ?? 0,
+        onPageChange: setPage,
+      }}
     />
   );
 }

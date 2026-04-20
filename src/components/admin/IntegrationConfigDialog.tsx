@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Loader2, Eye, EyeOff, CheckCircle2, AlertCircle, Save, ExternalLink, RefreshCw } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import SalesforceSyncPanel from "./SalesforceSyncPanel";
 
@@ -113,13 +112,12 @@ export default function IntegrationConfigDialog({ open, onOpenChange, integratio
   }, [open, isSalesforce]);
 
   const refreshConfig = async () => {
-    const { data } = await supabase
-      .from("integrations")
-      .select("config")
-      .eq("id", integration.id)
-      .single();
-    if (data?.config && typeof data.config === "object") {
-      setConfig(data.config as Record<string, string>);
+    const res = await fetch(`/api/integrations/${integration.id}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data?.config && typeof data.config === "object") {
+        setConfig(data.config as Record<string, string>);
+      }
     }
   };
 
@@ -131,12 +129,13 @@ export default function IntegrationConfigDialog({ open, onOpenChange, integratio
     }
 
     setSaving(true);
-    const { error } = await supabase
-      .from("integrations")
-      .update({ config, is_configured: true, updated_at: new Date().toISOString() } as any)
-      .eq("id", integration.id);
+    const res = await fetch(`/api/integrations/${integration.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ config, is_configured: true }),
+    });
 
-    if (error) {
+    if (!res.ok) {
       toast.error("Failed to save configuration");
     } else {
       toast.success(`${integration.name} configured successfully`);
@@ -171,12 +170,13 @@ export default function IntegrationConfigDialog({ open, onOpenChange, integratio
 
     setSaving(true);
 
-    const { error } = await supabase
-      .from("integrations")
-      .update({ config, updated_at: new Date().toISOString() } as any)
-      .eq("id", integration.id);
+    const saveRes = await fetch(`/api/integrations/${integration.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ config }),
+    });
 
-    if (error) {
+    if (!saveRes.ok) {
       toast.error("Failed to save configuration");
       setSaving(false);
       return;

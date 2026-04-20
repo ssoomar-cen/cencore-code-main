@@ -1,4 +1,5 @@
 import { Router, Request, Response } from "express";
+import { randomUUID } from "crypto";
 import { db } from "../utils/prisma.js";
 
 export const salesforceRouter = Router();
@@ -114,7 +115,83 @@ async function getValidToken(
 
 // ─── Field maps (ported from salesforce-sync edge function) ───────────────────
 
-const SF_TO_TABLE: Record<string, string> = { cases: "support_tickets", events: "activities" };
+const SF_TO_TABLE: Record<string, string> = {
+  cases: "support_tickets",
+  events: "activities",
+  contracts: "contract",
+  energy_programs: "energy_program",
+  invoices: "invoice",
+  invoice_items: "invoice_item",
+};
+
+// Column in each table that stores the Salesforce ID (defaults to 'sf_id')
+const TABLE_SF_ID_COL: Record<string, string> = {
+  accounts: "salesforce_id",
+  contacts: "salesforce_id",
+  opportunities: "salesforce_id",
+  contract: "salesforce_id",
+  energy_program: "salesforce_id",
+  invoice: "salesforce_id",
+  activities: "salesforce_id",
+  leads: "salesforce_id",
+  support_tickets: "salesforce_id",
+  campaigns: "salesforce_id",
+  quotes: "salesforce_id",
+  commission_splits: "salesforce_id",
+  connections: "salesforce_id",
+  buildings: "salesforce_id",
+  invoice_item: "salesforce_id",
+};
+
+// Tenant column per table (null = no tenant scoping, omit key = use 'tenant_id')
+const TABLE_TENANT_COL: Record<string, string | null> = {
+  accounts: "org_id",
+  contacts: "org_id",
+  opportunities: "org_id",
+  contract: null,
+  energy_program: null,
+  invoice: "tenant_id",
+  activities: null,
+  leads: null,
+  support_tickets: null,
+  campaigns: null,
+  quotes: null,
+  commission_splits: null,
+  connections: null,
+  buildings: "tenant_id",
+  invoice_item: "tenant_id",
+};
+
+// Primary key column name per table (defaults to 'id')
+const TABLE_PK_COL: Record<string, string> = {
+  contract: "contract_id",
+  energy_program: "energy_program_id",
+  invoice: "invoice_id",
+  invoice_item: "invoice_item_id",
+};
+
+// Required FK columns (NOT NULL) that must be resolved before insert; keyed by objectName
+const OBJECT_REQUIRED_FK_COLS: Record<string, string[]> = {
+  contacts: ["account_id"],
+  opportunities: ["account_id"],
+};
+
+const columnCache = new Map<string, Set<string>>();
+
+async function getColumns(tableName: string): Promise<Set<string>> {
+  if (columnCache.has(tableName)) return columnCache.get(tableName)!;
+  try {
+    const rows = await db.query<{ column_name: string }>(
+      `SELECT column_name FROM information_schema.columns WHERE table_name = $1 AND table_schema = 'public'`,
+      [tableName],
+    );
+    const cols = new Set(rows.map((r: any) => r.column_name));
+    columnCache.set(tableName, cols);
+    return cols;
+  } catch {
+    return new Set();
+  }
+}
 
 const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) => Record<string, any> }> = {
   accounts: {
@@ -146,7 +223,7 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
     map: (r) => ({
       sf_id: r.Id, _sf_account_id: r.AccountId || null,
       first_name: r.FirstName || "Unknown", last_name: r.LastName || "Unknown",
-      email: r.Email, phone: r.Phone, mobile: r.MobilePhone, job_title: r.Title,
+      email: r.Email || `noemail+${r.Id}@placeholder.invalid`, phone: r.Phone, mobile: r.MobilePhone, job_title: r.Title,
       department: r.Department, address_street: r.MailingStreet, address_city: r.MailingCity,
       address_state: r.MailingState, address_zip: r.MailingPostalCode,
       description: r.Description, fax: r.Fax, lead_source: r.LeadSource,
@@ -163,14 +240,20 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
     }),
   },
   opportunities: {
-    soql: "SELECT Id, Name, Amount, StageName, CloseDate, Probability, Description, LeadSource, NextStep, Type, ForecastCategory, AccountId, ContactId FROM Opportunity",
+    soql: "SELECT Id, Name, Amount, StageName, CloseDate, Probability, Description, LeadSource, NextStep, Type, AccountId, Opportunity_Number__c FROM Opportunity",
     map: (r) => ({
-      sf_id: r.Id, _sf_account_id: r.AccountId || null, _sf_contact_id: r.ContactId || null,
-      name: r.Name, amount: r.Amount, stage: r.StageName, close_date: r.CloseDate,
+      sf_id: r.Id,                              // Salesforce Id → salesforce_id column
+      _sf_account_id: r.AccountId || null,      // resolves to account_id FK
+      name: r.Name,
+      amount: r.Amount,
+      stage: r.StageName,
+      close_date: r.CloseDate,
       probability: r.Probability ? Math.round(r.Probability) : null,
-      description: r.Description, lead_source: r.LeadSource, next_step: r.NextStep,
-      status: r.Type === "Closed Won" ? "won" : r.Type === "Closed Lost" ? "lost" : "open",
-      notes: r.ForecastCategory, last_synced_at: new Date().toISOString(),
+      description: r.Description,
+      lead_source: r.LeadSource,
+      next_step: r.NextStep,
+      opportunity_number: r.Opportunity_Number__c || null,
+      last_synced_at: new Date().toISOString(),
     }),
   },
   leads: {
@@ -187,7 +270,7 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
     soql: "SELECT Id, Subject, Description, Status, Priority, ActivityDate, Type, Location, DurationInMinutes, IsAllDayEvent, CompletedDateTime, IsClosed, AccountId, WhoId, WhatId, Contact_Method__c, Visit_Type__c, Visit_Length__c, Sales_Meeting_Type__c, Activity_Number__c FROM Task",
     map: (r) => ({
       sf_id: r.Id, _sf_account_id: r.AccountId || null, _sf_contact_id: r.WhoId || null,
-      _sf_opportunity_id: r.WhatId || null,
+      what_id_sf: r.WhatId || null,
       subject: r.Subject || "Untitled", description: r.Description,
       status: r.Status === "Completed" ? "completed" : "open",
       priority: (r.Priority || "normal").toLowerCase(), due_date: r.ActivityDate,
@@ -204,7 +287,7 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
     soql: "SELECT Id, Subject, Description, Location, StartDateTime, EndDateTime, IsAllDayEvent, DurationInMinutes, AccountId, WhoId, WhatId, NumberOfAttendees__c FROM Event",
     map: (r) => ({
       sf_id: r.Id, _sf_account_id: r.AccountId || null, _sf_contact_id: r.WhoId || null,
-      _sf_opportunity_id: r.WhatId || null,
+      what_id_sf: r.WhatId || null,
       subject: r.Subject || "Untitled Event", description: r.Description,
       activity_type: "event", location: r.Location,
       start_datetime: r.StartDateTime, end_datetime: r.EndDateTime,
@@ -272,7 +355,8 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
     soql: "SELECT Id, Name, Description, Account__c, Status__c, Program_Type__c, Start_Date__c, End_Date__c, Budget__c, Contract_Term__c, Contract_Type__c, Contract_Status__c, Utility__c, Contract_Start_Date__c, Billing_Schedule_End_Date__c, Service_Status__c, Key_Reference__c, Key_Reference_Notes__c, CT_Hot_Notes__c, PGM_ID__c, Push_To_D365__c, Send_Contacts__c FROM Energy_Program__c",
     map: (r) => ({
       sf_id: r.Id, _sf_account_id: r.Account__c || null,
-      name: r.Name, description: r.Description, status: r.Status__c,
+      name: r.Name, description: r.Description,
+      status: r.Service_Status__c || r.Status__c,
       program_type: r.Program_Type__c, start_date: r.Start_Date__c, end_date: r.End_Date__c,
       budget: r.Budget__c, contract_term: r.Contract_Term__c, contract_type: r.Contract_Type__c,
       contract_status: r.Contract_Status__c, utility: r.Utility__c,
@@ -312,6 +396,36 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
       last_synced_at: new Date().toISOString(),
     }),
   },
+  buildings: {
+    soql: "SELECT Id, Name, Energy_Program__c, Building_No__c, Place_Code__c, Place_Id__c, Status__c, Status_Reason__c, Address_1__c, Address_2__c, City__c, State__c, Zip__c, Primary_Use__c, Square_Footage__c, Building_D365_Id__c, Ecap_Building_Id__c, Ecap_Owner__c, Measure_Building_ID__c, Exclude_from_GreenX__c FROM Building__c",
+    map: (r) => ({
+      sf_id: r.Id, _sf_energy_program_id: r.Energy_Program__c || null,
+      name: r.Name || "Unnamed Building",
+      building_no: r.Building_No__c, place_code: r.Place_Code__c, place_id: r.Place_Id__c,
+      status: r.Status__c, status_reason: r.Status_Reason__c,
+      address_street: r.Address_1__c, address_2: r.Address_2__c,
+      address_city: r.City__c, address_state: r.State__c, address_zip: r.Zip__c,
+      primary_use: r.Primary_Use__c, square_footage: r.Square_Footage__c,
+      building_d365_id: r.Building_D365_Id__c, ecap_building_id: r.Ecap_Building_Id__c,
+      ecap_owner: r.Ecap_Owner__c, measure_building_id: r.Measure_Building_ID__c,
+      exclude_from_greenx: r.Exclude_from_GreenX__c === true || r.Exclude_from_GreenX__c === "true",
+      last_synced_at: new Date().toISOString(),
+    }),
+  },
+  invoice_items: {
+    table: "invoice_item",
+    soql: "SELECT Id, Name, Invoice__c, Energy_Program__c, Invoice_Item_Type__c, Period_Date__c, Savings__c, Current_Cost_Avoidance__c, Previous_Cost_Avoidance__c, Special_Savings__c, Previous_Special_Savings__c, Current_Less_Previous__c, Credit__c, Fee_Amount__c FROM Invoice_Item_CEN__c",
+    map: (r) => ({
+      sf_id: r.Id, _sf_invoice_id: r.Invoice__c || null, _sf_energy_program_id: r.Energy_Program__c || null,
+      name: r.Name,
+      invoice_item_type: r.Invoice_Item_Type__c, period_date: r.Period_Date__c,
+      savings: r.Savings__c, current_cost_avoidance: r.Current_Cost_Avoidance__c,
+      previous_cost_avoidance: r.Previous_Cost_Avoidance__c, special_savings: r.Special_Savings__c,
+      previous_special_savings: r.Previous_Special_Savings__c, current_less_previous: r.Current_Less_Previous__c,
+      credit: r.Credit__c, fee_amount: r.Fee_Amount__c,
+      last_synced_at: new Date().toISOString(),
+    }),
+  },
   commission_splits: {
     soql: "SELECT Id, Name, Sales_Rep_Name__c, Sales_Rep_Email__c, Split_Percentage__c, Amount__c, Commission_Percent__c, Commission_Type__c, Status__c, Role__c, Notes__c, Split_Type__c, Opportunity__c, Contract__c, Contact__c, Energy_Program__c FROM Commission_Split__c",
     map: (r) => ({
@@ -333,8 +447,7 @@ const RELATIONSHIP_DEFS: Record<string, Array<{ sfField: string; fkColumn: strin
   opportunities:     [{ sfField: "AccountId",        fkColumn: "account_id",        lookupTable: "accounts" },
                       { sfField: "ContactId",        fkColumn: "contact_id",        lookupTable: "contacts" }],
   activities:        [{ sfField: "AccountId",        fkColumn: "account_id",        lookupTable: "accounts" },
-                      { sfField: "WhoId",            fkColumn: "contact_id",        lookupTable: "contacts" },
-                      { sfField: "WhatId",           fkColumn: "opportunity_id",    lookupTable: "opportunities" }],
+                      { sfField: "WhoId",            fkColumn: "contact_id",        lookupTable: "contacts" }],
   events:            [{ sfField: "AccountId",        fkColumn: "account_id",        lookupTable: "accounts" },
                       { sfField: "WhoId",            fkColumn: "contact_id",        lookupTable: "contacts" }],
   contracts:         [{ sfField: "AccountId",        fkColumn: "account_id",        lookupTable: "accounts" },
@@ -354,22 +467,31 @@ const RELATIONSHIP_DEFS: Record<string, Array<{ sfField: string; fkColumn: strin
   connections:       [{ sfField: "Contact__c",             fkColumn: "contact_id",           lookupTable: "contacts" },
                       { sfField: "Connected_Contact__c",   fkColumn: "connected_contact_id", lookupTable: "contacts" }],
   energy_programs:   [{ sfField: "Account__c",       fkColumn: "account_id",        lookupTable: "accounts" }],
+  buildings:         [{ sfField: "Energy_Program__c", fkColumn: "energy_program_id", lookupTable: "energy_programs" }],
+  invoice_items:     [{ sfField: "Invoice__c",        fkColumn: "invoice_id",        lookupTable: "invoices" },
+                      { sfField: "Energy_Program__c", fkColumn: "energy_program_id", lookupTable: "energy_programs" }],
 };
 
 const SYNC_ORDER = [
   "accounts", "contacts", "leads", "energy_programs", "campaigns",
   "opportunities", "contracts", "quotes", "cases",
-  "activities", "events", "invoices", "commission_splits", "connections",
+  "activities", "events", "invoices", "invoice_items", "buildings",
+  "commission_splits", "connections",
 ];
 
 // ─── DB helpers ───────────────────────────────────────────────────────────────
 
-async function buildSfIdLookup(tableName: string, tenantId: string): Promise<Map<string, string>> {
-  const rows = await db.query<{ id: string; sf_id: string }>(
-    `SELECT id, sf_id FROM ${tableName} WHERE tenant_id = $1 AND sf_id IS NOT NULL`,
-    [tenantId],
+async function buildSfIdLookup(tableName: string): Promise<Map<string, string>> {
+  const pkCol = TABLE_PK_COL[tableName] ?? "id";
+  const sfIdCol = TABLE_SF_ID_COL[tableName] ?? "sf_id";
+  const validCols = await getColumns(tableName);
+  if (!validCols.has(sfIdCol) || !validCols.has(pkCol)) return new Map();
+
+  // No tenant filter — SF IDs are globally unique across tenants
+  const rows = await db.query<Record<string, string>>(
+    `SELECT ${pkCol}, ${sfIdCol} FROM ${tableName} WHERE ${sfIdCol} IS NOT NULL`,
   );
-  return new Map(rows.map(r => [r.sf_id, r.id]));
+  return new Map(rows.map((r: any) => [r[sfIdCol], r[pkCol]]));
 }
 
 async function batchUpsertRecords(
@@ -379,82 +501,122 @@ async function batchUpsertRecords(
   report: SyncReport,
   objectName: string,
   pendingRelationships: any[],
+  sfIdCaches: Map<string, Map<string, string>>,
 ): Promise<void> {
   if (!records.length) return;
 
-  const existingMap = await buildSfIdLookup(tableName, tenantId);
+  const pkCol = TABLE_PK_COL[tableName] ?? "id";
+  const sfIdCol = TABLE_SF_ID_COL[tableName] ?? "sf_id";
+  const tenantColEntry = Object.prototype.hasOwnProperty.call(TABLE_TENANT_COL, tableName)
+    ? TABLE_TENANT_COL[tableName]
+    : "tenant_id";
+  const validCols = await getColumns(tableName);
+  const existingMap = await buildSfIdLookup(tableName);
   const relDefs = RELATIONSHIP_DEFS[objectName] || [];
+  const requiredFKCols = new Set(OBJECT_REQUIRED_FK_COLS[objectName] ?? []);
 
   for (const rawRecord of records) {
-    const record = { ...rawRecord };
-    record.tenant_id = tenantId;
-
-    // Extract _sf_* relationship placeholders (resolved in second pass)
     const sfRelFields: Record<string, string> = {};
-    for (const key of Object.keys(record)) {
-      if (key.startsWith("_sf_")) {
-        if (record[key]) sfRelFields[key] = record[key];
-        delete record[key];
+    const record: Record<string, any> = {};
+
+    for (const [k, v] of Object.entries(rawRecord)) {
+      if (k.startsWith("_sf_")) {
+        if (v) sfRelFields[k] = v as string;
+      } else if (k === "sf_id") {
+        if (validCols.has(sfIdCol)) record[sfIdCol] = v;
+      } else if (validCols.has(k)) {
+        record[k] = v;
       }
     }
 
-    const existingId = existingMap.get(record.sf_id);
+    // Add tenant column
+    if (tenantColEntry && validCols.has(tenantColEntry)) {
+      record[tenantColEntry] = tenantId;
+    }
+
+    // Always set updated_at (required NOT NULL on all tables, no DB default)
+    if (validCols.has("updated_at") && !record.updated_at) {
+      record.updated_at = new Date().toISOString();
+    }
+
+    // Set team_id = tenantId as fallback (required NOT NULL, no FK constraint)
+    if (validCols.has("team_id") && !record.team_id) {
+      record.team_id = tenantId;
+    }
+
+    // Inline FK resolution using accumulated caches
+    const unresolvedOptionalRels: typeof relDefs = [];
+    for (const rel of relDefs) {
+      const sfKey = `_sf_${rel.fkColumn}`;
+      if (!sfRelFields[sfKey]) continue;
+      const lookupTableActual = SF_TO_TABLE[rel.lookupTable] ?? rel.lookupTable;
+      const cache = sfIdCaches.get(lookupTableActual);
+      const resolvedId = cache?.get(sfRelFields[sfKey]);
+      if (resolvedId && validCols.has(rel.fkColumn)) {
+        record[rel.fkColumn] = resolvedId;
+      } else {
+        unresolvedOptionalRels.push(rel);
+      }
+    }
+
+    const sfIdValue = record[sfIdCol];
+    if (!sfIdValue) { report.skipped++; continue; }
+
+    const existingId = existingMap.get(sfIdValue);
 
     if (existingId) {
-      // UPDATE
-      const setCols = Object.keys(record)
-        .filter(k => k !== "sf_id")
-        .map((k, i) => `${k} = $${i + 2}`)
-        .join(", ");
-      const values = [existingId, ...Object.keys(record).filter(k => k !== "sf_id").map(k => record[k])];
-      try {
-        await db.execute(`UPDATE ${tableName} SET ${setCols} WHERE id = $1`, values);
+      const setKeys = Object.keys(record).filter(k => k !== sfIdCol && k !== pkCol);
+      if (setKeys.length) {
+        const setCols = setKeys.map((k, i) => `${k} = $${i + 2}`).join(", ");
+        const values = [existingId, ...setKeys.map(k => record[k])];
+        try {
+          await db.execute(`UPDATE ${tableName} SET ${setCols} WHERE ${pkCol} = $1`, values);
+          report.updated++;
+        } catch (e: any) {
+          report.errors.push(`Update ${objectName} ${sfIdValue}: ${e.message}`);
+        }
+      } else {
         report.updated++;
-      } catch (e: any) {
-        report.errors.push(`Update ${objectName} ${record.sf_id}: ${e.message}`);
       }
-
-      queueRelationships(pendingRelationships, relDefs, sfRelFields, tableName, existingId, objectName);
+      for (const rel of unresolvedOptionalRels) {
+        pendingRelationships.push({ tableName, cencoreId: existingId, sfRelId: sfRelFields[`_sf_${rel.fkColumn}`], fkColumn: rel.fkColumn, lookupTable: rel.lookupTable });
+      }
+      if (objectName === "accounts" && sfRelFields["_sf_parent_account_id"]) {
+        pendingRelationships.push({ tableName: "accounts", cencoreId: existingId, sfRelId: sfRelFields["_sf_parent_account_id"], fkColumn: "parent_account_id", lookupTable: "accounts" });
+      }
     } else {
-      // INSERT
+      // Only enforce required FKs on INSERT — for UPDATE the columns are already in the DB
+      const missingRequired = [...requiredFKCols].filter(col => !record[col]);
+      if (missingRequired.length > 0) { report.skipped++; continue; }
+
+      // Generate PK if no DB-level default
+      if (validCols.has(pkCol) && !record[pkCol]) record[pkCol] = randomUUID();
       const cols = Object.keys(record).join(", ");
       const placeholders = Object.keys(record).map((_, i) => `$${i + 1}`).join(", ");
-      const values = Object.values(record);
+      const upsertKeys = Object.keys(record).filter(k => k !== sfIdCol && k !== pkCol);
+      const onConflictSet = upsertKeys.length
+        ? `DO UPDATE SET ${upsertKeys.map(k => `${k} = EXCLUDED.${k}`).join(", ")}`
+        : "DO NOTHING";
       try {
-        const inserted = await db.query<{ id: string }>(
-          `INSERT INTO ${tableName} (${cols}) VALUES (${placeholders}) RETURNING id`,
-          values,
+        const inserted = await db.query<Record<string, string>>(
+          `INSERT INTO ${tableName} (${cols}) VALUES (${placeholders}) ON CONFLICT (${sfIdCol}) ${onConflictSet} RETURNING ${pkCol}`,
+          Object.values(record),
         );
         if (inserted[0]) {
-          const newId = inserted[0].id;
+          const newId = inserted[0][pkCol];
           report.created++;
-          existingMap.set(record.sf_id, newId); // keep map current for this batch
-          queueRelationships(pendingRelationships, relDefs, sfRelFields, tableName, newId, objectName);
+          existingMap.set(sfIdValue, newId);
+          for (const rel of unresolvedOptionalRels) {
+            pendingRelationships.push({ tableName, cencoreId: newId, sfRelId: sfRelFields[`_sf_${rel.fkColumn}`], fkColumn: rel.fkColumn, lookupTable: rel.lookupTable });
+          }
+          if (objectName === "accounts" && sfRelFields["_sf_parent_account_id"]) {
+            pendingRelationships.push({ tableName: "accounts", cencoreId: newId, sfRelId: sfRelFields["_sf_parent_account_id"], fkColumn: "parent_account_id", lookupTable: "accounts" });
+          }
         }
       } catch (e: any) {
-        report.errors.push(`Insert ${objectName} ${record.sf_id}: ${e.message}`);
+        report.errors.push(`Insert ${objectName} ${sfIdValue}: ${e.message}`);
       }
     }
-  }
-}
-
-function queueRelationships(
-  pending: any[],
-  relDefs: Array<{ sfField: string; fkColumn: string; lookupTable: string }>,
-  sfRelFields: Record<string, string>,
-  tableName: string,
-  cencoreId: string,
-  objectName: string,
-) {
-  for (const rel of relDefs) {
-    const sfKey = `_sf_${rel.fkColumn}`;
-    if (sfRelFields[sfKey]) {
-      pending.push({ tableName, cencoreId, sfRelId: sfRelFields[sfKey], fkColumn: rel.fkColumn, lookupTable: rel.lookupTable });
-    }
-  }
-  // Self-referential parent account
-  if (objectName === "accounts" && sfRelFields["_sf_parent_account_id"]) {
-    pending.push({ tableName: "accounts", cencoreId, sfRelId: sfRelFields["_sf_parent_account_id"], fkColumn: "parent_account_id", lookupTable: "accounts" });
   }
 }
 
@@ -464,10 +626,13 @@ async function resolveRelationships(
 ): Promise<number> {
   if (!pending.length) return 0;
 
-  // Build sf_id lookup caches per table
+  // Build sf_id lookup caches per table (resolve plural→singular table name)
   const tables = [...new Set(pending.map((r: any) => r.lookupTable))];
   const caches: Record<string, Map<string, string>> = {};
-  for (const t of tables) caches[t] = await buildSfIdLookup(t, tenantId);
+  for (const t of tables) {
+    const actual = SF_TO_TABLE[t] ?? t;
+    caches[t] = await buildSfIdLookup(actual);
+  }
 
   // Collapse multiple FK updates for the same record
   const byRecord: Record<string, { tableName: string; updates: Record<string, string> }> = {};
@@ -489,6 +654,35 @@ async function resolveRelationships(
     } catch { /* non-fatal */ }
   }
   return resolved;
+}
+
+// Resolve polymorphic WhatId against accounts, opportunities, energy_programs
+async function resolveWhatIdPolymorphic(): Promise<void> {
+  try {
+    await db.execute(`
+      UPDATE activities SET related_to_id = a.id, related_to_type = 'account'
+      FROM accounts a
+      WHERE activities.what_id_sf = a.salesforce_id
+        AND activities.what_id_sf IS NOT NULL
+        AND activities.related_to_id IS NULL
+    `);
+    await db.execute(`
+      UPDATE activities SET related_to_id = o.id, related_to_type = 'opportunity'
+      FROM opportunities o
+      WHERE activities.what_id_sf = o.salesforce_id
+        AND activities.what_id_sf IS NOT NULL
+        AND activities.related_to_id IS NULL
+    `);
+    await db.execute(`
+      UPDATE activities SET related_to_id = ep.energy_program_id, related_to_type = 'energy_program'
+      FROM energy_program ep
+      WHERE activities.what_id_sf = ep.salesforce_id
+        AND activities.what_id_sf IS NOT NULL
+        AND activities.related_to_id IS NULL
+    `);
+  } catch (e: any) {
+    console.error("WhatId polymorphic resolution error:", e.message);
+  }
 }
 
 // ─── GET /api/salesforce/callback — OAuth token exchange ──────────────────────
@@ -593,7 +787,8 @@ salesforceRouter.post("/sync", async (req: Request, res: Response) => {
   }
 
   const validObjects = ["accounts","contacts","opportunities","leads","activities","events",
-    "contracts","campaigns","quotes","cases","energy_programs","connections","invoices","commission_splits"];
+    "contracts","campaigns","quotes","cases","energy_programs","connections","invoices",
+    "invoice_items","buildings","commission_splits"];
   const requested = objects.filter(o => validObjects.includes(o));
   if (!requested.length) return res.status(400).json({ error: "No valid objects specified" });
 
@@ -609,6 +804,12 @@ salesforceRouter.post("/sync", async (req: Request, res: Response) => {
 
     const reports: SyncReport[] = [];
     const pendingRelationships: any[] = [];
+    // Pre-populate SF-ID→local-PK lookups from DB so child tables can resolve FKs
+    // even when parent tables aren't in the current sync batch
+    const sfIdCaches = new Map<string, Map<string, string>>();
+    for (const tbl of ["accounts", "contacts", "opportunities", "contract", "energy_program"]) {
+      try { sfIdCaches.set(tbl, await buildSfIdLookup(tbl)); } catch { /* table may not have sf_id */ }
+    }
 
     const ordered = [...requested].sort(
       (a, b) => (SYNC_ORDER.indexOf(a) ?? 99) - (SYNC_ORDER.indexOf(b) ?? 99),
@@ -633,17 +834,25 @@ salesforceRouter.post("/sync", async (req: Request, res: Response) => {
         const sfRecords = await sfQueryAll(sfAuth.instance_url, sfAuth.access_token, soql);
         const mapped = sfRecords.map(r => { try { return mapping.map(r); } catch { return null; } }).filter(Boolean) as Record<string, any>[];
 
-        await batchUpsertRecords(tableName, mapped, tenant_id, report, objectName, pendingRelationships);
+        await batchUpsertRecords(tableName, mapped, tenant_id, report, objectName, pendingRelationships, sfIdCaches);
       } catch (err: any) {
         report.errors.push(`Sync failed: ${err.message}`);
       }
 
       reports.push(report);
+
+      // Update cache so child tables can resolve FKs inline
+      try { sfIdCaches.set(tableName, await buildSfIdLookup(tableName)); } catch { /* non-fatal */ }
     }
 
     // Resolve FK relationships (second pass)
     const totalResolved = await resolveRelationships(pendingRelationships, tenant_id);
     for (const r of reports) r.relationships_resolved = pendingRelationships.filter(p => (FIELD_MAPS[r.object]?.table || r.object) === p.tableName).length;
+
+    // Resolve polymorphic WhatId for activities/events
+    if (ordered.some(o => o === "activities" || o === "events")) {
+      await resolveWhatIdPolymorphic();
+    }
 
     // Update last_sync metadata
     await db.execute(

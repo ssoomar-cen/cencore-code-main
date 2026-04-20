@@ -3,19 +3,46 @@ import { db } from "../utils/prisma.js";
 
 const router = Router();
 
-// GET /api/accounts - List all accounts
+// GET /api/accounts - List accounts with search and pagination
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const accounts = await db.query(`
-      SELECT a.id, a.name, a.salesforce_id, a.industry, a.region,
-             (SELECT COUNT(*) FROM contract WHERE account_id = a.id) as contract_count,
-             (SELECT COUNT(*) FROM energy_program WHERE account_id = a.id) as program_count,
-             (SELECT COUNT(*) FROM invoice WHERE account_id = a.id) as invoice_count
-      FROM accounts a
-      ORDER BY a.name 
-      LIMIT 100
-    `);
-    res.json({ data: accounts });
+    const search = String(req.query.search || "").trim();
+    const page = Math.max(1, parseInt(String(req.query.page || "1"), 10));
+    const limit = Math.min(500, Math.max(1, parseInt(String(req.query.limit || "250"), 10)));
+    const offset = (page - 1) * limit;
+
+    const searchParams: unknown[] = [];
+    let whereClause = "";
+    if (search) {
+      searchParams.push(`%${search}%`);
+      whereClause = `WHERE (a.name ILIKE $1 OR a.industry ILIKE $1 OR a.billing_city ILIKE $1 OR a.billing_state ILIKE $1 OR a.phone ILIKE $1 OR a.status ILIKE $1 OR a.org_type ILIKE $1)`;
+    }
+
+    const [countRows, accounts] = await Promise.all([
+      db.query<{ count: string }>(
+        `SELECT COUNT(*) AS count FROM accounts a ${whereClause}`,
+        searchParams
+      ),
+      db.query(
+        `SELECT a.id, a.name, a.salesforce_id, a.industry, a.region,
+                a.billing_city    AS address_city,
+                a.billing_state   AS address_state,
+                a.billing_street  AS address_street,
+                a.billing_country AS address_country,
+                a.status, a.phone, a.org_type AS account_type, a.contract_status,
+                (SELECT COUNT(*) FROM contract WHERE account_id = a.id)       AS contract_count,
+                (SELECT COUNT(*) FROM energy_program WHERE account_id = a.id) AS program_count,
+                (SELECT COUNT(*) FROM invoice WHERE account_id = a.id)        AS invoice_count
+         FROM accounts a
+         ${whereClause}
+         ORDER BY a.name
+         LIMIT $${searchParams.length + 1} OFFSET $${searchParams.length + 2}`,
+        [...searchParams, limit, offset]
+      ),
+    ]);
+
+    const total = parseInt(countRows[0]?.count ?? "0", 10);
+    res.json({ data: accounts, total, page, limit });
   } catch (error) {
     console.error("Error fetching accounts:", error);
     res.status(500).json({ error: "Failed to fetch accounts" });
@@ -28,10 +55,10 @@ router.get("/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
     const accounts = await db.query(
       `
-      SELECT id, name, salesforce_id, industry, region, 
+      SELECT id, name, salesforce_id, industry, region,
              billing_city, billing_state, billing_country, billing_street,
              phone, website, status, contract_status, org_legal_name, org_type
-      FROM accounts 
+      FROM accounts
       WHERE id = $1
       `,
       [id]
@@ -53,11 +80,11 @@ router.get("/:id/contracts", async (req: Request, res: Response) => {
     const { id } = req.params;
     const contracts = await db.query(
       `
-      SELECT contract_id, name, salesforce_id, contract_status, contract_type, 
-             contract_term, contract_start_date, billing_schedule_end_date, 
+      SELECT contract_id, name, salesforce_id, contract_status, contract_type,
+             contract_term, contract_start_date, billing_schedule_end_date,
              client_manager, service_status
-      FROM contract 
-      WHERE account_id = $1 
+      FROM contract
+      WHERE account_id = $1
       ORDER BY contract_start_date DESC
       LIMIT 100
       `,
@@ -76,11 +103,11 @@ router.get("/:id/energy-programs", async (req: Request, res: Response) => {
     const { id } = req.params;
     const programs = await db.query(
       `
-      SELECT energy_program_id, name, salesforce_id, status, pgm_id, 
-             technical_lead, implementation_consultant, 
+      SELECT energy_program_id, name, salesforce_id, status, pgm_id,
+             technical_lead, implementation_consultant,
              contract_start_date, billing_schedule_end_date
-      FROM energy_program 
-      WHERE account_id = $1 
+      FROM energy_program
+      WHERE account_id = $1
       ORDER BY contract_start_date DESC
       LIMIT 100
       `,
@@ -99,11 +126,11 @@ router.get("/:id/invoices", async (req: Request, res: Response) => {
     const { id } = req.params;
     const invoices = await db.query(
       `
-      SELECT invoice_id, name, invoice_sf_number, invoice_total, due_date, 
-             bill_month, intacct_status, status, document_type, 
+      SELECT invoice_id, name, invoice_sf_number, invoice_total, due_date,
+             bill_month, intacct_status, status, document_type,
              contract_id, energy_program_id
-      FROM invoice 
-      WHERE account_id = $1 
+      FROM invoice
+      WHERE account_id = $1
       ORDER BY bill_month DESC
       LIMIT 100
       `,
@@ -122,10 +149,10 @@ router.get("/contracts/:contractId", async (req: Request, res: Response) => {
     const { contractId } = req.params;
     const contracts = await db.query(
       `
-      SELECT contract_id, name, salesforce_id, account_id, contract_status, contract_type, 
-             contract_term, contract_start_date, billing_schedule_end_date, 
+      SELECT contract_id, name, salesforce_id, account_id, contract_status, contract_type,
+             contract_term, contract_start_date, billing_schedule_end_date,
              client_manager, service_status, created_at, updated_at
-      FROM contract 
+      FROM contract
       WHERE contract_id = $1
       `,
       [contractId]
@@ -147,10 +174,10 @@ router.get("/contracts/:contractId/invoices", async (req: Request, res: Response
     const { contractId } = req.params;
     const invoices = await db.query(
       `
-      SELECT invoice_id, name, invoice_sf_number, invoice_total, due_date, 
+      SELECT invoice_id, name, invoice_sf_number, invoice_total, due_date,
              bill_month, intacct_status, status, document_type
-      FROM invoice 
-      WHERE contract_id = $1 
+      FROM invoice
+      WHERE contract_id = $1
       ORDER BY bill_month DESC
       LIMIT 100
       `,
@@ -169,10 +196,10 @@ router.get("/programs/:programId", async (req: Request, res: Response) => {
     const { programId } = req.params;
     const programs = await db.query(
       `
-      SELECT energy_program_id, name, salesforce_id, account_id, status, pgm_id, 
-             technical_lead, implementation_consultant, 
+      SELECT energy_program_id, name, salesforce_id, account_id, status, pgm_id,
+             technical_lead, implementation_consultant,
              contract_start_date, billing_schedule_end_date, created_at, updated_at
-      FROM energy_program 
+      FROM energy_program
       WHERE energy_program_id = $1
       `,
       [programId]
@@ -194,10 +221,10 @@ router.get("/programs/:programId/invoices", async (req: Request, res: Response) 
     const { programId } = req.params;
     const invoices = await db.query(
       `
-      SELECT invoice_id, name, invoice_sf_number, invoice_total, due_date, 
+      SELECT invoice_id, name, invoice_sf_number, invoice_total, due_date,
              bill_month, intacct_status, status, document_type
-      FROM invoice 
-      WHERE energy_program_id = $1 
+      FROM invoice
+      WHERE energy_program_id = $1
       ORDER BY bill_month DESC
       LIMIT 100
       `,

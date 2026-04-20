@@ -124,6 +124,7 @@ router.post("/energy-programs", async (_req: Request, res: Response) => {
     Id: string;
     Name: string;
     "Organization__c"?: string;
+    "Service_Status__c"?: string;
     "Status__c"?: string;
     "pgmId__c"?: string;
     "Technical_Lead__c"?: string;
@@ -171,7 +172,7 @@ router.post("/energy-programs", async (_req: Request, res: Response) => {
             updated_at=NOW()`,
           [
             generateUUID(), row.Name.trim(), accountId, row.Id,
-            row["Status__c"]?.trim() || null,
+            row["Service_Status__c"]?.trim() || row["Status__c"]?.trim() || null,
             row["pgmId__c"]?.trim() || null,
             row["Technical_Lead__c"]?.trim() || null,
             row["Implementation_Consultant__c"]?.trim() || null,

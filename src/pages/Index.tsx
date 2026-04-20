@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +12,7 @@ import { format, addDays, subDays, startOfWeek, endOfWeek, isWithinInterval } fr
 import { useNavigate } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { PowerBIReportsList } from "@/components/powerbi/PowerBIReportsList";
+import { supabase } from "@/integrations/supabase/client";
 
 const QUERY_OPTIONS = {
   staleTime: 5 * 60 * 1000,
@@ -23,73 +23,24 @@ const QUERY_OPTIONS = {
 export default function Index() {
   const navigate = useNavigate();
 
-  // Use count-only queries for summary cards
-  const { data: contractCount = 0, isLoading: l1, isError: e1 } = useQuery({
-    queryKey: ["dashboard-contract-count"],
+  const { data: stats, isLoading: statsLoading, isError: statsError } = useQuery({
+    queryKey: ["dashboard-stats"],
     queryFn: async () => {
-      const { count } = await supabase.from("contracts").select("*", { count: "exact", head: true });
-      return count ?? 0;
+      const res = await fetch("/api/dashboard/stats");
+      if (!res.ok) throw new Error("Failed to load dashboard stats");
+      return res.json() as Promise<{
+        contractCount: number;
+        accountCount: number;
+        opportunityCount: number;
+        programs: { total: number; active: number; suspended: number; terminated: number; completed: number };
+        expiringPrograms: { end_date: string }[];
+        recentOpportunities: { id: string; name: string; stage: string; amount: string }[];
+      }>;
     },
     ...QUERY_OPTIONS,
   });
 
-  const { data: activeOrgCount = 0, isLoading: l2, isError: e2 } = useQuery({
-    queryKey: ["dashboard-active-org-count"],
-    queryFn: async () => {
-      const { count } = await supabase.from("accounts").select("*", { count: "exact", head: true }).eq("status", "active");
-      return count ?? 0;
-    },
-    ...QUERY_OPTIONS,
-  });
-
-  const { data: oppCount = 0, isLoading: l3, isError: e3 } = useQuery({
-    queryKey: ["dashboard-opp-count"],
-    queryFn: async () => {
-      const { count } = await supabase.from("opportunities").select("*", { count: "exact", head: true });
-      return count ?? 0;
-    },
-    ...QUERY_OPTIONS,
-  });
-
-  const { data: projectCounts, isLoading: l4, isError: e4 } = useQuery({
-    queryKey: ["dashboard-project-counts"],
-    queryFn: async () => {
-      const { data } = await supabase.from("projects").select("status");
-      const all = data || [];
-      return {
-        total: all.length,
-        active: all.filter(p => p.status === "active").length,
-        suspended: all.filter(p => p.status === "on_hold").length,
-        terminated: all.filter(p => p.status === "cancelled").length,
-        completed: all.filter(p => p.status === "completed").length,
-      };
-    },
-    ...QUERY_OPTIONS,
-  });
-
-  // Opportunities list — limited
-  const { data: myOpportunities = [] } = useQuery({
-    queryKey: ["dashboard-my-opps"],
-    queryFn: async () => {
-      const { data } = await supabase.from("opportunities").select("id, name, stage, amount").eq("status", "open").limit(5);
-      return data || [];
-    },
-    ...QUERY_OPTIONS,
-  });
-
-  // Expiring projects — limited to next 180 days
-  const { data: expiringProjects = [] } = useQuery({
-    queryKey: ["dashboard-expiring-projects"],
-    queryFn: async () => {
-      const now = new Date().toISOString();
-      const future = addDays(new Date(), 180).toISOString();
-      const { data } = await supabase.from("projects").select("end_date").gte("end_date", now).lte("end_date", future);
-      return data || [];
-    },
-    ...QUERY_OPTIONS,
-  });
-
-  // Calendar events — only this week + past 14 days
+  // Calendar events — Supabase only (local calendar data)
   const { data: calendarEvents = [] } = useQuery({
     queryKey: ["dashboard-calendar-events"],
     queryFn: async () => {
@@ -106,14 +57,16 @@ export default function Index() {
     ...QUERY_OPTIONS,
   });
 
-  const isLoading = l1 || l2 || l3 || l4;
-  const hasError = e1 || e2 || e3 || e4;
+  const isLoading = statsLoading;
+  const hasError = statsError;
 
-  const pc = projectCounts ?? { total: 0, active: 0, suspended: 0, terminated: 0, completed: 0 };
+  const pc = stats?.programs ?? { total: 0, active: 0, suspended: 0, terminated: 0, completed: 0 };
+  const expiringPrograms = stats?.expiringPrograms ?? [];
+  const myOpportunities = stats?.recentOpportunities ?? [];
 
   // Chart data
   const expiringByMonth: Record<string, number> = {};
-  expiringProjects.forEach((p) => {
+  expiringPrograms.forEach((p) => {
     if (!p.end_date) return;
     const month = format(new Date(p.end_date), "MMM yyyy");
     expiringByMonth[month] = (expiringByMonth[month] || 0) + 1;
@@ -135,18 +88,18 @@ export default function Index() {
   });
 
   const summaryCards = [
-    { title: "Total Contracts", value: contractCount, icon: FileText, color: "border-l-primary", description: "All contracts", link: "/crm/contracts" },
-    { title: "Active Organizations", value: activeOrgCount, icon: Building2, color: "border-l-info", description: "Currently active", link: "/crm/accounts" },
-    { title: "Opportunities", value: oppCount, icon: TrendingUp, color: "border-l-success", description: "Open pipeline", link: "/crm/opportunities" },
-    { title: "Energy Programs", value: pc.total, icon: Zap, color: "border-l-warning", description: "All programs", link: "/crm/energy-programs" },
+    { title: "Total Contracts", value: stats?.contractCount ?? 0, icon: FileText, color: "border-l-primary", description: "All contracts", link: "/crm/contracts" },
+    { title: "Organizations", value: stats?.accountCount ?? 0, icon: Building2, color: "border-l-info", description: "Total accounts", link: "/crm/accounts" },
+    { title: "Opportunities", value: stats?.opportunityCount ?? 0, icon: TrendingUp, color: "border-l-success", description: "Open pipeline", link: "/crm/opportunities" },
+    { title: "Energy Programs", value: pc.total, icon: Zap, color: "border-l-warning", description: "All programs", link: "/projects" },
   ];
 
   const programCards = [
     { title: "Total Programs", value: pc.total, icon: Activity, description: "All energy programs" },
     { title: "Active Programs", value: pc.active, icon: ArrowUpRight, description: "Currently in service" },
     { title: "Suspended Programs", value: pc.suspended, icon: Pause, description: 'Service status is "Suspended"' },
-    { title: "Terminated Programs", value: pc.terminated, icon: XCircle, description: 'Service status is "terminated"' },
-    { title: "Completed Programs", value: pc.completed, icon: CheckCircle2, description: 'Service status is "OOC"' },
+    { title: "Terminated Programs", value: pc.terminated, icon: XCircle, description: 'Service status is "Terminated"' },
+    { title: "Completed Programs", value: pc.completed, icon: CheckCircle2, description: 'Service status is "Completed"' },
   ];
 
   if (hasError) {
@@ -191,7 +144,7 @@ export default function Index() {
               <card.icon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground/50 hidden sm:block" />
             </CardHeader>
             <CardContent className="p-3 sm:p-5 pt-0">
-              <div className="text-xl sm:text-3xl font-bold text-foreground tabular-nums">{card.value}</div>
+              <div className="text-xl sm:text-3xl font-bold text-foreground tabular-nums">{card.value.toLocaleString()}</div>
               <p className="text-[10px] sm:text-xs text-muted-foreground mt-1">{card.description}</p>
             </CardContent>
           </Card>
@@ -204,14 +157,14 @@ export default function Index() {
           <Card
             key={card.title}
             className="cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-            onClick={() => navigate("/crm/energy-programs")}
+            onClick={() => navigate("/projects")}
           >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 p-3 sm:p-5 sm:pb-2">
               <CardTitle className="text-[11px] sm:text-xs font-medium text-muted-foreground leading-tight">{card.title}</CardTitle>
               <card.icon className="h-4 w-4 text-muted-foreground/50" />
             </CardHeader>
             <CardContent className="p-3 sm:p-5 pt-0">
-              <div className="text-xl sm:text-2xl font-bold text-foreground tabular-nums">{card.value}</div>
+              <div className="text-xl sm:text-2xl font-bold text-foreground tabular-nums">{card.value.toLocaleString()}</div>
               <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 leading-tight">{card.description}</p>
             </CardContent>
           </Card>
@@ -223,7 +176,7 @@ export default function Index() {
         <Card className="min-h-[320px]">
           <CardHeader>
             <CardTitle className="text-base font-semibold">Energy Programs Expiring in Next 180 Days</CardTitle>
-            <CardDescription>Sum of Related Contract: Gross Total Contract Value</CardDescription>
+            <CardDescription>Programs by contract end date</CardDescription>
           </CardHeader>
           <CardContent className="h-[220px]">
             {chartData.length > 0 ? (
@@ -249,7 +202,7 @@ export default function Index() {
               </ResponsiveContainer>
             ) : (
               <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
-                No expiring contracts in the next 180 days
+                No expiring programs in the next 180 days
               </div>
             )}
           </CardContent>
@@ -260,10 +213,10 @@ export default function Index() {
             <div>
               <CardTitle className="text-base font-semibold flex items-center gap-2">
                 <BarChart3 className="h-4 w-4 text-primary" />
-                My Opportunities
+                Recent Opportunities
               </CardTitle>
               <CardDescription>
-                {myOpportunities.length} items • Sorted by Opportunity Name
+                {myOpportunities.length} items • Sorted by most recent
               </CardDescription>
             </div>
           </CardHeader>
@@ -297,7 +250,7 @@ export default function Index() {
               </Table>
             ) : (
               <div className="flex items-center justify-center h-[180px] text-muted-foreground text-sm">
-                No active opportunities
+                No opportunities yet
               </div>
             )}
           </CardContent>

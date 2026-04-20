@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { formatDate } from "@/lib/utils";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Pencil, Trash2, Check, X, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
+import { Pencil, Trash2, Check, X, ArrowUp, ArrowDown, ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { CrmToolbar, FilterConfig } from "./CrmToolbar";
 import { CrmKanbanView } from "./CrmKanbanView";
 import { CrmRecordDetail, RelatedTab, LookupLink, BusinessProcessFlow, DrillDownConfig } from "./CrmRecordDetail";
@@ -25,6 +26,7 @@ export interface FormField {
   placeholder?: string;
   required?: boolean;
   section?: string;
+  dependsOn?: { key: string; value: string };
 }
 
 export interface KanbanConfig {
@@ -34,6 +36,15 @@ export interface KanbanConfig {
   subtitleField?: string;
   badgeField?: string;
   amountField?: string;
+}
+
+export interface ServerSidePagination {
+  search: string;
+  onSearchChange: (v: string) => void;
+  page: number;
+  pageSize: number;
+  total: number;
+  onPageChange: (p: number) => void;
 }
 
 export interface CrmDataTableProps {
@@ -59,6 +70,8 @@ export interface CrmDataTableProps {
   relatedTabs?: RelatedTab[];
   lookupLinks?: LookupLink[];
   businessProcessFlow?: BusinessProcessFlow;
+  /** When provided, search and pagination are server-driven; disables in-memory search filtering */
+  serverSide?: ServerSidePagination;
 }
 
 function InlineEditCell({ field, value, onChange }: { field: FormField | undefined; value: any; onChange: (v: any) => void }) {
@@ -110,6 +123,7 @@ export function CrmDataTable({
   extraActions, rowActions, filters = [], kanban, onRowClick,
   detailRoute,
   entityLabel, headerFields, relatedTabs, lookupLinks, businessProcessFlow,
+  serverSide,
 }: CrmDataTableProps) {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -124,6 +138,9 @@ export function CrmDataTable({
   const [view, setView] = useState<"list" | "kanban">("list");
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+
+  const activeSearch = serverSide ? serverSide.search : search;
+  const handleSearchChange = serverSide ? serverSide.onSearchChange : setSearch;
 
   const handleSort = (key: string) => {
     if (sortKey === key) {
@@ -154,7 +171,8 @@ export function CrmDataTable({
   const fieldMap = new Map(formFields.map((f) => [f.key, f]));
 
   const filtered = useMemo(() => {
-    const needle = search.trim().toLowerCase();
+    // When server handles search, skip in-memory text filtering; still apply dropdown filters
+    const needle = serverSide ? "" : activeSearch.trim().toLowerCase();
     let result = (data || []).filter((row) => {
       if (needle) {
         const match = columns.some((col) =>
@@ -193,7 +211,9 @@ export function CrmDataTable({
     }
 
     return result;
-  }, [data, search, columns, filters, filterValues, sortKey, sortDir]);
+  }, [data, serverSide, activeSearch, columns, filters, filterValues, sortKey, sortDir]);
+
+  const recordCount = serverSide ? serverSide.total : filtered.length;
 
   const resetForm = () => {
     setFormData({});
@@ -290,6 +310,11 @@ export function CrmDataTable({
     );
   }
 
+  const showPagination = !!serverSide && view === "list";
+  const totalPages = serverSide ? Math.max(1, Math.ceil(serverSide.total / serverSide.pageSize)) : 1;
+  const rangeStart = serverSide ? Math.min((serverSide.page - 1) * serverSide.pageSize + 1, serverSide.total) : 1;
+  const rangeEnd = serverSide ? Math.min(serverSide.page * serverSide.pageSize, serverSide.total) : filtered.length;
+
   return (
     <div className="space-y-4 sm:space-y-6">
       <div>
@@ -298,15 +323,15 @@ export function CrmDataTable({
       </div>
 
       <CrmToolbar
-        search={search}
-        onSearchChange={setSearch}
+        search={activeSearch}
+        onSearchChange={handleSearchChange}
         filters={filters}
         filterValues={filterValues}
         onFilterChange={handleFilterChange}
         view={view}
         onViewChange={setView}
         showKanban={!!kanban}
-        recordCount={filtered.length}
+        recordCount={recordCount}
         createLabel={createLabel}
         onCreateClick={() => { setFormData({}); setCreateOpen(true); }}
         extraActions={extraActions}
@@ -388,7 +413,7 @@ export function CrmDataTable({
                               onChange={(v) => setFormData((prev) => ({ ...prev, [col.key]: v }))}
                             />
                           ) : (
-                            col.render ? col.render(row[col.key], row) : (row[col.key] ?? "—")
+                            col.render ? col.render(row[col.key], row) : col.key.endsWith("_date") && row[col.key] ? formatDate(row[col.key]) : (row[col.key] ?? "—")
                           )}
                         </TableCell>
                       ))}
@@ -422,6 +447,41 @@ export function CrmDataTable({
               )}
             </TableBody>
           </Table>
+
+          {showPagination && (
+            <div className="flex items-center justify-between px-4 py-3 border-t bg-muted/20">
+              <span className="text-sm text-muted-foreground">
+                {serverSide!.total === 0
+                  ? "0 records"
+                  : `${rangeStart.toLocaleString()}–${rangeEnd.toLocaleString()} of ${serverSide!.total.toLocaleString()}`}
+              </span>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-8 px-3 gap-1"
+                  disabled={serverSide!.page <= 1}
+                  onClick={() => serverSide!.onPageChange(serverSide!.page - 1)}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  <span className="hidden sm:inline">Previous</span>
+                </Button>
+                <span className="text-sm text-muted-foreground tabular-nums">
+                  Page {serverSide!.page} of {totalPages.toLocaleString()}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-8 px-3 gap-1"
+                  disabled={serverSide!.page >= totalPages}
+                  onClick={() => serverSide!.onPageChange(serverSide!.page + 1)}
+                >
+                  <span className="hidden sm:inline">Next</span>
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

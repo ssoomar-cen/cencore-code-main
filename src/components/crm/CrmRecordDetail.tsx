@@ -165,6 +165,11 @@ export function CrmRecordDetail({
   const renderField = (field: FormField) => {
     const value = formData[field.key] ?? "";
 
+    if (field.dependsOn) {
+      const depValue = isEditing ? formData[field.dependsOn.key] : record?.[field.dependsOn.key];
+      if (depValue !== field.dependsOn.value) return null;
+    }
+
     if (!isEditing) {
       const displayValue = record?.[field.key];
       const lookup = getLookupDisplay(field.key, displayValue);
@@ -237,7 +242,9 @@ export function CrmRecordDetail({
     );
   };
 
-  const renderCreateField = (field: FormField) => (
+  const renderCreateField = (field: FormField) => {
+    if (field.dependsOn && createFormData[field.dependsOn.key] !== field.dependsOn.value) return null;
+    return (
     <div key={field.key} className="space-y-1">
       <Label htmlFor={`create-${field.key}`} className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
         {field.label}{field.required && <span className="text-destructive ml-0.5">*</span>}
@@ -258,6 +265,7 @@ export function CrmRecordDetail({
       )}
     </div>
   );
+  };
 
   const renderRelatedTable = (tab: RelatedTab) => {
     const rows = getRelatedData(tab);
