@@ -46,6 +46,35 @@ enum DocumentKind {
   OTHER
 }
 
+enum AssetCategory {
+  HVAC
+  LIGHTING
+  ENVELOPE
+  CONTROLS
+  DHW
+  REFRIGERATION
+  MOTORS
+  PLUG_LOAD
+  RENEWABLE
+  METERING
+  OTHER
+}
+
+enum AssetCondition {
+  NEW
+  GOOD
+  FAIR
+  POOR
+  END_OF_LIFE
+}
+
+enum AssetStatus {
+  ACTIVE
+  INACTIVE
+  RETIRED
+  REPLACED
+}
+
 model User {
   id         String      @id @default(cuid())
   name       String
@@ -121,7 +150,7 @@ model Opportunity {
   accountId    String      @map("account_id")
   ownerId      String?     @map("owner_id")
   teamId       String      @map("team_id")
-  orgId        String      @map("org_id")
+  orgId       String       @map("org_id")
   createdAt    DateTime    @default(now()) @map("created_at")
   updatedAt    DateTime    @updatedAt @map("updated_at")
 
@@ -651,6 +680,7 @@ model Building {
   portfolio           Portfolio?     @relation(fields: [portfolioId], references: [id], onDelete: SetNull)
   campus              Campus?        @relation(fields: [campusId], references: [id], onDelete: SetNull)
   energyProgram       EnergyProgram? @relation(fields: [energyProgramId], references: [id], onDelete: SetNull)
+  assets              Asset[]
 
   @@index([tenantId])
   @@index([accountId])
@@ -702,6 +732,7 @@ model Document {
   updatedAt        DateTime      @updatedAt @map("updated_at")
 
   uploadedBy       User?         @relation("DocumentUploader", fields: [uploadedById], references: [id], onDelete: SetNull)
+  assetPhotos      Asset[]       @relation("AssetPhoto")
 
   @@index([tenantId])
   @@index([parentType, parentId])
@@ -709,4 +740,108 @@ model Document {
   @@index([kind])
   @@index([sha256])
   @@map("document")
+}
+
+// ============================================================================
+// Asset — physical equipment living in a Building (RTU, chiller, boiler,
+// lighting fixture, envelope component, BAS controller, etc). Anchors audit
+// findings and ECMs to real equipment, and carries just enough make/model /
+// life / condition data to drive replacement planning and savings estimates.
+//
+// Photos: `photoDocId` points at a single primary photo in `Document`;
+// additional photos live polymorphically with `Document.parent_type = 'Asset'`
+// + `parent_id = asset.id`. Sector-specific fields (e.g. HVAC tons per ton of
+// cooling, classroom ID for K-12, criticality for healthcare) live in
+// `AssetSectorExtension` so the core table stays thin.
+// ============================================================================
+
+model Asset {
+  id                String                @id @default(cuid()) @map("asset_id")
+  tenantId          String                @map("tenant_id")
+  buildingId        String                @map("building_id")
+
+  // Identity
+  name              String
+  assetTag          String?               @map("asset_tag")
+
+  // Classification
+  category          AssetCategory
+  subtype           String?
+
+  // Location within building
+  location          String?
+  floor             String?
+  zone              String?
+
+  // Make / provenance
+  manufacturer      String?
+  model             String?
+  serialNumber      String?               @map("serial_number")
+
+  // Lifecycle
+  installYear       Int?                  @map("install_year")
+  expectedLifeYears Int?                  @map("expected_life_years")
+  lastServiceDate   DateTime?             @map("last_service_date")
+
+  // Rating
+  capacity          Decimal?              @db.Decimal(14, 4)
+  capacityUnit      String?               @map("capacity_unit")
+
+  // State
+  condition         AssetCondition?
+  status            AssetStatus?          @default(ACTIVE)
+
+  // Economics
+  replacementCost   Decimal?              @map("replacement_cost") @db.Decimal(14, 2)
+
+  // Primary photo
+  photoDocId        String?               @map("photo_doc_id")
+
+  // Arbitrary extras
+  metadata          Json?
+
+  notes             String?
+
+  createdAt         DateTime              @default(now()) @map("created_at")
+  updatedAt         DateTime              @updatedAt @map("updated_at")
+
+  // Relations
+  building          Building              @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+  photo             Document?             @relation("AssetPhoto", fields: [photoDocId], references: [id], onDelete: SetNull)
+  sectorExtension   AssetSectorExtension?
+
+  @@index([tenantId])
+  @@index([buildingId])
+  @@index([category])
+  @@index([subtype])
+  @@index([condition])
+  @@index([status])
+  @@index([assetTag])
+  @@map("asset")
+}
+
+// ============================================================================
+// AssetSectorExtension — 1:1 side table carrying sector-specific fields so the
+// Asset core stays thin. `data` is a JSON blob validated app-side against a
+// schema keyed by `sector` + `schemaVersion`. Keeping this in its own row
+// makes it easy to evolve sector schemas without touching the Asset table.
+// ============================================================================
+
+model AssetSectorExtension {
+  id            String     @id @default(cuid()) @map("asset_sector_extension_id")
+  assetId       String     @unique @map("asset_id")
+  tenantId      String     @map("tenant_id")
+
+  sector        SectorType
+  schemaVersion String?    @map("schema_version")
+  data          Json
+
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+
+  asset         Asset      @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([sector])
+  @@map("asset_sector_extension")
 }

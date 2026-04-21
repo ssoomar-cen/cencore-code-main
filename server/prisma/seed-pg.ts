@@ -296,6 +296,83 @@ async function main() {
           buildingInsertCount++;
         }
         console.log(`✅ Energy demo seeded: 1 portfolio, ${Object.keys(campusIds).length} campuses, ${buildingInsertCount} new buildings`);
+
+        // Assets — a representative K-12 equipment complement per building.
+        // Skip any building that already has ≥1 asset so re-running the seed
+        // is safe.
+        const assetTemplate: Array<{
+          name: string;
+          assetTag: string;
+          category: string;
+          subtype: string;
+          location: string | null;
+          manufacturer: string | null;
+          model: string | null;
+          installYear: number;
+          expectedLifeYears: number;
+          capacity: number | null;
+          capacityUnit: string | null;
+          condition: string;
+          replacementCost: number | null;
+        }> = [
+          { name: "RTU-1 Roof",           assetTag: "RTU-01", category: "HVAC",        subtype: "RTU",              location: "Roof",            manufacturer: "Carrier",   model: "48HC",     installYear: 2006, expectedLifeYears: 18, capacity: 25,     capacityUnit: "tons",   condition: "FAIR",       replacementCost: 45000 },
+          { name: "RTU-2 Roof",           assetTag: "RTU-02", category: "HVAC",        subtype: "RTU",              location: "Roof",            manufacturer: "Carrier",   model: "48HC",     installYear: 2006, expectedLifeYears: 18, capacity: 25,     capacityUnit: "tons",   condition: "FAIR",       replacementCost: 45000 },
+          { name: "Boiler-1",             assetTag: "BLR-01", category: "HVAC",        subtype: "Hot Water Boiler", location: "Mechanical Room", manufacturer: "Cleaver-Brooks", model: "CB-LE", installYear: 1998, expectedLifeYears: 25, capacity: 2000000, capacityUnit: "BTU/hr", condition: "POOR",       replacementCost: 85000 },
+          { name: "BAS Controller",       assetTag: "BAS-01", category: "CONTROLS",    subtype: "BACnet Supervisor",location: "Mechanical Room", manufacturer: "Johnson Controls", model: "Metasys", installYear: 2012, expectedLifeYears: 15, capacity: null,   capacityUnit: null,     condition: "GOOD",       replacementCost: 18000 },
+          { name: "Interior Lighting",    assetTag: "LTG-01", category: "LIGHTING",    subtype: "T8 Fluorescent",   location: "Classrooms",      manufacturer: null,        model: null,       installYear: 2001, expectedLifeYears: 22, capacity: null,   capacityUnit: null,     condition: "END_OF_LIFE", replacementCost: 120000 },
+          { name: "Exterior Lighting",    assetTag: "LTG-02", category: "LIGHTING",    subtype: "HID Pole",         location: "Parking",         manufacturer: null,        model: null,       installYear: 2001, expectedLifeYears: 20, capacity: null,   capacityUnit: null,     condition: "POOR",       replacementCost: 28000 },
+          { name: "DHW Heater",           assetTag: "DHW-01", category: "DHW",         subtype: "Gas Water Heater", location: "Mechanical Room", manufacturer: "A. O. Smith", model: "BTH-250", installYear: 2010, expectedLifeYears: 12, capacity: 199000, capacityUnit: "BTU/hr", condition: "FAIR",       replacementCost: 9500 },
+        ];
+
+        let assetInsertCount = 0;
+        for (const buildingName of buildings.map((b) => b.name)) {
+          const bRow = await client.query<{ building_id: string }>(
+            `SELECT building_id FROM building WHERE tenant_id = $1 AND name = $2`,
+            [demoTenantId, buildingName],
+          );
+          const buildingId = bRow.rows[0]?.building_id;
+          if (!buildingId) continue;
+          const existingAssets = await client.query<{ count: string }>(
+            `SELECT COUNT(*)::text AS count FROM asset WHERE building_id = $1`,
+            [buildingId],
+          );
+          if (parseInt(existingAssets.rows[0]?.count ?? "0") > 0) continue;
+
+          for (const a of assetTemplate) {
+            await client.query(
+              `INSERT INTO asset (
+                 asset_id, tenant_id, building_id,
+                 name, asset_tag, category, subtype,
+                 location, manufacturer, model,
+                 install_year, expected_life_years,
+                 capacity, capacity_unit,
+                 condition, status, replacement_cost
+               )
+               VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)`,
+              [
+                crypto.randomUUID(),
+                demoTenantId,
+                buildingId,
+                a.name,
+                a.assetTag,
+                a.category,
+                a.subtype,
+                a.location,
+                a.manufacturer,
+                a.model,
+                a.installYear,
+                a.expectedLifeYears,
+                a.capacity,
+                a.capacityUnit,
+                a.condition,
+                "ACTIVE",
+                a.replacementCost,
+              ],
+            );
+            assetInsertCount++;
+          }
+        }
+        console.log(`✅ Energy demo seeded: ${assetInsertCount} assets across ${buildings.length} buildings`);
       }
     }
 
