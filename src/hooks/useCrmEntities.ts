@@ -42,7 +42,45 @@ function useCrudHook(table: string, label: string, selectQuery = "*", tenantId: 
   return { ...query, create, update, remove };
 }
 
-export const useQuotes = () => { const { activeTenantId } = useTenant(); return useCrudHook("quotes", "Quote", "*, accounts(name), opportunities(name)", activeTenantId); };
+export const useQuotes = () => {
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ["quotes"],
+    queryFn: async () => {
+      const res = await fetch("/api/quotes?limit=500");
+      if (!res.ok) throw new Error("Failed to fetch quotes");
+      const result = await res.json();
+      return Array.isArray(result) ? result : (result.data || []);
+    },
+  });
+  const create = useMutation({
+    mutationFn: async (item: any) => {
+      const res = await fetch("/api/quotes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(item) });
+      if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.error || "Failed to create quote"); }
+      return res.json();
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["quotes"] }); toast.success("Quote created"); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  const update = useMutation({
+    mutationFn: async ({ id, ...updates }: any) => {
+      const res = await fetch(`/api/quotes/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updates) });
+      if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.error || "Failed to update quote"); }
+      return res.json();
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["quotes"] }); toast.success("Quote updated"); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  const remove = useMutation({
+    mutationFn: async (id: string) => {
+      const res = await fetch(`/api/quotes/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete quote");
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["quotes"] }); toast.success("Quote deleted"); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  return { ...query, create, update, remove };
+};
 export const useContracts = () => {
   const queryClient = useQueryClient();
   const { activeTenantId } = useTenant();

@@ -13,7 +13,7 @@ import { ArrowLeft, FileText, ChevronDown, Calendar, Mail, Download } from "luci
 import { MailMergeDialog } from "./MailMergeDialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { RelatedRecords } from "./RelatedRecords";
 import { ActivityForm } from "./ActivityForm";
 import { CaseForm } from "./CaseForm";
@@ -24,11 +24,6 @@ import { Column } from "./CRMTable";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { YearProjectionsTable } from "./YearProjectionsTable";
 import { EditableField } from "@/components/ui/editable-field";
-
-const formatDate = (date: string | null | undefined) => {
-  if (!date) return "-";
-  return format(new Date(date), "M/d/yyyy");
-};
 
 // Read-only row for system fields that shouldn't be edited
 const ReadOnlyRow = ({ label, value }: { label: string; value: React.ReactNode }) => (
@@ -80,21 +75,21 @@ export const ContractDetail = () => {
   const { updateContract, deleteContract } = useContracts();
   const { createCase } = useCases();
   const { createActivity } = useActivities();
-  const { 
-    projections: yearProjections, 
-    createProjection, 
-    updateProjection, 
+  const {
+    projections: yearProjections,
+    createProjection,
+    updateProjection,
     deleteProjection,
-    isLoading: projectionsLoading 
+    isLoading: projectionsLoading
   } = useContractYearProjections(id);
-  
+
   const projects: any[] = [];
-  
+
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showMailMerge, setShowMailMerge] = useState(false);
   const [addingRelatedType, setAddingRelatedType] = useState<string | null>(null);
   const [showActivityForm, setShowActivityForm] = useState(false);
-  
+
   // Collapsible state for each section
   const [generalOpen, setGeneralOpen] = useState(true);
   const [keyDatesGeneralOpen, setKeyDatesGeneralOpen] = useState(true);
@@ -104,7 +99,7 @@ export const ContractDetail = () => {
   const [billingTypeOpen, setBillingTypeOpen] = useState(true);
   const [softwareOpen, setSoftwareOpen] = useState(true);
   const [visitOpen, setVisitOpen] = useState(true);
-  
+
   const [systemInfoOpen, setSystemInfoOpen] = useState(true);
   const [relatedEPOpen, setRelatedEPOpen] = useState(true);
 
@@ -163,15 +158,15 @@ export const ContractDetail = () => {
     { header: "Subject", accessor: "subject" },
     { header: "Status", accessor: "status" },
     { header: "Priority", accessor: "priority" },
-    { 
-      header: "Created", 
-      accessor: (row: any) => row.created_at ? format(new Date(row.created_at), "MMM dd, yyyy") : "-"
+    {
+      header: "Created",
+      accessor: (row: any) => formatDate(row.created_at)
     },
   ];
 
   const projectColumns: Column[] = [
-    { 
-      header: "Program Name", 
+    {
+      header: "Program Name",
       accessor: (row: any) => (
         <div>
           <div className="font-medium">{row.name}</div>
@@ -179,22 +174,22 @@ export const ContractDetail = () => {
         </div>
       )
     },
-    { 
-      header: "Status", 
+    {
+      header: "Status",
       accessor: (row: any) => <Badge variant={row.status === 'Active' ? 'default' : 'secondary'}>{row.status}</Badge>
     },
-    { 
-      header: "Program Manager", 
+    {
+      header: "Program Manager",
       accessor: (row: any) => {
         if (!row.project_manager) return "-";
         return `${row.project_manager.first_name || ''} ${row.project_manager.last_name || ''}`.trim();
       }
     },
-    { 
-      header: "Timeline", 
+    {
+      header: "Timeline",
       accessor: (row: any) => {
         if (!row.start_date || !row.end_date) return "-";
-        return `${format(new Date(row.start_date), 'MMM d')} - ${format(new Date(row.end_date), 'MMM d, yyyy')}`;
+        return `${formatDate(row.start_date)} - ${formatDate(row.end_date)}`;
       }
     },
   ];
@@ -207,7 +202,7 @@ export const ContractDetail = () => {
       {/* Top Header Section */}
       <div className="bg-muted border-b border-border px-4 md:px-6 py-4">
         {/* Breadcrumb */}
-        <button 
+        <button
           onClick={() => navigate("/crm/contracts")}
           className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors mb-2"
         >
@@ -311,96 +306,96 @@ export const ContractDetail = () => {
                   <CollapsibleContent>
                     <CardContent className="pt-0">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
-                        <EditableField 
-                          label="Name" 
-                          value={contract.name} 
-                          onSave={(val) => handleFieldUpdate("name", val)} 
+                        <EditableField
+                          label="Name"
+                          value={contract.name}
+                          onSave={(val) => handleFieldUpdate("name", val)}
                         />
-                        <EditableField 
-                          label="Type" 
-                          value={contract.contract_type} 
+                        <EditableField
+                          label="Type"
+                          value={contract.contract_type}
                           type="select"
                           options={contractTypeOptions}
-                          onSave={(val) => handleFieldUpdate("contract_type", val)} 
+                          onSave={(val) => handleFieldUpdate("contract_type", val)}
                         />
-                        <EditableField 
-                          label="Auto Renew" 
-                          value={contract.auto_renew} 
+                        <EditableField
+                          label="Auto Renew"
+                          value={contract.auto_renew}
                           type="checkbox"
-                          onSave={(val) => handleFieldUpdate("auto_renew", val)} 
+                          onSave={(val) => handleFieldUpdate("auto_renew", val)}
                         />
-                        <EditableField 
-                          label="Contract Status" 
-                          value={contract.status} 
+                        <EditableField
+                          label="Contract Status"
+                          value={contract.status}
                           type="select"
                           options={statusOptions}
-                          onSave={(val) => handleFieldUpdate("status", val)} 
+                          onSave={(val) => handleFieldUpdate("status", val)}
                         />
-                        <EditableField 
-                          label="Auto Renew Cancellation Deadline" 
-                          value={contract.auto_renew_cancellation_deadline} 
+                        <EditableField
+                          label="Auto Renew Cancellation Deadline"
+                          value={contract.auto_renew_cancellation_deadline}
                           type="date"
-                          onSave={(val) => handleFieldUpdate("auto_renew_cancellation_deadline", val)} 
+                          onSave={(val) => handleFieldUpdate("auto_renew_cancellation_deadline", val)}
                         />
-                        <EditableField 
-                          label="Contract Start Date" 
-                          value={contract.start_date} 
+                        <EditableField
+                          label="Contract Start Date"
+                          value={contract.start_date}
                           type="date"
-                          onSave={(val) => handleFieldUpdate("start_date", val)} 
+                          onSave={(val) => handleFieldUpdate("start_date", val)}
                         />
-                        <EditableField 
-                          label="Auto Renew Declined" 
-                          value={contract.auto_renew_declined} 
+                        <EditableField
+                          label="Auto Renew Declined"
+                          value={contract.auto_renew_declined}
                           type="checkbox"
-                          onSave={(val) => handleFieldUpdate("auto_renew_declined", val)} 
+                          onSave={(val) => handleFieldUpdate("auto_renew_declined", val)}
                         />
-                        <ReadOnlyRow 
-                          label="Organization Name" 
+                        <ReadOnlyRow
+                          label="Organization Name"
                           value={
-                            <span 
+                            <span
                               className="text-primary cursor-pointer hover:underline"
                               onClick={() => contract.account && navigate(`/crm/accounts/${contract.account.account_id}`)}
                             >
                               {contract.account?.name || "-"}
                             </span>
-                          } 
+                          }
                         />
-                        <EditableField 
-                          label="Renewal" 
-                          value={contract.renewal} 
+                        <EditableField
+                          label="Renewal"
+                          value={contract.renewal}
                           type="checkbox"
-                          onSave={(val) => handleFieldUpdate("renewal", val)} 
+                          onSave={(val) => handleFieldUpdate("renewal", val)}
                         />
                         <ReadOnlyRow label="Owner" value={(contract as any).owner?.first_name ? `${(contract as any).owner.first_name} ${(contract as any).owner.last_name || ''}` : "-"} />
-                        <EditableField 
-                          label="Renewal Declined" 
-                          value={contract.renewal_declined} 
+                        <EditableField
+                          label="Renewal Declined"
+                          value={contract.renewal_declined}
                           type="checkbox"
-                          onSave={(val) => handleFieldUpdate("renewal_declined", val)} 
+                          onSave={(val) => handleFieldUpdate("renewal_declined", val)}
                         />
-                        <EditableField 
-                          label="Legal Counsel" 
-                          value={contract.legal_counsel} 
-                          onSave={(val) => handleFieldUpdate("legal_counsel", val)} 
+                        <EditableField
+                          label="Legal Counsel"
+                          value={contract.legal_counsel}
+                          onSave={(val) => handleFieldUpdate("legal_counsel", val)}
                         />
-                        <EditableField 
-                          label="Accounting ID" 
-                          value={contract.accounting_id} 
-                          onSave={(val) => handleFieldUpdate("accounting_id", val)} 
+                        <EditableField
+                          label="Accounting ID"
+                          value={contract.accounting_id}
+                          onSave={(val) => handleFieldUpdate("accounting_id", val)}
                         />
                         <div />
-                        <ReadOnlyRow 
-                          label="Original Opportunity" 
+                        <ReadOnlyRow
+                          label="Original Opportunity"
                           value={
                             contract.opportunity ? (
-                              <span 
+                              <span
                                 className="text-primary cursor-pointer hover:underline"
                                 onClick={() => navigate(`/crm/opportunities/${contract.opportunity.opportunity_id}`)}
                               >
                                 {contract.opportunity.name}
                               </span>
                             ) : "-"
-                          } 
+                          }
                         />
                         <div />
                         <ReadOnlyRow label="Contract Number" value={contract.contract_number || "-"} />
@@ -651,9 +646,9 @@ export const ContractDetail = () => {
                   <CollapsibleContent>
                     <CardContent className="pt-0">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
-                        <ReadOnlyRow label="Created" value={contract.created_at ? format(new Date(contract.created_at), "M/d/yyyy, h:mm a") : "-"} />
+                        <ReadOnlyRow label="Created" value={formatDate(contract.created_at)} />
                         <EditableField label="SharePoint Path" value={contract.sharepoint_path} onSave={(val) => handleFieldUpdate("sharepoint_path", val)} />
-                        <ReadOnlyRow label="Last Modified" value={contract.updated_at ? format(new Date(contract.updated_at), "M/d/yyyy, h:mm a") : "-"} />
+                        <ReadOnlyRow label="Last Modified" value={formatDate(contract.updated_at)} />
                         <EditableField label="Push to D365" value={contract.push_to_d365} type="checkbox" onSave={(val) => handleFieldUpdate("push_to_d365", val)} />
                         <EditableField label="Unique Contract ID" value={contract.unique_contract_id} onSave={(val) => handleFieldUpdate("unique_contract_id", val)} />
                         <ReadOnlyRow label="D365ContractGuid" value={contract.d365_contract_guid || "-"} />
@@ -678,7 +673,7 @@ export const ContractDetail = () => {
               <div>
                 <span className="text-xs text-muted-foreground">Energy Program</span>
                 {relatedProject ? (
-                  <p 
+                  <p
                     className="text-sm text-primary cursor-pointer hover:underline"
                     onClick={() => navigate(`/crm/projects/${relatedProject.project_id}`)}
                   >
@@ -700,8 +695,8 @@ export const ContractDetail = () => {
             <Tabs defaultValue="activity" className="flex flex-col h-full">
               <div className="border-b bg-background">
                 <TabsList className="h-auto p-0 bg-transparent border-0 rounded-none w-full justify-start">
-                  <TabsTrigger 
-                    value="activity" 
+                  <TabsTrigger
+                    value="activity"
                     className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 py-3"
                   >
                     Activity

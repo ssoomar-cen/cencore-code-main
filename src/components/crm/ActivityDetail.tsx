@@ -12,7 +12,7 @@ import { EmailReplyDialog } from "./EmailReplyDialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { format, parseISO } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { getUserDisplayName } from "@/hooks/useUserDisplayInfo";
@@ -239,19 +239,19 @@ export const ActivityDetail = () => {
             {activity.start_datetime && (
               <div>
                 <label className="text-sm font-medium text-muted-foreground">Start Date</label>
-                <p className="mt-1">{format(parseISO(activity.start_datetime), "MMM d, yyyy h:mm a")}</p>
+                <p className="mt-1">{formatDate(activity.start_datetime)}</p>
               </div>
             )}
             {activity.end_datetime && (
               <div>
                 <label className="text-sm font-medium text-muted-foreground">End Date</label>
-                <p className="mt-1">{format(parseISO(activity.end_datetime), "MMM d, yyyy h:mm a")}</p>
+                <p className="mt-1">{formatDate(activity.end_datetime)}</p>
               </div>
             )}
             {activity.due_date && (
               <div>
                 <label className="text-sm font-medium text-muted-foreground">Due Date</label>
-                <p className="mt-1">{format(parseISO(activity.due_date), "MMM d, yyyy")}</p>
+                <p className="mt-1">{formatDate(activity.due_date)}</p>
               </div>
             )}
             {activity.type === "Email" && (activity as any).from_email && (

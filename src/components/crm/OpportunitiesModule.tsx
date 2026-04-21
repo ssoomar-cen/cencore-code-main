@@ -10,7 +10,7 @@ import { GenericKanban } from "./GenericKanban";
 import { BulkEditDialog, BulkEditField } from "@/components/ui/bulk-edit-dialog";
 import { useOpportunities } from "@/hooks/useOpportunities";
 import { Plus, DollarSign, TrendingUp } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { toast } from "sonner";
 
 interface OpportunitiesModuleProps {
@@ -127,9 +127,9 @@ export function OpportunitiesModule({ onOpenForm, onDelete }: OpportunitiesModul
             { header: "Account", accessor: (item: any) => item.account?.name || "N/A" },
             { header: "Stage", accessor: "stage" },
             { header: "Amount", accessor: (item: any) => item.amount ? `$${item.amount.toLocaleString()}` : "N/A" },
-            { header: "Close Date", accessor: (item: any) => item.close_date ? format(new Date(item.close_date), "MMM d, yyyy") : "N/A" },
+            { header: "Close Date", accessor: (item: any) => formatDate(item.close_date) },
             { header: "Probability", accessor: (item: any) => item.probability ? `${item.probability}%` : "N/A" },
-            { header: "Created", accessor: (item: any) => item.created_at ? format(new Date(item.created_at), "MMM d, yyyy") : "-" },
+            { header: "Created", accessor: (item: any) => formatDate(item.created_at) },
           ]}
           onRecordClick={(id) => navigate(`/crm/opportunities/${id}`)}
           onEdit={(item) => onOpenForm("opportunities", item)}
@@ -182,7 +182,7 @@ export function OpportunitiesModule({ onOpenForm, onDelete }: OpportunitiesModul
               <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
                 <span>{item.opportunity_number || 'N/A'}</span>
                 {item.close_date && (
-                  <span>{format(new Date(item.close_date), "MMM d")}</span>
+                  <span>{formatDate(item.close_date)}</span>
                 )}
               </div>
             </div>

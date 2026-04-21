@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, User, ChevronDown, Calendar, Mail } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { RelatedRecords } from "./RelatedRecords";
 import { ActivityForm } from "./ActivityForm";
 import { OpportunityForm } from "./OpportunityForm";
@@ -107,7 +107,7 @@ export const ContactDetail = () => {
     },
     { 
       header: "Close Date", 
-      accessor: (row: any) => row.close_date ? format(new Date(row.close_date), "MMM dd, yyyy") : "-"
+      accessor: (row: any) => formatDate(row.close_date)
     },
   ];
 

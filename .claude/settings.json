@@ -187,7 +187,9 @@
       "Bash(echo \"Server PID: $!\")",
       "Bash(curl -s \"http://localhost:4000/api/energy-programs/5e013cf0-ea6c-4a80-a019-d27ad72c5fd9\")",
       "Bash(python3 -m json.tool)",
-      "Bash(curl -s \"http://localhost:4000/api/connections?limit=3\")"
+      "Bash(curl -s \"http://localhost:4000/api/connections?limit=3\")",
+      "Bash(PGPASSWORD=\"YaRahim786!!\" \"/c/Program Files/PostgreSQL/16/bin/psql.exe\" -U postgres -h localhost -p 5432 -d cencore -c \"SELECT column_name FROM information_schema.columns WHERE table_name='accounts' ORDER BY ordinal_position;\")",
+      "Bash(PGPASSWORD=\"YaRahim786!!\" \"/c/Program Files/PostgreSQL/16/bin/psql.exe\" -U postgres -h localhost -p 5432 -d cencore -c \"SELECT * FROM accounts LIMIT 1;\")"
     ]
   }
 }

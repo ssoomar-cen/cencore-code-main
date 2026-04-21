@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { CRMTable } from "./CRMTable";
 import { useInvoices, Invoice } from "@/hooks/useInvoices";
 import { Plus } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 
 interface InvoicesModuleProps {
   onOpenForm: (type: string, data?: any) => void;
@@ -133,13 +133,13 @@ export function InvoicesModule({ onOpenForm, onDelete }: InvoicesModuleProps) {
           {
             header: "Due Date",
             accessor: (item: any) =>
-              item.due_date ? format(new Date(item.due_date), "M/d/yyyy") : "-",
+              formatDate(item.due_date),
           },
           { header: "Account", accessor: (item: any) => item.account?.name || "-" },
           {
             header: "Created",
             accessor: (item: any) =>
-              item.created_at ? format(new Date(item.created_at), "M/d/yyyy") : "-",
+              formatDate(item.created_at),
           },
         ]}
         onRecordClick={(id) => navigate(`/crm/invoices/${id}`)}

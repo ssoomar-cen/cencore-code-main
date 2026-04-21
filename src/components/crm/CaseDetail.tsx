@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Pencil, Trash2, UserCog, Plus, FileText, Download, Eye, Send, Upload, ChevronDown, ChevronUp } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { RelatedActivities } from "./RelatedActivities";
 import { CaseForm } from "./CaseForm";
 import { ReassignOwnerDialog } from "./ReassignOwnerDialog";
@@ -343,14 +343,14 @@ export const CaseDetail = () => {
             <div>
               <label className="text-sm font-medium text-muted-foreground">Created</label>
               <p className="mt-1">
-                {supportCase.created_at ? format(new Date(supportCase.created_at), "MMM dd, yyyy HH:mm") : "-"}
+                {formatDate(supportCase.created_at)}
               </p>
             </div>
             {supportCase.resolved_at && (
               <div>
                 <label className="text-sm font-medium text-muted-foreground">Resolved</label>
                 <p className="mt-1">
-                  {format(new Date(supportCase.resolved_at), "MMM dd, yyyy HH:mm")}
+                  {formatDate(supportCase.resolved_at)}
                 </p>
               </div>
             )}
@@ -459,7 +459,7 @@ export const CaseDetail = () => {
                             <p className="text-sm text-muted-foreground mt-1">{doc.description}</p>
                           )}
                           <p className="text-sm text-muted-foreground">
-                            {doc.created_at ? format(new Date(doc.created_at), "MMM dd, yyyy") : "-"}
+                            {formatDate(doc.created_at)}
                           </p>
                         </div>
                       </div>

@@ -416,7 +416,7 @@ export function CrmDataTable({
                               onChange={(v) => setFormData((prev) => ({ ...prev, [col.key]: v }))}
                             />
                           ) : (
-                            col.render ? col.render(row[col.key], row) : col.key.endsWith("_date") && row[col.key] ? formatDate(row[col.key]) : (row[col.key] ?? "—")
+                            col.render ? col.render(row[col.key], row) : (col.key.endsWith("_date") || col.key === "valid_until" || col.key === "birthdate" || col.key.endsWith("_at")) && row[col.key] ? formatDate(row[col.key]) : (row[col.key] ?? "—")
                           )}
                         </TableCell>
                       ))}

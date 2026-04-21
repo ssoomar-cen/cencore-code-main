@@ -10,7 +10,7 @@ import { GenericKanban } from "./GenericKanban";
 import { BulkEditDialog, BulkEditField } from "@/components/ui/bulk-edit-dialog";
 import { useContracts, Contract } from "@/hooks/useContracts";
 import { Plus, FileText, DollarSign } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { toast } from "sonner";
 
 interface ContractsModuleProps {
@@ -125,18 +125,17 @@ export function ContractsModule({ onOpenForm, onDelete, onMailMerge }: Contracts
         <CRMTable
           data={filteredContracts}
           columns={[
-            { header: "Contract Number", accessor: "contract_number" },
             { header: "Salesforce ID", accessor: (item: any) => item.salesforce_id || "-" },
             { header: "Energy Program", accessor: (item: any) => item.name || "-" },
             { header: "Auto Renew", accessor: (item: any) => item.auto_renew ? "Yes" : "No" },
             { header: "Billing Cycle", accessor: (item: any) => item.billing_cycle || item.billing_frequency || "-" },
             { header: "Legal Counsel", accessor: (item: any) => item.legal_counsel || "-" },
-            { header: "Billing Start Date", accessor: (item: any) => item.billing_start_date ? format(new Date(item.billing_start_date), "M/d/yyyy") : "-" },
-            { header: "Billing Schedule End Date", accessor: (item: any) => item.billing_schedule_end_date ? format(new Date(item.billing_schedule_end_date), "M/d/yyyy") : "-" },
+            { header: "Billing Start Date", accessor: (item: any) => formatDate(item.billing_start_date) },
+            { header: "Billing Schedule End Date", accessor: (item: any) => formatDate(item.billing_schedule_end_date) },
             { header: "Contract Term (Months)", accessor: (item: any) => item.contract_term_months ?? "-" },
             { header: "Organization Name", accessor: (item: any) => item.account?.name || "-" },
-            { header: "Base Year End", accessor: (item: any) => item.base_year_end ? format(new Date(item.base_year_end), "M/d/yyyy") : "-" },
-            { header: "Base Year Start", accessor: (item: any) => item.base_year_start ? format(new Date(item.base_year_start), "M/d/yyyy") : "-" },
+            { header: "Base Year End", accessor: (item: any) => formatDate(item.base_year_end) },
+            { header: "Base Year Start", accessor: (item: any) => formatDate(item.base_year_start) },
           ]}
           onRecordClick={(id) => navigate(`/crm/contracts/${id}`)}
           onEdit={(item) => onOpenForm("contracts", item)}
@@ -199,10 +198,10 @@ export function ContractsModule({ onOpenForm, onDelete, onMailMerge }: Contracts
               )}
               <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
                 {item.start_date && (
-                  <span>{format(new Date(item.start_date), "MMM d")}</span>
+                  <span>{formatDate(item.start_date)}</span>
                 )}
                 {item.end_date && (
-                  <span>→ {format(new Date(item.end_date), "MMM d")}</span>
+                  <span>→ {formatDate(item.end_date)}</span>
                 )}
               </div>
               <Button

@@ -30,7 +30,7 @@ import { ReassignOwnerDialog } from "./ReassignOwnerDialog";
 import { BulkEditDialog, BulkEditField } from "@/components/ui/bulk-edit-dialog";
 import { CRMTable } from "./CRMTable";
 import { useQueryClient } from "@tanstack/react-query";
-import { format, parseISO } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import {
@@ -388,17 +388,13 @@ export function ActivitiesModule() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {activity.start_datetime
-                        ? format(parseISO(activity.start_datetime), "MMM d, yyyy h:mm a")
-                        : activity.due_date
-                        ? format(parseISO(activity.due_date), "MMM d, yyyy")
-                        : "-"}
+                      {formatDate(activity.start_datetime || activity.due_date)}
                     </TableCell>
                     <TableCell className="max-w-xs truncate">
                       {activity.description || "-"}
                     </TableCell>
                     <TableCell>
-                      {activity.created_at ? format(parseISO(activity.created_at), "MMM d, yyyy") : "-"}
+                      {formatDate(activity.created_at)}
                     </TableCell>
                     <TableCell onClick={(e) => e.stopPropagation()}>
                       <div className="flex gap-2">
@@ -466,12 +462,10 @@ export function ActivitiesModule() {
                           <span>{getOwnerDisplay(activity.owner)}</span>
                         </div>
                         {activity.due_date && (
-                          <span>Due: {format(parseISO(activity.due_date), "MMM d, yyyy")}</span>
+                          <span>Due: {formatDate(activity.due_date)}</span>
                         )}
                         {activity.start_datetime && (
-                          <span>
-                            {format(parseISO(activity.start_datetime), "MMM d, yyyy h:mm a")}
-                          </span>
+                          <span>{formatDate(activity.start_datetime)}</span>
                         )}
                         {activity.priority && (
                           <Badge 
@@ -587,7 +581,7 @@ export function ActivitiesModule() {
               )}
               {item.start_datetime && (
                 <p className="text-xs text-muted-foreground mt-2">
-                  {format(parseISO(item.start_datetime), "MMM d, h:mm a")}
+                  {formatDate(item.start_datetime)}
                 </p>
               )}
             </div>
@@ -660,13 +654,12 @@ export function ActivitiesModule() {
                 ),
               },
               {
-                header: "Date",
-                accessor: (item: any) =>
-                  item.start_datetime
-                    ? format(parseISO(item.start_datetime), "MMM d, yyyy h:mm a")
-                    : item.due_date
-                    ? format(parseISO(item.due_date), "MMM d, yyyy")
-                    : "-",
+                header: "Start Date",
+                accessor: (item: any) => formatDate(item.start_datetime),
+              },
+              {
+                header: "End Date",
+                accessor: (item: any) => formatDate(item.end_datetime),
               },
               { header: "Description", accessor: (item: any) => item.description || "-" },
             ]}

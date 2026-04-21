@@ -195,7 +195,7 @@ async function getColumns(tableName: string): Promise<Set<string>> {
 
 const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) => Record<string, any> }> = {
   accounts: {
-    soql: "SELECT Id, Name, Phone, Website, Industry, BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry, Description, Fax, AnnualRevenue, NumberOfEmployees, Type, AccountNumber, ShippingStreet, ShippingCity, ShippingState, ShippingPostalCode, ShippingCountry, Ownership, Rating, Sic, SicDesc, Site, TickerSymbol, AccountSource, ParentId, Status__c, Sales_Status__c, Org_Type__c, Org_Record_Type__c, Association__c, Legal_Name__c, PO_Number__c, GL_Revenue_Account__c, Invoice_Delivery__c, Contract_Status__c, Prospect_Data_Source__c, Est_Annual_Expenditures__c, Minimum_Utility_Spend__c, Cost_Per_Student__c, Membership_Enrollment__c, Total_Gross_Square_Feet__c, Faith_Based__c, Key_Reference__c FROM Account",
+    soql: "SELECT Id, Name, Phone, Website, Industry, BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry, Description, Fax, AnnualRevenue, NumberOfEmployees, Type, AccountNumber, ShippingStreet, ShippingCity, ShippingState, ShippingPostalCode, ShippingCountry, Ownership, Rating, Sic, SicDesc, Site, TickerSymbol, AccountSource, ParentId, Status__c, Sales_Status__c, Org_Type__c, Org_Record_Type__c, Association__c, Legal_Name__c, PO_Number__c, GL_Revenue_Account__c, Invoice_Delivery__c, Contract_Status__c, Prospect_Data_Source__c, Est_Annual_Expenditures__c, Minimum_Utility_Spend__c, Cost_Per_Student__c, Membership_Enrollment__c, Total_Gross_Square_Feet__c, Faith_Based__c, Key_Reference__c, Status_Reason__c, Email__c, Billing_Email__c, Notes__c FROM Account",
     map: (r) => ({
       sf_id: r.Id, _sf_parent_account_id: r.ParentId || null,
       name: r.Name, phone: r.Phone, website: r.Website, industry: r.Industry,
@@ -215,11 +215,13 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
       cost_per_student: r.Cost_Per_Student__c, membership_enrollment: r.Membership_Enrollment__c,
       total_gross_square_feet: r.Total_Gross_Square_Feet__c,
       faith_based: r.Faith_Based__c, key_reference: r.Key_Reference__c,
+      status_reason: r.Status_Reason__c, email: r.Email__c,
+      billing_email: r.Billing_Email__c, notes: r.Notes__c,
       last_synced_at: new Date().toISOString(),
     }),
   },
   contacts: {
-    soql: "SELECT Id, FirstName, LastName, Email, Phone, MobilePhone, Title, Department, MailingStreet, MailingCity, MailingState, MailingPostalCode, Description, Fax, LeadSource, Salutation, HomePhone, OtherStreet, OtherCity, OtherState, OtherPostalCode, OtherCountry, MiddleName, Suffix, Birthdate, AssistantEmail, AccountId, Status__c, Contact_Type__c, Sales_Role__c, Goes_By__c, Personal_Email__c, Additional_Email__c, Association__c, Preferred_Contact_Method__c, Contact_Number__c FROM Contact",
+    soql: "SELECT Id, FirstName, LastName, Email, Phone, MobilePhone, Title, Department, MailingStreet, MailingCity, MailingState, MailingPostalCode, Description, Fax, LeadSource, Salutation, HomePhone, OtherStreet, OtherCity, OtherState, OtherPostalCode, OtherCountry, MiddleName, Suffix, Birthdate, AssistantEmail, AccountId, Status__c, Contact_Type__c, Sales_Role__c, Goes_By__c, Personal_Email__c, Additional_Email__c, Association__c, Preferred_Contact_Method__c, Contact_Number__c, Commission_Split_Total__c, MC_Commission__c, MC_Status__c, MC_Recruitment_Stage__c, MC_Orientation_Date__c, MC_Rating__c, MC_Assigned_State__c, MC_Start_Date__c, MC_Compensation_Plan__c, MC_Type__c, MC_Comments__c, MC_Recruiter__c, ReportsToId, MC_Management_Notes__c, Actual_From_Goals__c, Recruiter_Commission__c, Quota_Over_Goals__c, Internal_Search_Owner__c, Amount_Over_Quota__c, Recruited_By__c, Dallas_Visit_Date__c, Agreement_Notes__c, Commission_Notes__c, Employee_ID__c, Notes__c FROM Contact",
     map: (r) => ({
       sf_id: r.Id, _sf_account_id: r.AccountId || null,
       first_name: r.FirstName || "Unknown", last_name: r.LastName || "Unknown",
@@ -236,11 +238,23 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
       goes_by: r.Goes_By__c, personal_email: r.Personal_Email__c,
       additional_email: r.Additional_Email__c, association: r.Association__c,
       preferred_contact_method: r.Preferred_Contact_Method__c, contact_number: r.Contact_Number__c,
+      commission_split_total: r.Commission_Split_Total__c,
+      mc_commission: r.MC_Commission__c, mc_status: r.MC_Status__c,
+      mc_recruitment_stage: r.MC_Recruitment_Stage__c, mc_orientation_date: r.MC_Orientation_Date__c,
+      mc_rating: r.MC_Rating__c, mc_assigned_state: r.MC_Assigned_State__c,
+      mc_start_date: r.MC_Start_Date__c, mc_compensation_plan: r.MC_Compensation_Plan__c,
+      mc_type: r.MC_Type__c, mc_comments: r.MC_Comments__c, mc_recruiter: r.MC_Recruiter__c,
+      reports_to: r.ReportsToId, mc_management_notes: r.MC_Management_Notes__c,
+      actual_from_goals: r.Actual_From_Goals__c, recruiter_commission: r.Recruiter_Commission__c,
+      quota_over_goals: r.Quota_Over_Goals__c, internal_search_owner: r.Internal_Search_Owner__c,
+      amount_over_quota: r.Amount_Over_Quota__c, recruited_by: r.Recruited_By__c,
+      dallas_visit_date: r.Dallas_Visit_Date__c, agreement_notes: r.Agreement_Notes__c,
+      commission_notes: r.Commission_Notes__c, employee_id: r.Employee_ID__c, notes: r.Notes__c,
       last_synced_at: new Date().toISOString(),
     }),
   },
   opportunities: {
-    soql: "SELECT Id, Name, Amount, StageName, CloseDate, Probability, Description, LeadSource, NextStep, Type, AccountId, Opportunity_Number__c FROM Opportunity",
+    soql: "SELECT Id, Name, Amount, StageName, CloseDate, Probability, Description, LeadSource, NextStep, Type, AccountId, Opportunity_Number__c, Notes__c FROM Opportunity",
     map: (r) => ({
       sf_id: r.Id,                              // Salesforce Id → salesforce_id column
       _sf_account_id: r.AccountId || null,      // resolves to account_id FK
@@ -252,7 +266,9 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
       description: r.Description,
       lead_source: r.LeadSource,
       next_step: r.NextStep,
+      type: r.Type,
       opportunity_number: r.Opportunity_Number__c || null,
+      notes: r.Notes__c,
       last_synced_at: new Date().toISOString(),
     }),
   },
@@ -267,7 +283,7 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
     }),
   },
   activities: {
-    soql: "SELECT Id, Subject, Description, Status, Priority, ActivityDate, Type, Location, DurationInMinutes, IsAllDayEvent, CompletedDateTime, IsClosed, AccountId, WhoId, WhatId, Contact_Method__c, Visit_Type__c, Visit_Length__c, Sales_Meeting_Type__c, Activity_Number__c FROM Task",
+    soql: "SELECT Id, Subject, Description, Status, Priority, ActivityDate, Type, Location, DurationInMinutes, IsAllDayEvent, CompletedDateTime, IsClosed, AccountId, WhoId, WhatId, Contact_Method__c, Visit_Type__c, Visit_Length__c, Sales_Meeting_Type__c, Activity_Number__c, Notes__c FROM Task",
     map: (r) => ({
       sf_id: r.Id, _sf_account_id: r.AccountId || null, _sf_contact_id: r.WhoId || null,
       what_id_sf: r.WhatId || null,
@@ -279,7 +295,8 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
       completed_datetime: r.CompletedDateTime, is_closed: r.IsClosed || false,
       contact_method: r.Contact_Method__c, visit_type: r.Visit_Type__c,
       visit_length: r.Visit_Length__c, sales_meeting_type: r.Sales_Meeting_Type__c,
-      activity_number: r.Activity_Number__c, last_synced_at: new Date().toISOString(),
+      activity_number: r.Activity_Number__c, notes: r.Notes__c,
+      last_synced_at: new Date().toISOString(),
     }),
   },
   events: {
@@ -330,13 +347,14 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
     }),
   },
   quotes: {
-    soql: "SELECT Id, Name, Status, ExpirationDate, Subtotal, Discount, TotalPrice, Tax, Description, QuoteNumber, AccountId, OpportunityId FROM Quote",
+    soql: "SELECT Id, Name, Status, ExpirationDate, Subtotal, Discount, TotalPrice, Tax, Description, QuoteNumber, AccountId, OpportunityId, TermsAndConditions FROM Quote",
     map: (r) => ({
       sf_id: r.Id, _sf_account_id: r.AccountId || null, _sf_opportunity_id: r.OpportunityId || null,
       name: r.Name, status: (r.Status || "draft").toLowerCase(),
       valid_until: r.ExpirationDate, subtotal: r.Subtotal, discount: r.Discount,
       total: r.TotalPrice, tax: r.Tax, notes: r.Description,
-      quote_number: r.QuoteNumber, last_synced_at: new Date().toISOString(),
+      quote_number: r.QuoteNumber, terms: r.TermsAndConditions,
+      last_synced_at: new Date().toISOString(),
     }),
   },
   cases: {

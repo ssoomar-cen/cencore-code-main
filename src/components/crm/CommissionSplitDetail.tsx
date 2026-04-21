@@ -31,14 +31,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { CommissionSplit } from "@/hooks/useCommissionSplits";
 import { useCommissionSplitSchedules } from "@/hooks/useCommissionSplitSchedules";
-
-const formatDate = (date: string | null | undefined) => {
-  if (!date) return "-";
-  return format(new Date(date), "M/d/yyyy");
-};
 
 const InfoRow = ({
   label,

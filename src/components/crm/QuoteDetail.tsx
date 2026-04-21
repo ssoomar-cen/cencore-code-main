@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, FileText, ChevronDown, Calendar, Mail } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { ActivityForm } from "./ActivityForm";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -171,7 +171,7 @@ export const QuoteDetail = () => {
           </div>
           <div>
             <span className="text-muted-foreground">Valid Until</span>
-            <p className="text-foreground truncate">{quote.valid_until ? format(new Date(quote.valid_until), "MMM dd, yyyy") : "-"}</p>
+            <p className="text-foreground truncate">{formatDate(quote.valid_until)}</p>
           </div>
         </div>
       </div>
@@ -214,8 +214,8 @@ export const QuoteDetail = () => {
                   <EditableField label="Date of Quote" value={quote.date_of_quote} type="date" onSave={(val) => handleFieldUpdate("date_of_quote", val)} />
                   <EditableField label="Expiration Date" value={quote.expiration_date} type="date" onSave={(val) => handleFieldUpdate("expiration_date", val)} />
                   <EditableField label="Valid Until" value={quote.valid_until} type="date" onSave={(val) => handleFieldUpdate("valid_until", val)} />
-                  <EditableField label="Created" value={quote.created_at ? format(new Date(quote.created_at), "MMM dd, yyyy") : null} disabled />
-                  <EditableField label="Last Modified" value={quote.updated_at ? format(new Date(quote.updated_at), "MMM dd, yyyy") : null} disabled />
+                  <EditableField label="Created" value={formatDate(quote.created_at)} disabled />
+                  <EditableField label="Last Modified" value={formatDate(quote.updated_at)} disabled />
                 </div>
               </CollapsibleSection>
 

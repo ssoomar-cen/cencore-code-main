@@ -28,6 +28,7 @@ import { activityRouter } from "./routes/activityRoutes.js";
 import { dashboardRouter } from "./routes/dashboardRoutes.js";
 import { opportunityRouter } from "./routes/opportunityRoutes.js";
 import { connectionRouter } from "./routes/connectionRoutes.js";
+import { quoteRouter } from "./routes/quoteRoutes.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -127,6 +128,7 @@ app.use("/api/activities", activityRouter);
 app.use("/api/dashboard", dashboardRouter);
 app.use("/api/opportunities", opportunityRouter);
 app.use("/api/connections", connectionRouter);
+app.use("/api/quotes", quoteRouter);
 
 async function attachFrontend() {
   if (!serveFrontend) {

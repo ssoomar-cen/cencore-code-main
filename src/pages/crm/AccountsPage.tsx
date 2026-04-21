@@ -13,8 +13,6 @@ const PAGE_SIZE = 250;
 
 const columns: Column[] = [
   { key: "name", label: "Name" },
-  { key: "account_number", label: "Account #" },
-  { key: "industry", label: "Industry" },
   { key: "account_type", label: "Type", render: (v) => <Badge variant="outline">{v || "prospect"}</Badge> },
   { key: "status", label: "Status", render: (v) => <Badge variant={v === "active" ? "default" : "secondary"}>{v}</Badge> },
   { key: "phone", label: "Phone" },

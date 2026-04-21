@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ViewToggle } from "./ViewToggle";
 import { GenericKanban } from "./GenericKanban";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 
 export const ConnectionsModule = () => {
   const navigate = useNavigate();
@@ -51,9 +51,7 @@ export const ConnectionsModule = () => {
     },
     { 
       header: "Start Date", 
-      accessor: (row: any) => row.start_date 
-        ? format(new Date(row.start_date), "MMM dd, yyyy") 
-        : "-",
+      accessor: (row: any) => formatDate(row.start_date),
     },
   ];
 
@@ -151,7 +149,7 @@ export const ConnectionsModule = () => {
               {item.role && <p className="text-xs font-medium line-clamp-1">{item.role}</p>}
               <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
                 <span>{item.owner?.first_name || item.owner?.last_name ? `${item.owner?.first_name || ""} ${item.owner?.last_name || ""}`.trim() : "No owner"}</span>
-                <span>{item.start_date ? format(new Date(item.start_date), "MMM d") : "-"}</span>
+                <span>{formatDate(item.start_date)}</span>
               </div>
             </div>
           )}

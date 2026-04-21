@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { CRMTable } from "./CRMTable";
 import { useLeads } from "@/hooks/useLeads";
 import { Plus } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 
 interface LeadsModuleProps {
   onOpenForm: (type: string, data?: any) => void;
@@ -108,7 +108,7 @@ export function LeadsModule({ onOpenForm, onDelete }: LeadsModuleProps) {
           {
             header: "Created",
             accessor: (item: any) =>
-              item.created_at ? format(new Date(item.created_at), "M/d/yyyy") : "-",
+              formatDate(item.created_at),
           },
         ]}
         onRecordClick={(id) => navigate(`/crm/leads/${id}`)}

@@ -6,13 +6,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { Measure } from "@/hooks/useMeasures";
-
-const formatDate = (date: string | null | undefined) => {
-  if (!date) return "-";
-  return format(new Date(date), "M/d/yyyy");
-};
 
 const InfoRow = ({
   label,

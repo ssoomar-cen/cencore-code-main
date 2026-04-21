@@ -18,7 +18,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { RelatedRecords } from "./RelatedRecords";
 import { ActivityForm } from "./ActivityForm";
 import { QuoteForm } from "./QuoteForm";
@@ -153,7 +153,7 @@ export const OpportunityDetail = () => {
     },
     { 
       header: "Valid Until", 
-      accessor: (row: any) => row.valid_until ? format(new Date(row.valid_until), "MMM dd, yyyy") : "-"
+      accessor: (row: any) => formatDate(row.valid_until)
     },
   ];
 
@@ -166,7 +166,7 @@ export const OpportunityDetail = () => {
     },
     { 
       header: "Start Date", 
-      accessor: (row: any) => row.start_date ? format(new Date(row.start_date), "MMM dd, yyyy") : "-"
+      accessor: (row: any) => formatDate(row.start_date)
     },
   ];
 
@@ -232,7 +232,7 @@ export const OpportunityDetail = () => {
           </div>
           <div>
             <span className="text-muted-foreground">Close Date</span>
-            <p className="text-foreground truncate">{opportunity.close_date ? format(new Date(opportunity.close_date), "MMM dd, yyyy") : "-"}</p>
+            <p className="text-foreground truncate">{formatDate(opportunity.close_date)}</p>
           </div>
           <div className="hidden sm:block">
             <span className="text-muted-foreground">Owner</span>
@@ -374,7 +374,7 @@ export const OpportunityDetail = () => {
                         </div>
                         <div className="flex justify-between items-center border-b border-border/50 pb-2">
                           <span className="text-sm text-muted-foreground">Created</span>
-                          <span className="text-sm">{opportunity.created_at ? format(new Date(opportunity.created_at), "MMM dd, yyyy") : "-"}</span>
+                          <span className="text-sm">{formatDate(opportunity.created_at)}</span>
                         </div>
                         <div className="md:col-span-2">
                           <EditableField
@@ -754,7 +754,7 @@ export const OpportunityDetail = () => {
                             </div>
                           </div>
                           <span className="text-xs text-muted-foreground">
-                            {doc.created_at ? format(new Date(doc.created_at), "MMM dd, yyyy") : "-"}
+                            {formatDate(doc.created_at)}
                           </span>
                         </div>
                       ))}

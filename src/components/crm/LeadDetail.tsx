@@ -12,17 +12,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, ChevronDown, User, Building2, Mail, Phone, MapPin, Calendar } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { LeadForm } from "./LeadForm";
-
-const formatDate = (date: string | null | undefined) => {
-  if (!date) return "-";
-  try {
-    return format(new Date(date), "M/d/yyyy");
-  } catch {
-    return date;
-  }
-};
 
 const ReadOnlyRow = ({ label, value }: { label: string; value: React.ReactNode }) => (
   <div className="flex justify-between items-center border-b border-border/50 pb-2 min-h-[36px]">

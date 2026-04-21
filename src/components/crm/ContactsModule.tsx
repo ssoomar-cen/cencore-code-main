@@ -12,7 +12,7 @@ import { MergeRecordsDialog } from "@/components/ui/merge-records-dialog";
 import { useContacts } from "@/hooks/useContacts";
 import { supabase } from "@/integrations/supabase/client";
 import { Plus, Mail, Phone, User, Merge } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { toast } from "sonner";
 
 interface ContactsModuleProps {
@@ -197,7 +197,7 @@ export function ContactsModule({ onOpenForm, onDelete }: ContactsModuleProps) {
             { header: "Title", accessor: "title" },
             { header: "Account", accessor: (item: any) => item.account?.name || "N/A" },
             { header: "Primary", accessor: (item: any) => item.is_primary ? "Yes" : "No" },
-            { header: "Created", accessor: (item: any) => item.created_at ? format(new Date(item.created_at), "MMM d, yyyy") : "-" },
+            { header: "Created", accessor: (item: any) => formatDate(item.created_at) },
           ]}
           onEdit={(item) => onOpenForm("contacts", item)}
           onDelete={(id) => onDelete("contacts", id)}
@@ -264,7 +264,7 @@ export function ContactsModule({ onOpenForm, onDelete }: ContactsModuleProps) {
               <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
                 <span>{item.contact_number || 'N/A'}</span>
                 {item.created_at && (
-                  <span>{format(new Date(item.created_at), "MMM d")}</span>
+                  <span>{formatDate(item.created_at)}</span>
                 )}
               </div>
             </div>

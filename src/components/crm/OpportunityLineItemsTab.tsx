@@ -19,7 +19,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Trash2, Plus } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { toast } from "sonner";
 
 interface OpportunityLineItemsTabProps {
@@ -122,7 +122,7 @@ export const OpportunityLineItemsTab = ({ opportunityId }: OpportunityLineItemsT
                 <TableCell className="text-right">{formatCurrency(item.total_price)}</TableCell>
                 <TableCell>
                   {item.service_date
-                    ? format(new Date(item.service_date), "MMM d, yyyy")
+                    ? formatDate(item.service_date)
                     : "—"}
                 </TableCell>
                 <TableCell>

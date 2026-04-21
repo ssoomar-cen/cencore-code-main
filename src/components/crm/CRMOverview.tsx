@@ -7,7 +7,7 @@ import { useCRMStats } from "@/hooks/useCRMStats";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PieChart, Pie, Cell, Legend, ResponsiveContainer, Tooltip } from "recharts";
 import { useNavigate } from "react-router-dom";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -343,7 +343,7 @@ export const CRMOverview = () => {
                       <TableCell>{opp.stage || "—"}</TableCell>
                       <TableCell>{opp.account?.org_type || "—"}</TableCell>
                       <TableCell>
-                        {opp.close_date ? format(new Date(opp.close_date), "M/d/yyyy") : "—"}
+                        {formatDate(opp.close_date)}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -393,7 +393,7 @@ export const CRMOverview = () => {
                   {stats?.appointmentsThisWeek?.slice(0, 5).map((apt: any) => (
                     <TableRow key={apt.activity_id} className="cursor-pointer hover:bg-muted/50">
                       <TableCell>
-                        {apt.start_datetime ? format(new Date(apt.start_datetime), "M/d/yyyy") : "—"}
+                        {formatDate(apt.start_datetime)}
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline" className={getStatusBadgeVariant(apt.status)}>
@@ -448,7 +448,7 @@ export const CRMOverview = () => {
                   {stats?.appointmentsPast14Days?.slice(0, 5).map((apt: any) => (
                     <TableRow key={apt.activity_id} className="cursor-pointer hover:bg-muted/50">
                       <TableCell>
-                        {apt.start_datetime ? format(new Date(apt.start_datetime), "M/d/yyyy") : "—"}
+                        {formatDate(apt.start_datetime)}
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline" className={getStatusBadgeVariant(apt.status)}>

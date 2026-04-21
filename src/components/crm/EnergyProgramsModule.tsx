@@ -13,7 +13,7 @@ import {
 import { CRMTable } from "./CRMTable";
 import { useEnergyPrograms } from "@/hooks/useEnergyPrograms";
 import { Plus } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 
 interface EnergyProgramsModuleProps {
   onOpenForm: (type: string, data?: any) => void;
@@ -140,9 +140,7 @@ export function EnergyProgramsModule({
           {
             header: "Contract Start Date",
             accessor: (item: any) =>
-              item.contract_start_date
-                ? format(new Date(item.contract_start_date), "M/d/yyyy")
-                : "-",
+              formatDate(item.contract_start_date),
           },
           {
             header: "Account",
@@ -151,9 +149,7 @@ export function EnergyProgramsModule({
           {
             header: "Created",
             accessor: (item: any) =>
-              item.created_at
-                ? format(new Date(item.created_at), "M/d/yyyy")
-                : "-",
+              formatDate(item.created_at),
           },
         ]}
         onRecordClick={(id) => navigate(`/crm/energy-programs/${id}`)}

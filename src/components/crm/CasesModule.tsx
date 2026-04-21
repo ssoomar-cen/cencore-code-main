@@ -26,7 +26,7 @@ import { ViewToggle } from "./ViewToggle";
 import { GenericKanban } from "./GenericKanban";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 
 export const CasesModule = () => {
   const navigate = useNavigate();
@@ -168,7 +168,7 @@ export const CasesModule = () => {
     { header: "Priority", accessor: "priority" },
     { header: "Category", accessor: "category" },
     { header: "Origin", accessor: "origin" },
-    { header: "Created", accessor: (item: any) => item.created_at ? format(new Date(item.created_at), "MMM d, yyyy") : "-" },
+    { header: "Created", accessor: (item: any) => formatDate(item.created_at) },
   ];
 
   const kanbanColumns = [

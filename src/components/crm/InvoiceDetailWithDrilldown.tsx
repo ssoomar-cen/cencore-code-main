@@ -10,22 +10,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, ChevronDown } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { InvoiceForm } from "./InvoiceForm";
 import { InvoiceItemsTab } from "./InvoiceItemsTab";
 import { InvoiceReconTab } from "./InvoiceReconTab";
 import { InvoiceItemDetailPanel } from "./InvoiceItemDetailPanel";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-
-const formatDate = (date: string | null | undefined) => {
-  if (!date) return "-";
-  try {
-    return format(new Date(date), "M/d/yyyy");
-  } catch {
-    return date;
-  }
-};
 
 const formatCurrency = (value: number | null | undefined) => {
   if (value == null) return "-";

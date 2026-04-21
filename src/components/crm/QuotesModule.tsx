@@ -10,7 +10,7 @@ import { GenericKanban } from "./GenericKanban";
 import { BulkEditDialog, BulkEditField } from "@/components/ui/bulk-edit-dialog";
 import { useQuotes } from "@/hooks/useQuotes";
 import { Plus, DollarSign, FileText, ArrowUpDown, ArrowUp, ArrowDown, Trash2 } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { toast } from "sonner";
 
 interface QuotesModuleProps {
@@ -378,10 +378,10 @@ export function QuotesModule({ onOpenForm, onDelete }: QuotesModuleProps) {
                       {quote.total_amount ? `$${quote.total_amount.toLocaleString()}` : "N/A"}
                     </td>
                     <td className="px-2.5 py-2 align-middle text-sm">
-                      {quote.valid_until ? format(new Date(quote.valid_until), "MMM d, yyyy") : "N/A"}
+                      {formatDate(quote.valid_until)}
                     </td>
                     <td className="px-2.5 py-2 align-middle text-sm">
-                      {quote.created_at ? format(new Date(quote.created_at), "MMM d, yyyy") : "-"}
+                      {formatDate(quote.created_at)}
                     </td>
                   </tr>
                 ))
@@ -426,10 +426,10 @@ export function QuotesModule({ onOpenForm, onDelete }: QuotesModuleProps) {
               )}
               <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
                 {item.created_at && (
-                  <span>{format(new Date(item.created_at), "MMM d")}</span>
+                  <span>{formatDate(item.created_at)}</span>
                 )}
                 {item.valid_until && (
-                  <span>Valid: {format(new Date(item.valid_until), "MMM d")}</span>
+                  <span>Valid: {formatDate(item.valid_until)}</span>
                 )}
               </div>
             </div>

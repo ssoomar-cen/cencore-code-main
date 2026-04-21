@@ -12,7 +12,7 @@ import { MergeRecordsDialog } from "@/components/ui/merge-records-dialog";
 import { useAccounts, Account } from "@/hooks/useAccounts";
 import { supabase } from "@/integrations/supabase/client";
 import { Plus, Phone, Merge } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { toast } from "sonner";
 
 interface AccountsModuleProps {
@@ -215,7 +215,7 @@ export function AccountsModule({ onOpenForm, onDelete }: AccountsModuleProps) {
               return associatedAccount?.name || item.association;
             }},
             { header: "Contract Status", accessor: "contract_status" },
-            { header: "Created Date", accessor: (item: any) => item.created_at ? format(new Date(item.created_at), "M/d/yyyy, h:mm a") : "-" },
+            { header: "Created Date", accessor: (item: any) => formatDate(item.created_at) },
             { header: "Org Owner", accessor: (item: any) => item.owner_user_id ? "Owner" : "-" },
           ]}
           onEdit={(item) => onOpenForm("accounts", item)}
@@ -269,7 +269,7 @@ export function AccountsModule({ onOpenForm, onDelete }: AccountsModuleProps) {
               <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
                 <span>{item.account_number || 'N/A'}</span>
                 {item.created_at && (
-                  <span>{format(new Date(item.created_at), "MMM d")}</span>
+                  <span>{formatDate(item.created_at)}</span>
                 )}
               </div>
             </div>

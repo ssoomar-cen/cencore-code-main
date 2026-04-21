@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Pencil, Trash2, UserCog, Building2, Calendar, Mail, ChevronDown, RefreshCw } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { RelatedActivities } from "./RelatedActivities";
 import { RelatedRecords } from "./RelatedRecords";
 import { AccountForm } from "./AccountForm";
@@ -135,7 +135,7 @@ export const AccountDetail = () => {
     },
     { 
       header: "Close Date", 
-      accessor: (row: any) => row.close_date ? format(new Date(row.close_date), "MMM dd, yyyy") : "-"
+      accessor: (row: any) => formatDate(row.close_date)
     },
     { 
       header: "Probability", 
@@ -152,11 +152,11 @@ export const AccountDetail = () => {
     },
     { 
       header: "Start Date", 
-      accessor: (row: any) => row.start_date ? format(new Date(row.start_date), "MMM dd, yyyy") : "-"
+      accessor: (row: any) => formatDate(row.start_date)
     },
-    { 
-      header: "End Date", 
-      accessor: (row: any) => row.end_date ? format(new Date(row.end_date), "MMM dd, yyyy") : "-"
+    {
+      header: "End Date",
+      accessor: (row: any) => formatDate(row.end_date)
     },
   ];
 
@@ -165,21 +165,21 @@ export const AccountDetail = () => {
   const projectColumns: Column[] = [
     { header: "Program Name", accessor: "name" },
     { header: "Code", accessor: "code" },
-    { 
-      header: "Status", 
+    {
+      header: "Status",
       accessor: (row: any) => (
         <Badge variant={row.status === "Active" ? "default" : "secondary"}>
           {row.status}
         </Badge>
       )
     },
-    { 
-      header: "Start Date", 
-      accessor: (row: any) => row.start_date ? format(new Date(row.start_date), "MMM dd, yyyy") : "-"
+    {
+      header: "Start Date",
+      accessor: (row: any) => formatDate(row.start_date)
     },
-    { 
-      header: "End Date", 
-      accessor: (row: any) => row.end_date ? format(new Date(row.end_date), "MMM dd, yyyy") : "-"
+    {
+      header: "End Date",
+      accessor: (row: any) => formatDate(row.end_date)
     },
     { 
       header: "Budget", 
@@ -429,7 +429,7 @@ export const AccountDetail = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label className="text-sm font-medium text-muted-foreground">Created</label>
-                        <p className="mt-1">{account.created_at ? format(new Date(account.created_at), "MMM dd, yyyy h:mm a") : "-"}</p>
+                        <p className="mt-1">{formatDate(account.created_at)}</p>
                       </div>
                       <div>
                         <label className="text-sm font-medium text-muted-foreground">Sales Status</label>
@@ -437,7 +437,7 @@ export const AccountDetail = () => {
                       </div>
                       <div>
                         <label className="text-sm font-medium text-muted-foreground">Last Modified</label>
-                        <p className="mt-1">{account.updated_at ? format(new Date(account.updated_at), "MMM dd, yyyy h:mm a") : "-"}</p>
+                        <p className="mt-1">{formatDate(account.updated_at)}</p>
                       </div>
                       <div>
                         <label className="text-sm font-medium text-muted-foreground">Status</label>

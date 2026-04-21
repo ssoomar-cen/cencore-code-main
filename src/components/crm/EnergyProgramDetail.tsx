@@ -21,15 +21,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { EnergyProgram } from "@/hooks/useEnergyPrograms";
 import { useEnergyProgramTeamMembers } from "@/hooks/useEnergyProgramTeamMembers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-
-const formatDate = (date: string | null | undefined) => {
-  if (!date) return "-";
-  return format(new Date(date), "M/d/yyyy");
-};
 
 const InfoRow = ({ label, value }: { label: string; value: React.ReactNode }) => (
   <div className="flex justify-between items-center border-b border-border/50 pb-2 min-h-[36px]">

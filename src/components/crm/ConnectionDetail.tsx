@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Link2, ChevronDown, Calendar, Mail } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { ActivityForm } from "@/components/crm/ActivityForm";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -257,12 +257,12 @@ export const ConnectionDetail = () => {
                         />
                         <EditableField
                           label="Created"
-                          value={connection.created_at ? format(new Date(connection.created_at), "MMM dd, yyyy h:mm a") : null}
+                          value={formatDate(connection.created_at)}
                           disabled
                         />
                         <EditableField
                           label="Last Modified"
-                          value={connection.updated_at ? format(new Date(connection.updated_at), "MMM dd, yyyy h:mm a") : null}
+                          value={formatDate(connection.updated_at)}
                           disabled
                         />
                         <EditableField

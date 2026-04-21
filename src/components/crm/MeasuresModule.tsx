@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { CRMTable } from "./CRMTable";
 import { useMeasures } from "@/hooks/useMeasures";
 import { Plus } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 
 interface MeasuresModuleProps {
   onOpenForm: (type: string, data?: any) => void;
@@ -81,7 +81,7 @@ export function MeasuresModule({ onOpenForm, onDelete }: MeasuresModuleProps) {
             header: "Created",
             accessor: (item: any) =>
               item.created_at
-                ? format(new Date(item.created_at), "M/d/yyyy")
+                ? formatDate(item.created_at)
                 : "-",
           },
         ]}

@@ -11,7 +11,7 @@ import { CRMTable, Column } from "./CRMTable";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ActivityForm } from "./ActivityForm";
 import { ReassignOwnerDialog } from "./ReassignOwnerDialog";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 import { getUserDisplayName } from "@/hooks/useUserDisplayInfo";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
@@ -152,7 +152,7 @@ export const RelatedActivities = ({ entityType, entityId, entityName }: RelatedA
     { header: "Priority", accessor: "priority" },
     { 
       header: "Due Date", 
-      accessor: (row: any) => row.due_date ? format(new Date(row.due_date), "MMM dd, yyyy") : "-"
+      accessor: (row: any) => formatDate(row.due_date)
     },
     { 
       header: "Owner", 
@@ -160,7 +160,7 @@ export const RelatedActivities = ({ entityType, entityId, entityName }: RelatedA
     },
     { 
       header: "Created", 
-      accessor: (row: any) => row.created_at ? format(new Date(row.created_at), "MMM d, yyyy") : "-"
+      accessor: (row: any) => formatDate(row.created_at)
     },
     { 
       header: "Actions", 

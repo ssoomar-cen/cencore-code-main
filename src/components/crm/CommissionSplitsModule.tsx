@@ -12,7 +12,7 @@ import {
 import { CRMTable } from "./CRMTable";
 import { useCommissionSplits } from "@/hooks/useCommissionSplits";
 import { Plus } from "lucide-react";
-import { format } from "date-fns";
+import { formatDate } from "@/lib/utils";
 
 interface CommissionSplitsModuleProps {
   onOpenForm: (type: string, data?: any) => void;
@@ -129,10 +129,7 @@ export function CommissionSplitsModule({
           },
           {
             header: "Created",
-            accessor: (item: any) =>
-              item.created_at
-                ? format(new Date(item.created_at), "M/d/yyyy")
-                : "-",
+            accessor: (item: any) => formatDate(item.created_at),
           },
         ]}
         onRecordClick={(id) => navigate(`/crm/commission-splits/${id}`)}
