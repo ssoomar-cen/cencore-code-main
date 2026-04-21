@@ -98,7 +98,8 @@ const RELATIONSHIP_DEFS: Record<string, Array<{ sfField: string; fkColumn: strin
 const SYNC_ORDER: string[] = [
   "accounts", "contacts", "leads", "energy_programs", "campaigns",
   "opportunities", "contracts", "quotes", "cases",
-  "activities", "events", "invoices", "commission_splits", "connections",
+  "activities", "events", "invoices", "invoice_items", "buildings",
+  "commission_splits", "connections",
 ];
 
 function jsonResponse(body: Record<string, unknown>, status = 200) {

@@ -157,7 +157,7 @@ const TABLE_TENANT_COL: Record<string, string | null> = {
   campaigns: null,
   quotes: null,
   commission_splits: null,
-  connections: null,
+  connections: "tenant_id",
   buildings: "tenant_id",
   invoice_item: "tenant_id",
 };

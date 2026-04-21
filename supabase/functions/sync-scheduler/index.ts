@@ -6,6 +6,26 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+// Dependency order: parent objects must sync before children that reference them as FKs.
+const SYNC_ORDER = [
+  "accounts",          // root entity — no dependencies
+  "contacts",          // depends on accounts
+  "leads",             // independent
+  "energy_programs",   // depends on accounts
+  "campaigns",         // independent
+  "opportunities",     // depends on accounts, contacts
+  "contracts",         // depends on accounts, opportunities
+  "quotes",            // depends on opportunities
+  "cases",             // depends on accounts, contacts
+  "activities",        // depends on accounts, contacts, opportunities
+  "events",            // depends on accounts, contacts
+  "invoices",          // depends on accounts, energy_programs
+  "invoice_items",     // depends on invoices, energy_programs
+  "buildings",         // depends on energy_programs
+  "commission_splits", // depends on opportunities
+  "connections",       // depends on contacts
+];
+
 // Called by pg_cron every minute. Checks sync_schedules for due syncs and triggers them.
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -44,7 +64,13 @@ Deno.serve(async (req) => {
 
     for (const schedule of dueSchedules) {
       try {
-        const objects = schedule.sync_objects || [];
+        const objects = (schedule.sync_objects || []).slice().sort(
+          (a: string, b: string) => {
+            const ai = SYNC_ORDER.indexOf(a);
+            const bi = SYNC_ORDER.indexOf(b);
+            return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+          }
+        );
         const syncResults: any[] = [];
 
         // Sync one object at a time to avoid CPU time exceeded

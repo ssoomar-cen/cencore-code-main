@@ -269,7 +269,45 @@ export function useBuildingsList(params: { search: string; page: number; limit: 
   });
 }
 
-export const useConnections = () => { const { activeTenantId } = useTenant(); return useCrudHook("connections", "Connection", "*, contact:contacts!connections_contact_id_fkey(id, first_name, last_name), connected_contact:contacts!connections_connected_contact_id_fkey(id, first_name, last_name)", activeTenantId); };
+export const useConnections = () => {
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ["connections"],
+    queryFn: async () => {
+      const res = await fetch("/api/connections?limit=500");
+      if (!res.ok) throw new Error("Failed to fetch connections");
+      const result = await res.json();
+      return (result.data || []) as any[];
+    },
+  });
+  const create = useMutation({
+    mutationFn: async (item: any) => {
+      const res = await fetch("/api/connections", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(item) });
+      if (!res.ok) throw new Error(await res.text());
+      return res.json();
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["connections"] }); toast.success("Connection created"); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  const update = useMutation({
+    mutationFn: async ({ id, ...updates }: any) => {
+      const res = await fetch(`/api/connections/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updates) });
+      if (!res.ok) throw new Error(await res.text());
+      return res.json();
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["connections"] }); toast.success("Connection updated"); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  const remove = useMutation({
+    mutationFn: async (id: string) => {
+      const res = await fetch(`/api/connections/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error(await res.text());
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["connections"] }); toast.success("Connection deleted"); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  return { ...query, create, update, remove };
+};
 export const useCredentials = () => { const { activeTenantId } = useTenant(); return useCrudHook("credentials", "Credential", "*", activeTenantId); };
 export const useEnergyPrograms = () => { const { activeTenantId } = useTenant(); return useCrudHook("energy_programs", "Energy Program", "*, accounts(name)", activeTenantId); };
 

@@ -291,7 +291,7 @@ export default function SalesforceSyncPanel({ integrationId, config, onDisconnec
   const [selectedObjects, setSelectedObjects] = useState<Record<string, boolean>>(
     config.sync_objects
       ? Object.fromEntries(SYNC_OBJECTS.map((o) => [o.key, (config.sync_objects as string[]).includes(o.key)]))
-      : Object.fromEntries(SYNC_OBJECTS.map((o) => [o.key, true]))
+      : Object.fromEntries(SYNC_OBJECTS.map((o) => [o.key, false]))
   );
   const [syncing, setSyncing] = useState(false);
   const [syncProgress, setSyncProgress] = useState<{ current: string; done: number; total: number } | null>(null);

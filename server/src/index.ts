@@ -27,6 +27,7 @@ import { contactRouter } from "./routes/contactRoutes.js";
 import { activityRouter } from "./routes/activityRoutes.js";
 import { dashboardRouter } from "./routes/dashboardRoutes.js";
 import { opportunityRouter } from "./routes/opportunityRoutes.js";
+import { connectionRouter } from "./routes/connectionRoutes.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -125,6 +126,7 @@ app.use("/api/contacts", contactRouter);
 app.use("/api/activities", activityRouter);
 app.use("/api/dashboard", dashboardRouter);
 app.use("/api/opportunities", opportunityRouter);
+app.use("/api/connections", connectionRouter);
 
 async function attachFrontend() {
   if (!serveFrontend) {
