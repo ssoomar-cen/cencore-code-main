@@ -35,7 +35,7 @@ export default function InvoicesPage() {
 
   const { data: listResult, isLoading } = useInvoicesList({ search: debouncedSearch, page, limit: PAGE_SIZE });
 
-  const { create, update, remove } = useInvoices();
+  const { data, create, update, remove } = useInvoices();
   const { data: accounts } = useAccounts();
   const { data: contracts } = useContracts();
   const { data: invoiceItems } = useAllInvoiceItems();
@@ -168,6 +168,7 @@ export default function InvoicesPage() {
     <CrmDataTable title="Invoices" description="Manage invoices and billing"
       entityLabel="Invoice"
       columns={columns} data={listResult?.data || []}
+      detailData={data || []}
       isLoading={isLoading} formFields={formFields}
       onCreate={(d) => create.mutate(d)} onUpdate={(d) => update.mutate(d)} onDelete={(id) => remove.mutate(id)}
       createLabel="Add Invoice" filters={filters} kanban={kanban}

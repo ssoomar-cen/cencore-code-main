@@ -42,6 +42,36 @@ interface SyncSchedule {
   sync_direction: string;
 }
 
+const SYNC_ORDER = [
+  "accounts",
+  "contacts",
+  "leads",
+  "campaigns",
+  "opportunities",
+  "quotes",
+  "measures",
+  "energy_programs",
+  "contracts",
+  "buildings",
+  "credentials",
+  "activities",
+  "events",
+  "cases",
+  "connections",
+  "invoices",
+  "invoice_items",
+  "commission_splits",
+  "commission_split_schedules",
+  "energy_program_team_members",
+];
+
+const sortSyncObjects = (objects: string[]) =>
+  [...objects].sort((a, b) => {
+    const ai = SYNC_ORDER.indexOf(a);
+    const bi = SYNC_ORDER.indexOf(b);
+    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+  });
+
 const SYNC_OBJECTS = [
   { key: "accounts", label: "Accounts", icon: "🏢" },
   { key: "contacts", label: "Contacts", icon: "👤" },
@@ -60,6 +90,20 @@ const SYNC_OBJECTS = [
   { key: "buildings", label: "Buildings", icon: "🏗️" },
   { key: "commission_splits", label: "Commission Splits", icon: "💵" },
 ];
+
+const RELATED_SYNC_OBJECTS = [
+  { key: "measures", label: "Measures", icon: "M" },
+  { key: "credentials", label: "Credentials", icon: "C" },
+  { key: "commission_split_schedules", label: "Commission Split Schedules", icon: "S" },
+  { key: "energy_program_team_members", label: "Energy Program Team Members", icon: "T" },
+];
+
+const AVAILABLE_SYNC_OBJECTS = sortSyncObjects([
+  ...SYNC_OBJECTS.map((objectItem) => objectItem.key),
+  ...RELATED_SYNC_OBJECTS
+    .filter((related) => !SYNC_OBJECTS.some((objectItem) => objectItem.key === related.key))
+    .map((objectItem) => objectItem.key),
+]).map((key) => [...SYNC_OBJECTS, ...RELATED_SYNC_OBJECTS].find((objectItem) => objectItem.key === key)!);
 
 const INTERVAL_OPTIONS = [
   { value: "5", label: "Every 5 minutes" },
@@ -91,14 +135,13 @@ const FIELD_MAPPINGS: Record<string, { sf: string; cencore: string }[]> = {
     { sf: "AccountSource", cencore: "account_source" },
     { sf: "Status__c", cencore: "status" }, { sf: "Sales_Status__c", cencore: "sales_status" },
     { sf: "Org_Type__c", cencore: "org_type" }, { sf: "Org_Record_Type__c", cencore: "org_record_type" },
-    { sf: "Association__c", cencore: "association" }, { sf: "Legal_Name__c", cencore: "legal_name" },
+    { sf: "Association__c", cencore: "association" }, { sf: "Org_Legal_Name__c", cencore: "legal_name" },
     { sf: "PO_Number__c", cencore: "po_number" }, { sf: "GL_Revenue_Account__c", cencore: "gl_revenue_account" },
     { sf: "Invoice_Delivery__c", cencore: "invoice_delivery" },
     { sf: "Contract_Status__c", cencore: "contract_status" },
     { sf: "Prospect_Data_Source__c", cencore: "prospect_data_source" },
     { sf: "Est_Annual_Expenditures__c", cencore: "est_annual_expenditures" },
     { sf: "Minimum_Utility_Spend__c", cencore: "minimum_utility_spend" },
-    { sf: "Cost_Per_Student__c", cencore: "cost_per_student" },
     { sf: "Membership_Enrollment__c", cencore: "membership_enrollment" },
     { sf: "Total_Gross_Square_Feet__c", cencore: "total_gross_square_feet" },
     { sf: "Faith_Based__c", cencore: "faith_based" }, { sf: "Key_Reference__c", cencore: "key_reference" },
@@ -159,11 +202,17 @@ const FIELD_MAPPINGS: Record<string, { sf: string; cencore: string }[]> = {
     { sf: "NumberOfAttendees__c", cencore: "number_of_attendees" },
   ],
   contracts: [
-    { sf: "ContractNumber", cencore: "contract_number" }, { sf: "Status", cencore: "status" },
-    { sf: "StartDate", cencore: "start_date" }, { sf: "EndDate", cencore: "end_date" },
-    { sf: "ContractTerm", cencore: "contract_term" }, { sf: "Description", cencore: "description" },
-    { sf: "CompanySignedDate", cencore: "company_signed_date" },
-    { sf: "CustomerSignedDate", cencore: "customer_signed_date" },
+    { sf: "Name", cencore: "contract_number" }, { sf: "Name__c", cencore: "name" },
+    { sf: "Organization_Name__c", cencore: "account_id" },
+    { sf: "Original_Opportunity__c", cencore: "opportunity_id" },
+    { sf: "Energy_Program__c", cencore: "energy_program_id" },
+    { sf: "Contract__c", cencore: "parent_contract_id" },
+    { sf: "Status__c", cencore: "status" }, { sf: "Type__c", cencore: "type" },
+    { sf: "Contract_Start_Date__c", cencore: "start_date" },
+    { sf: "Contract_Term__c", cencore: "contract_term" },
+    { sf: "Description__c", cencore: "description" },
+    { sf: "Company_SIgned_Date__c", cencore: "company_signed_date" },
+    { sf: "Customer_Signed_Date__c", cencore: "customer_signed_date" },
     { sf: "Contract_Type__c", cencore: "contract_type" },
     { sf: "Contract_Status__c", cencore: "contract_status" },
     { sf: "Billing_Cycle__c", cencore: "billing_cycle" },
@@ -204,38 +253,84 @@ const FIELD_MAPPINGS: Record<string, { sf: string; cencore: string }[]> = {
     { sf: "ContactEmail", cencore: "source_email" },
   ],
   energy_programs: [
-    { sf: "Name", cencore: "name" }, { sf: "Description", cencore: "description" },
-    { sf: "Status__c", cencore: "status" }, { sf: "Program_Type__c", cencore: "program_type" },
-    { sf: "Start_Date__c", cencore: "start_date" }, { sf: "End_Date__c", cencore: "end_date" },
-    { sf: "Budget__c", cencore: "budget" }, { sf: "Contract_Term__c", cencore: "contract_term" },
+    { sf: "Name", cencore: "name" },
+    { sf: "Organization__c", cencore: "account_id" },
+    { sf: "Related_Opportunity__c", cencore: "opportunity_id" },
+    { sf: "Related_Measure__c", cencore: "measure_id" },
+    { sf: "Status__c", cencore: "status" },
+    { sf: "Service_Status__c", cencore: "service_status" },
+    { sf: "Contract_Term__c", cencore: "contract_term" },
     { sf: "Contract_Type__c", cencore: "contract_type" },
     { sf: "Contract_Status__c", cencore: "contract_status" },
-    { sf: "Utility__c", cencore: "utility" },
     { sf: "Contract_Start_Date__c", cencore: "contract_start_date" },
     { sf: "Billing_Schedule_End_Date__c", cencore: "billing_schedule_end_date" },
-    { sf: "Service_Status__c", cencore: "service_status" },
     { sf: "Key_Reference__c", cencore: "key_reference" },
     { sf: "Key_Reference_Notes__c", cencore: "key_reference_notes" },
-    { sf: "CT_Hot_Notes__c", cencore: "ct_hot_notes" },
-    { sf: "PGM_ID__c", cencore: "pgm_id" },
-    { sf: "Push_To_D365__c", cencore: "push_to_d365" },
+    { sf: "CT_HotNotes__c", cencore: "ct_hot_notes" },
+    { sf: "pgmId__c", cencore: "pgm_id" },
+    { sf: "Push_to_D365__c", cencore: "push_to_d365" },
     { sf: "Send_Contacts__c", cencore: "send_contacts" },
+  ],
+  measures: [
+    { sf: "Name", cencore: "name" },
+    { sf: "Org__c", cencore: "account_id" },
+    { sf: "C360MeasureID__c", cencore: "c360_measure_id" },
+    { sf: "Conversion_Date__c", cencore: "conversion_date" },
+    { sf: "Measure_Program_ID__c", cencore: "measure_program_id" },
+    { sf: "C360AccountID__c", cencore: "c360_account_id" },
+    { sf: "Conversion_Bill_Period__c", cencore: "conversion_bill_period" },
+  ],
+  buildings: [
+    { sf: "Name", cencore: "name" }, { sf: "Name__c", cencore: "name" },
+    { sf: "Energy_Program__c", cencore: "energy_program_id" },
+    { sf: "Building_No__c", cencore: "building_no" },
+    { sf: "Place_Code__c", cencore: "place_code" },
+    { sf: "Place_Id__c", cencore: "place_id" },
+    { sf: "Status__c", cencore: "status" },
+    { sf: "Status_Reason__c", cencore: "status_reason" },
+    { sf: "Address_1__c", cencore: "address_street" },
+    { sf: "Address_2__c", cencore: "address_2" },
+    { sf: "City__c", cencore: "address_city" },
+    { sf: "State__c", cencore: "address_state" },
+    { sf: "Zip__c", cencore: "address_zip" },
+    { sf: "Primary_Use__c", cencore: "primary_use" },
+    { sf: "Square_Footage__c", cencore: "square_footage" },
+    { sf: "Exclude_from_GreenX__c", cencore: "exclude_from_greenx" },
+  ],
+  credentials: [
+    { sf: "Name", cencore: "name" },
+    { sf: "Contact__c", cencore: "contact_id" },
+    { sf: "Organization__c", cencore: "account_id" },
+    { sf: "Credential_Type__c", cencore: "credential_type" },
+    { sf: "Credentials__c", cencore: "credential_number" },
+    { sf: "Cert_ID__c", cencore: "cert_id" },
+    { sf: "Included_in_Resume__c", cencore: "included_in_resume" },
+    { sf: "Valid_To__c", cencore: "valid_to" },
+    { sf: "Certified_Date__c", cencore: "certified_date" },
+    { sf: "Status__c", cencore: "status" },
+    { sf: "Status_Reason__c", cencore: "status_reason" },
+    { sf: "Comments__c", cencore: "comments" },
+    { sf: "Credentials_Description__c", cencore: "credentials_description" },
   ],
   connections: [
     { sf: "Name", cencore: "relationship_type" },
-    { sf: "Relationship_Type__c", cencore: "relationship_type" },
-    { sf: "Description", cencore: "notes" },
+    { sf: "Organization__c", cencore: "account_id" },
+    { sf: "Contact__c", cencore: "contact_id" },
+    { sf: "Role__c", cencore: "relationship_type" },
+    { sf: "Active__c", cencore: "is_active" },
+    { sf: "Start_Date__c", cencore: "start_date" },
+    { sf: "End_Date__c", cencore: "end_date" },
+    { sf: "Notes__c", cencore: "notes" },
   ],
   invoices: [
-    { sf: "Name", cencore: "name" }, { sf: "Invoice_Number__c", cencore: "invoice_number" },
-    { sf: "Invoice_Name__c", cencore: "invoice_name" }, { sf: "Status__c", cencore: "status" },
-    { sf: "Invoice_Date__c", cencore: "issue_date" }, { sf: "Due_Date__c", cencore: "due_date" },
-    { sf: "Subtotal__c", cencore: "subtotal" }, { sf: "Tax__c", cencore: "tax" },
-    { sf: "Total__c", cencore: "total" }, { sf: "Amount_Paid__c", cencore: "amount_paid" },
+    { sf: "Name", cencore: "name" }, { sf: "Invoice_ID__c", cencore: "invoice_number" },
+    { sf: "Invoice_Name__c", cencore: "invoice_name" },
+    { sf: "Intacct_Status__c", cencore: "status" },
+    { sf: "Due_Date__c", cencore: "due_date" },
+    { sf: "Invoice_Total__c", cencore: "total" },
     { sf: "Applied_Amount__c", cencore: "applied_amount" },
     { sf: "Contract_Amount__c", cencore: "contract_amount" },
-    { sf: "Invoice_Total__c", cencore: "invoice_total" },
-    { sf: "Description__c", cencore: "description" }, { sf: "Currency__c", cencore: "currency" },
+    { sf: "Description__c", cencore: "description" },
     { sf: "Document_Type__c", cencore: "document_type" },
     { sf: "Bill_Month__c", cencore: "bill_month" }, { sf: "Post_Date__c", cencore: "post_date" },
     { sf: "Scheduled_Date__c", cencore: "scheduled_date" },
@@ -244,37 +339,76 @@ const FIELD_MAPPINGS: Record<string, { sf: string; cencore: string }[]> = {
     { sf: "Intacct_Status__c", cencore: "intacct_status" },
     { sf: "Ready_For_Billing__c", cencore: "ready_for_billing" },
     { sf: "Billing_Wizard__c", cencore: "billing_wizard" },
+    { sf: "Contract__c", cencore: "contract_id" },
+    { sf: "Energy_Program__c", cencore: "energy_program_id" },
+  ],
+  invoice_items: [
+    { sf: "Name", cencore: "name" },
+    { sf: "Invoice__c", cencore: "invoice_id" },
+    { sf: "Energy_Program__c", cencore: "energy_program_id" },
+    { sf: "Invoice_Item_Type__c", cencore: "invoice_item_type" },
+    { sf: "Savings__c", cencore: "savings" },
+    { sf: "Current_Cost_Avoidance__c", cencore: "current_cost_avoidance" },
+    { sf: "Special_Savings__c", cencore: "special_savings" },
+    { sf: "Previous_Cost_Avoidance__c", cencore: "previous_cost_avoidance" },
+    { sf: "Previous_Special_Savings__c", cencore: "previous_special_savings" },
+    { sf: "Current_Less_Previous__c", cencore: "current_less_previous" },
+    { sf: "Credit__c", cencore: "credit" },
+    { sf: "Fee_Amount__c", cencore: "fee_amount" },
+    { sf: "Period_Date__c", cencore: "period_date" },
   ],
   commission_splits: [
-    { sf: "Sales_Rep_Name__c", cencore: "sales_rep_name" },
-    { sf: "Sales_Rep_Email__c", cencore: "sales_rep_email" },
-    { sf: "Split_Percentage__c", cencore: "split_percentage" },
-    { sf: "Amount__c", cencore: "amount" },
+    { sf: "Name", cencore: "sales_rep_name" },
+    { sf: "Commission_Recipient__c", cencore: "contact_id" },
+    { sf: "Opportunity__c", cencore: "opportunity_id" },
+    { sf: "Contract__c", cencore: "contract_id" },
+    { sf: "Energy_Program__c", cencore: "energy_program_id" },
+    { sf: "Percentage__c", cencore: "split_percentage" },
+    { sf: "Total_Commission_for_Contract_Term__c", cencore: "amount" },
     { sf: "Commission_Percent__c", cencore: "commission_percent" },
     { sf: "Commission_Percent_2__c", cencore: "commission_percent_2" },
     { sf: "Commission_Type__c", cencore: "commission_type" },
-    { sf: "Commission_Recipient_Name__c", cencore: "commission_recipient_name" },
     { sf: "Status__c", cencore: "status" }, { sf: "Status_Reason__c", cencore: "status_reason" },
     { sf: "Role__c", cencore: "role" }, { sf: "Description__c", cencore: "description" },
-    { sf: "Notes__c", cencore: "notes" }, { sf: "Split_Type__c", cencore: "split_type" },
-    { sf: "Based_On_TCV_Or_NCV__c", cencore: "based_on_tcv_or_ncv" },
+    { sf: "Notes__c", cencore: "notes" }, { sf: "Type__c", cencore: "split_type" },
+    { sf: "Based_on_TCV_or_NCV__c", cencore: "based_on_tcv_or_ncv" },
     { sf: "TCV__c", cencore: "tcv" }, { sf: "NCV__c", cencore: "ncv" },
     { sf: "Percentage__c", cencore: "percentage" },
     { sf: "Customer_Sign_Date__c", cencore: "customer_sign_date" },
-    { sf: "Number_Of_Eligible_Years__c", cencore: "number_of_eligible_years" },
-    { sf: "Number_Of_Payments__c", cencore: "number_of_payments" },
+    { sf: "Number_of_Eligible_Years__c", cencore: "number_of_eligible_years" },
+    { sf: "Number_of_Payments__c", cencore: "number_of_payments" },
     { sf: "First_Payment_Amount__c", cencore: "first_payment_amount" },
     { sf: "First_Payment_Due_Date__c", cencore: "first_payment_due_date" },
     { sf: "First_Payment_Override__c", cencore: "first_payment_override" },
-    { sf: "Total_Commission_For_Contract_Term__c", cencore: "total_commission_for_contract_term" },
+    { sf: "Total_Commission_for_Contract_Term__c", cencore: "total_commission_for_contract_term" },
     { sf: "Total_Commission_Override__c", cencore: "total_commission_override" },
     { sf: "POP_Payment__c", cencore: "pop_payment" },
     { sf: "Recoverable__c", cencore: "recoverable" },
     { sf: "Commissions_Approved__c", cencore: "commissions_approved" },
     { sf: "Commissions_Assigned__c", cencore: "commissions_assigned" },
     { sf: "Over_Quota_Commission__c", cencore: "over_quota_commission" },
-    { sf: "Over_Quota_Commission_Amt__c", cencore: "over_quota_commission_amt" },
+    { sf: "Over_Quota_Commission_amt__c", cencore: "over_quota_commission_amt" },
     { sf: "Over_Quota_Scheduled_Date__c", cencore: "over_quota_scheduled_date" },
+  ],
+  commission_split_schedules: [
+    { sf: "Name", cencore: "name" },
+    { sf: "Commission_Split__c", cencore: "commission_split_id" },
+    { sf: "Scheduled_Date__c", cencore: "scheduled_date" },
+    { sf: "Commission_Percent__c", cencore: "commission_percent" },
+    { sf: "Commission_Amount__c", cencore: "commission_amount" },
+    { sf: "Payment_Status__c", cencore: "payment_status" },
+    { sf: "Period__c", cencore: "period" },
+  ],
+  energy_program_team_members: [
+    { sf: "Name", cencore: "name" },
+    { sf: "Energy_Program__c", cencore: "energy_program_id" },
+    { sf: "EP_Team_Member__c", cencore: "contact_id" },
+    { sf: "Role__c", cencore: "role" },
+    { sf: "Notes__c", cencore: "notes" },
+    { sf: "Start_Date__c", cencore: "start_date" },
+    { sf: "End_Date__c", cencore: "end_date" },
+    { sf: "Is_Primary__c", cencore: "is_primary" },
+    { sf: "Active__c", cencore: "is_active" },
   ],
 };
 
@@ -290,8 +424,8 @@ export default function SalesforceSyncPanel({ integrationId, config, onDisconnec
   const [direction, setDirection] = useState<SyncDirection>(config.sync_direction || "pull");
   const [selectedObjects, setSelectedObjects] = useState<Record<string, boolean>>(
     config.sync_objects
-      ? Object.fromEntries(SYNC_OBJECTS.map((o) => [o.key, (config.sync_objects as string[]).includes(o.key)]))
-      : Object.fromEntries(SYNC_OBJECTS.map((o) => [o.key, false]))
+      ? Object.fromEntries(AVAILABLE_SYNC_OBJECTS.map((o) => [o.key, (config.sync_objects as string[]).includes(o.key)]))
+      : Object.fromEntries(AVAILABLE_SYNC_OBJECTS.map((o) => [o.key, false]))
   );
   const [syncing, setSyncing] = useState(false);
   const [syncProgress, setSyncProgress] = useState<{ current: string; done: number; total: number } | null>(null);
@@ -334,8 +468,8 @@ export default function SalesforceSyncPanel({ integrationId, config, onDisconnec
     if (!activeTenant?.id) return;
     setSavingSchedule(true);
 
-    const objects = Object.entries(selectedObjects)
-      .filter(([, v]) => v).map(([k]) => k);
+    const objects = sortSyncObjects(Object.entries(selectedObjects)
+      .filter(([, v]) => v).map(([k]) => k));
 
     const scheduleData = {
       integration_id: integrationId,
@@ -367,8 +501,8 @@ export default function SalesforceSyncPanel({ integrationId, config, onDisconnec
       return;
     }
 
-    const objects = Object.entries(selectedObjects)
-      .filter(([, value]) => value).map(([key]) => key);
+    const objects = sortSyncObjects(Object.entries(selectedObjects)
+      .filter(([, value]) => value).map(([key]) => key));
 
     if (!objects.length) {
       toast.error("Select at least one object to sync");
@@ -557,7 +691,7 @@ export default function SalesforceSyncPanel({ integrationId, config, onDisconnec
         <div className="mb-4 space-y-2">
           <Label className="text-xs text-muted-foreground">Objects to Sync</Label>
           <div className="grid grid-cols-2 gap-2">
-            {SYNC_OBJECTS.map((obj) => (
+            {AVAILABLE_SYNC_OBJECTS.map((obj) => (
               <div
                 key={obj.key}
                 className="flex items-center justify-between rounded-md border bg-muted/30 px-3 py-2"
@@ -577,7 +711,7 @@ export default function SalesforceSyncPanel({ integrationId, config, onDisconnec
 
         <div className="mb-4 space-y-1">
           <Label className="text-xs text-muted-foreground">Field Mappings</Label>
-          {SYNC_OBJECTS.filter((objectItem) => selectedObjects[objectItem.key]).map((obj) => (
+          {AVAILABLE_SYNC_OBJECTS.filter((objectItem) => selectedObjects[objectItem.key]).map((obj) => (
             <Collapsible
               key={obj.key}
               open={expandedMapping === obj.key}

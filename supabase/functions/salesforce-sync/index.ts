@@ -42,7 +42,12 @@ class SalesforceAuthError extends Error {
   }
 }
 
-const VALID_OBJECTS = ["accounts", "contacts", "opportunities", "leads", "activities", "events", "contracts", "campaigns", "quotes", "cases", "energy_programs", "connections", "invoices", "commission_splits"] as const;
+const VALID_OBJECTS = [
+  "accounts", "contacts", "leads", "campaigns", "opportunities", "quotes",
+  "measures", "energy_programs", "contracts", "buildings", "credentials",
+  "activities", "events", "cases", "connections", "invoices", "invoice_items",
+  "commission_splits", "commission_split_schedules", "energy_program_team_members",
+] as const;
 const VALID_DIRECTIONS = ["pull", "push", "bidirectional"] as const;
 
 const RELATIONSHIP_DEFS: Record<string, Array<{ sfField: string; fkColumn: string; lookupTable: string }>> = {
@@ -55,16 +60,22 @@ const RELATIONSHIP_DEFS: Record<string, Array<{ sfField: string; fkColumn: strin
     { sfField: "AccountId", fkColumn: "account_id", lookupTable: "accounts" },
     { sfField: "WhoId", fkColumn: "contact_id", lookupTable: "contacts" },
     { sfField: "WhatId", fkColumn: "opportunity_id", lookupTable: "opportunities" },
+    { sfField: "WhatId", fkColumn: "contract_id", lookupTable: "contracts" },
   ],
   events: [
     { sfField: "AccountId", fkColumn: "account_id", lookupTable: "accounts" },
+    { sfField: "Organization_Lookup__c", fkColumn: "account_id", lookupTable: "accounts" },
     { sfField: "WhoId", fkColumn: "contact_id", lookupTable: "contacts" },
+    { sfField: "MC_Primary__c", fkColumn: "contact_id", lookupTable: "contacts" },
     { sfField: "WhatId", fkColumn: "opportunity_id", lookupTable: "opportunities" },
+    { sfField: "Opportunity_Lookup__c", fkColumn: "opportunity_id", lookupTable: "opportunities" },
+    { sfField: "WhatId", fkColumn: "contract_id", lookupTable: "contracts" },
   ],
   contracts: [
-    { sfField: "AccountId", fkColumn: "account_id", lookupTable: "accounts" },
-    { sfField: "Opportunity__c", fkColumn: "opportunity_id", lookupTable: "opportunities" },
+    { sfField: "Organization_Name__c", fkColumn: "account_id", lookupTable: "accounts" },
+    { sfField: "Original_Opportunity__c", fkColumn: "opportunity_id", lookupTable: "opportunities" },
     { sfField: "Energy_Program__c", fkColumn: "energy_program_id", lookupTable: "energy_programs" },
+    { sfField: "Contract__c", fkColumn: "parent_contract_id", lookupTable: "contracts" },
   ],
   quotes: [
     { sfField: "AccountId", fkColumn: "account_id", lookupTable: "accounts" },
@@ -75,31 +86,52 @@ const RELATIONSHIP_DEFS: Record<string, Array<{ sfField: string; fkColumn: strin
     { sfField: "ContactId", fkColumn: "contact_id", lookupTable: "contacts" },
   ],
   invoices: [
-    { sfField: "Account__c", fkColumn: "account_id", lookupTable: "accounts" },
     { sfField: "Contract__c", fkColumn: "contract_id", lookupTable: "contracts" },
+    { sfField: "Energy_Program__c", fkColumn: "energy_program_id", lookupTable: "energy_programs" },
+  ],
+  invoice_items: [
+    { sfField: "Invoice__c", fkColumn: "invoice_id", lookupTable: "invoices" },
     { sfField: "Energy_Program__c", fkColumn: "energy_program_id", lookupTable: "energy_programs" },
   ],
   commission_splits: [
     { sfField: "Opportunity__c", fkColumn: "opportunity_id", lookupTable: "opportunities" },
     { sfField: "Contract__c", fkColumn: "contract_id", lookupTable: "contracts" },
-    { sfField: "Contact__c", fkColumn: "contact_id", lookupTable: "contacts" },
+    { sfField: "Commission_Recipient__c", fkColumn: "contact_id", lookupTable: "contacts" },
     { sfField: "Energy_Program__c", fkColumn: "energy_program_id", lookupTable: "energy_programs" },
-    { sfField: "Project__c", fkColumn: "project_id", lookupTable: "projects" },
+  ],
+  commission_split_schedules: [
+    { sfField: "Commission_Split__c", fkColumn: "commission_split_id", lookupTable: "commission_splits" },
   ],
   connections: [
+    { sfField: "Organization__c", fkColumn: "account_id", lookupTable: "accounts" },
     { sfField: "Contact__c", fkColumn: "contact_id", lookupTable: "contacts" },
-    { sfField: "Connected_Contact__c", fkColumn: "connected_contact_id", lookupTable: "contacts" },
   ],
   energy_programs: [
-    { sfField: "Account__c", fkColumn: "account_id", lookupTable: "accounts" },
+    { sfField: "Organization__c", fkColumn: "account_id", lookupTable: "accounts" },
+    { sfField: "Related_Opportunity__c", fkColumn: "opportunity_id", lookupTable: "opportunities" },
+    { sfField: "Related_Measure__c", fkColumn: "measure_id", lookupTable: "measures" },
+  ],
+  buildings: [
+    { sfField: "Energy_Program__c", fkColumn: "energy_program_id", lookupTable: "energy_programs" },
+  ],
+  credentials: [
+    { sfField: "Contact__c", fkColumn: "contact_id", lookupTable: "contacts" },
+    { sfField: "Organization__c", fkColumn: "account_id", lookupTable: "accounts" },
+  ],
+  measures: [
+    { sfField: "Org__c", fkColumn: "account_id", lookupTable: "accounts" },
+  ],
+  energy_program_team_members: [
+    { sfField: "Energy_Program__c", fkColumn: "energy_program_id", lookupTable: "energy_programs" },
+    { sfField: "EP_Team_Member__c", fkColumn: "contact_id", lookupTable: "contacts" },
   ],
 };
 
 const SYNC_ORDER: string[] = [
-  "accounts", "contacts", "leads", "energy_programs", "campaigns",
-  "opportunities", "contracts", "quotes", "cases",
-  "activities", "events", "invoices", "invoice_items", "buildings",
-  "commission_splits", "connections",
+  "accounts", "contacts", "leads", "campaigns", "opportunities", "quotes",
+  "measures", "energy_programs", "contracts", "buildings", "credentials",
+  "activities", "events", "cases", "connections", "invoices", "invoice_items",
+  "commission_splits", "commission_split_schedules", "energy_program_team_members",
 ];
 
 function jsonResponse(body: Record<string, unknown>, status = 200) {
@@ -253,7 +285,7 @@ const SF_TO_TABLE: Record<string, string> = { cases: "support_tickets" };
 
 const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) => Record<string, any> }> = {
   accounts: {
-    soql: "SELECT Id, Name, Phone, Website, Industry, BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry, Description, Fax, AnnualRevenue, NumberOfEmployees, Type, AccountNumber, ShippingStreet, ShippingCity, ShippingState, ShippingPostalCode, ShippingCountry, Ownership, Rating, Sic, SicDesc, Site, TickerSymbol, AccountSource, ParentId, Status__c, Sales_Status__c, Org_Type__c, Org_Record_Type__c, Association__c, Legal_Name__c, PO_Number__c, GL_Revenue_Account__c, Invoice_Delivery__c, Contract_Status__c, Prospect_Data_Source__c, Est_Annual_Expenditures__c, Minimum_Utility_Spend__c, Cost_Per_Student__c, Membership_Enrollment__c, Total_Gross_Square_Feet__c, Faith_Based__c, Key_Reference__c FROM Account",
+    soql: "SELECT Id, Name, Phone, Website, Industry, BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry, Description, Fax, AnnualRevenue, NumberOfEmployees, Type, AccountNumber, ShippingStreet, ShippingCity, ShippingState, ShippingPostalCode, ShippingCountry, Ownership, Rating, Sic, SicDesc, Site, TickerSymbol, AccountSource, ParentId, Status__c, Sales_Status__c, Org_Type__c, Org_Record_Type__c, Association__c, Org_Legal_Name__c, PO_Number__c, GL_Revenue_Account__c, Invoice_Delivery__c, Contract_Status__c, Prospect_Data_Source__c, Est_Annual_Expenditures__c, Minimum_Utility_Spend__c, Membership_Enrollment__c, Total_Gross_Square_Feet__c, Faith_Based__c, Key_Reference__c FROM Account",
     map: (r) => ({
       sf_id: r.Id, _sf_parent_account_id: r.ParentId || null,
       name: r.Name, phone: r.Phone, website: r.Website, industry: r.Industry,
@@ -267,12 +299,12 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
       site: r.Site, ticker_symbol: r.TickerSymbol, account_source: r.AccountSource,
       status: r.Status__c, sales_status: r.Sales_Status__c, org_type: r.Org_Type__c,
       org_record_type: r.Org_Record_Type__c, association: r.Association__c,
-      legal_name: r.Legal_Name__c, po_number: r.PO_Number__c,
+      legal_name: r.Org_Legal_Name__c, po_number: r.PO_Number__c,
       gl_revenue_account: r.GL_Revenue_Account__c, invoice_delivery: r.Invoice_Delivery__c,
       contract_status: r.Contract_Status__c, prospect_data_source: r.Prospect_Data_Source__c,
       est_annual_expenditures: r.Est_Annual_Expenditures__c,
       minimum_utility_spend: r.Minimum_Utility_Spend__c,
-      cost_per_student: r.Cost_Per_Student__c, membership_enrollment: r.Membership_Enrollment__c,
+      membership_enrollment: r.Membership_Enrollment__c,
       total_gross_square_feet: r.Total_Gross_Square_Feet__c,
       faith_based: r.Faith_Based__c, key_reference: r.Key_Reference__c,
       last_synced_at: new Date().toISOString(),
@@ -301,9 +333,10 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
     }),
   },
   opportunities: {
-    soql: "SELECT Id, Name, Amount, StageName, CloseDate, Probability, Description, LeadSource, NextStep, Type, ForecastCategory, AccountId, ContactId FROM Opportunity",
+    soql: "SELECT Id, Name, Amount, StageName, CloseDate, Probability, Description, LeadSource, NextStep, Type, ForecastCategory, AccountId, ContactId, Primary_Contact__c FROM Opportunity",
     map: (r) => ({
-      sf_id: r.Id, _sf_account_id: r.AccountId || null, _sf_contact_id: r.ContactId || null,
+      sf_id: r.Id, _sf_account_id: r.AccountId || null,
+      _sf_contact_id: r.Primary_Contact__c || r.ContactId || null,
       name: r.Name, amount: r.Amount, stage: r.StageName, close_date: r.CloseDate,
       probability: r.Probability ? Math.round(r.Probability) : null,
       description: r.Description, lead_source: r.LeadSource, next_step: r.NextStep,
@@ -322,56 +355,75 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
     }),
   },
   activities: {
-    soql: "SELECT Id, Subject, Description, Status, Priority, ActivityDate, Type, Location, DurationInMinutes, IsAllDayEvent, CompletedDateTime, IsClosed, AccountId, WhoId, WhatId, Contact_Method__c, Visit_Type__c, Visit_Length__c, Sales_Meeting_Type__c, Activity_Number__c FROM Task",
+    soql: "SELECT Id, Subject, Description, Status, Priority, ActivityDate, Type, AccountId, WhoId, WhatId, EmailMessageId FROM Task",
     map: (r) => ({
       sf_id: r.Id, _sf_account_id: r.AccountId || null, _sf_contact_id: r.WhoId || null,
       _sf_opportunity_id: r.WhatId || null,
       subject: r.Subject || "Untitled", description: r.Description,
       status: r.Status === "Completed" ? "completed" : "open",
       priority: (r.Priority || "normal").toLowerCase(), due_date: r.ActivityDate,
-      activity_type: (r.Type || "task").toLowerCase(), location: r.Location,
-      duration_minutes: r.DurationInMinutes, all_day_event: r.IsAllDayEvent || false,
-      completed_datetime: r.CompletedDateTime, is_closed: r.IsClosed || false,
-      contact_method: r.Contact_Method__c, visit_type: r.Visit_Type__c,
-      visit_length: r.Visit_Length__c, sales_meeting_type: r.Sales_Meeting_Type__c,
-      activity_number: r.Activity_Number__c, last_synced_at: new Date().toISOString(),
+      activity_type: (r.Type || "task").toLowerCase(),
+      last_synced_at: new Date().toISOString(),
     }),
   },
   events: {
     table: "activities",
-    soql: "SELECT Id, Subject, Description, Location, StartDateTime, EndDateTime, IsAllDayEvent, DurationInMinutes, AccountId, WhoId, WhatId, NumberOfAttendees__c FROM Event",
+    soql: "SELECT Id, Subject, Description, Location, ActivityDateTime, ActivityDate, DurationInMinutes, IsAllDayEvent, AccountId, WhoId, WhatId, Organization_Lookup__c, Opportunity_Lookup__c, Energy_Program_Lookup__c, MC_Primary__c, Number_of_Attendees__c, Contact_Method__c, Visit_Type__c, Visit_Length__c, Sales_Meeting_Type__c, Status__c, Priority__c, D365ActivityID__c FROM Event",
     map: (r) => ({
-      sf_id: r.Id, _sf_account_id: r.AccountId || null, _sf_contact_id: r.WhoId || null,
-      _sf_opportunity_id: r.WhatId || null,
+      sf_id: r.Id, _sf_account_id: r.Organization_Lookup__c || r.AccountId || null,
+      _sf_contact_id: r.MC_Primary__c || r.WhoId || null,
+      _sf_opportunity_id: r.Opportunity_Lookup__c || r.WhatId || null,
       subject: r.Subject || "Untitled Event", description: r.Description,
       activity_type: "event", location: r.Location,
-      start_datetime: r.StartDateTime, end_datetime: r.EndDateTime,
+      start_datetime: r.ActivityDateTime, due_date: r.ActivityDate,
       all_day_event: r.IsAllDayEvent || false, duration_minutes: r.DurationInMinutes,
-      number_of_attendees: r.NumberOfAttendees__c, status: "open",
+      number_of_attendees: r.Number_of_Attendees__c,
+      contact_method: r.Contact_Method__c, visit_type: r.Visit_Type__c,
+      visit_length: r.Visit_Length__c, sales_meeting_type: r.Sales_Meeting_Type__c,
+      status: r.Status__c || "open", priority: (r.Priority__c || "normal").toLowerCase(),
+      activity_number: r.D365ActivityID__c,
       last_synced_at: new Date().toISOString(),
     }),
   },
   contracts: {
-    soql: "SELECT Id, ContractNumber, Status, StartDate, EndDate, ContractTerm, Description, CompanySignedDate, CustomerSignedDate, AccountId, Opportunity__c, Energy_Program__c, Contract_Type__c, Contract_Status__c, Billing_Cycle__c, Billing_Start_Date__c, Billing_Schedule_End_Date__c, Billable_Term__c, Auto_Renew__c, Renewal__c, Discount__c, Contract_Fiscal_Year__c, Special_Dates_Comments__c, Unique_Special_Provisions__c, Visits_Per_Month__c, Total_ESS__c, ES_FT__c, ES_PT__c, ES_Employed_By__c FROM Contract_Cen__c",
+    soql: "SELECT Id, Name, Name__c, Status__c, Type__c, Description__c, Organization_Name__c, Original_Opportunity__c, Energy_Program__c, Contract__c, Contract_Type__c, Contract_Status__c, Contract_Term__c, Contract_Start_Date__c, Billing_Cycle__c, Billing_Start_Date__c, Billing_Schedule_End_Date__c, Billable_Term__c, Auto_Renew__c, Renewal__c, Renewal_Declined__c, Discount__c, Contract_Fiscal_Year__c, Special_Dates_Comments__c, Unique_Special_Provisions__c, Visits_per_Month__c, ES_FT__c, ES_PT__c, ES_Employed_By__c, Accounting_Changes_Notes__c, Accounting_ID__c, Addendum_Effective_Date__c, Addendum_Type__c, Base_Year_Start__c, Base_Year_End__c, Company_SIgned_Date__c, Customer_Signed_Date__c, Estimated_Net_Total_Contract_Value__c, Gross_Total_Contract_Value__c, Software_Type__c, Year_1_Gross_Savings__c, Year_2_Gross_Savings__c, Year_3_Gross_Savings__c, Year_4_Gross_Savings__c, Year_5_Gross_Savings__c, Year_6_Gross_Savings__c, Year_7_Gross_Savings__c, Year_8_Gross_Savings__c, Year_9_Gross_Savings__c, Year_10_Gross_Savings__c FROM Contract_CEN__c",
     map: (r) => ({
-      sf_id: r.Id, _sf_account_id: r.AccountId || null,
-      _sf_opportunity_id: r.Opportunity__c || null,
+      sf_id: r.Id, _sf_account_id: r.Organization_Name__c || null,
+      _sf_opportunity_id: r.Original_Opportunity__c || null,
       _sf_energy_program_id: r.Energy_Program__c || null,
-      name: r.ContractNumber || `Contract ${r.Id}`, contract_number: r.ContractNumber,
-      status: r.Status, start_date: r.StartDate, end_date: r.EndDate,
-      contract_term: r.ContractTerm, description: r.Description,
-      company_signed_date: r.CompanySignedDate, customer_signed_date: r.CustomerSignedDate,
+      _sf_parent_contract_id: r.Contract__c || null,
+      name: r.Name__c || r.Name || `Contract ${r.Id}`, contract_number: r.Name,
+      status: r.Status__c, type: r.Type__c, start_date: r.Contract_Start_Date__c,
+      contract_term: r.Contract_Term__c, description: r.Description__c,
+      company_signed_date: r.Company_SIgned_Date__c, customer_signed_date: r.Customer_Signed_Date__c,
       contract_type: r.Contract_Type__c, contract_status: r.Contract_Status__c,
       billing_cycle: r.Billing_Cycle__c, billing_start_date: r.Billing_Start_Date__c,
       billing_schedule_end_date: r.Billing_Schedule_End_Date__c,
       billable_term: r.Billable_Term__c, auto_renew: r.Auto_Renew__c,
-      renewal: r.Renewal__c, discount: r.Discount__c,
+      renewal: r.Renewal__c, renewal_declined: r.Renewal_Declined__c, discount: r.Discount__c,
       contract_fiscal_year: r.Contract_Fiscal_Year__c,
       special_dates_comments: r.Special_Dates_Comments__c,
       unique_special_provisions: r.Unique_Special_Provisions__c,
-      visits_per_month: r.Visits_Per_Month__c, total_ess: r.Total_ESS__c,
+      visits_per_month: r.Visits_per_Month__c,
       es_ft: r.ES_FT__c, es_pt: r.ES_PT__c, es_employed_by: r.ES_Employed_By__c,
-      value: r.Discount__c, last_synced_at: new Date().toISOString(),
+      accounting_changes_notes: r.Accounting_Changes_Notes__c,
+      accounting_id: r.Accounting_ID__c,
+      addendum_effective_date: r.Addendum_Effective_Date__c,
+      addendum_type: r.Addendum_Type__c,
+      base_year_start: r.Base_Year_Start__c, base_year_end: r.Base_Year_End__c,
+      software_type: r.Software_Type__c,
+      value: r.Estimated_Net_Total_Contract_Value__c || r.Gross_Total_Contract_Value__c,
+      year_1_gross_savings: r.Year_1_Gross_Savings__c,
+      year_2_gross_savings: r.Year_2_Gross_Savings__c,
+      year_3_gross_savings: r.Year_3_Gross_Savings__c,
+      year_4_gross_savings: r.Year_4_Gross_Savings__c,
+      year_5_gross_savings: r.Year_5_Gross_Savings__c,
+      year_6_gross_savings: r.Year_6_Gross_Savings__c,
+      year_7_gross_savings: r.Year_7_Gross_Savings__c,
+      year_8_gross_savings: r.Year_8_Gross_Savings__c,
+      year_9_gross_savings: r.Year_9_Gross_Savings__c,
+      year_10_gross_savings: r.Year_10_Gross_Savings__c,
+      last_synced_at: new Date().toISOString(),
     }),
   },
   campaigns: {
@@ -410,42 +462,98 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
     }),
   },
   energy_programs: {
-    soql: "SELECT Id, Name, Description, Account__c, Status__c, Program_Type__c, Start_Date__c, End_Date__c, Budget__c, Contract_Term__c, Contract_Type__c, Contract_Status__c, Utility__c, Contract_Start_Date__c, Billing_Schedule_End_Date__c, Service_Status__c, Key_Reference__c, Key_Reference_Notes__c, CT_Hot_Notes__c, PGM_ID__c, Push_To_D365__c, Send_Contacts__c FROM Energy_Program__c",
+    soql: "SELECT Id, Name, Organization__c, Related_Opportunity__c, Related_Measure__c, Status__c, Service_Status__c, Contract_Type__c, Contract_Term__c, Contract_Status__c, Contract_Start_Date__c, Billing_Schedule_End_Date__c, Key_Reference__c, Key_Reference_Notes__c, CT_HotNotes__c, pgmId__c, Push_to_D365__c, Send_Contacts__c FROM Energy_Program__c",
     map: (r) => ({
-      sf_id: r.Id, _sf_account_id: r.Account__c || null,
+      sf_id: r.Id, _sf_account_id: r.Organization__c || null,
+      _sf_opportunity_id: r.Related_Opportunity__c || null,
+      _sf_measure_id: r.Related_Measure__c || null,
       name: r.Name, description: r.Description, status: r.Status__c,
       program_type: r.Program_Type__c, start_date: r.Start_Date__c,
       end_date: r.End_Date__c, budget: r.Budget__c,
       contract_term: r.Contract_Term__c, contract_type: r.Contract_Type__c,
-      contract_status: r.Contract_Status__c, utility: r.Utility__c,
+      contract_status: r.Contract_Status__c,
       contract_start_date: r.Contract_Start_Date__c,
       billing_schedule_end_date: r.Billing_Schedule_End_Date__c,
       service_status: r.Service_Status__c, key_reference: r.Key_Reference__c,
-      key_reference_notes: r.Key_Reference_Notes__c, ct_hot_notes: r.CT_Hot_Notes__c,
-      pgm_id: r.PGM_ID__c, push_to_d365: r.Push_To_D365__c,
+      key_reference_notes: r.Key_Reference_Notes__c, ct_hot_notes: r.CT_HotNotes__c,
+      pgm_id: r.pgmId__c, push_to_d365: r.Push_to_D365__c,
       send_contacts: r.Send_Contacts__c, last_synced_at: new Date().toISOString(),
     }),
   },
-  connections: {
-    soql: "SELECT Id, Name, Type, Description, Contact__c, Connected_Contact__c, Relationship_Type__c FROM Connection__c",
+  measures: {
+    soql: "SELECT Id, Name, Org__c, C360MeasureID__c, Conversion_Date__c, Measure_Program_ID__c, C360AccountID__c, Conversion_Bill_Period__c FROM Measure__c",
     map: (r) => ({
-      sf_id: r.Id, _sf_contact_id: r.Contact__c || null,
-      _sf_connected_contact_id: r.Connected_Contact__c || null,
-      relationship_type: r.Relationship_Type__c || r.Type || r.Name,
-      notes: r.Description, last_synced_at: new Date().toISOString(),
+      sf_id: r.Id, _sf_account_id: r.Org__c || null,
+      name: r.Name || `Measure ${r.Id}`,
+      c360_measure_id: r.C360MeasureID__c,
+      conversion_date: r.Conversion_Date__c,
+      measure_program_id: r.Measure_Program_ID__c,
+      c360_account_id: r.C360AccountID__c,
+      conversion_bill_period: r.Conversion_Bill_Period__c,
+      status: "active",
+      last_synced_at: new Date().toISOString(),
+    }),
+  },
+  buildings: {
+    soql: "SELECT Id, Name, Name__c, Energy_Program__c, Building_No__c, Place_Code__c, Place_Id__c, Status__c, Status_Reason__c, Address_1__c, Address_2__c, City__c, State__c, Zip__c, Primary_Use__c, Square_Footage__c, Exclude_from_GreenX__c FROM Building__c",
+    map: (r) => ({
+      sf_id: r.Id, _sf_energy_program_id: r.Energy_Program__c || null,
+      name: r.Name__c || r.Name || `Building ${r.Id}`,
+      building_no: r.Building_No__c,
+      place_code: r.Place_Code__c,
+      place_id: r.Place_Id__c,
+      status: r.Status__c,
+      status_reason: r.Status_Reason__c,
+      address_street: r.Address_1__c,
+      address_2: r.Address_2__c,
+      address_city: r.City__c,
+      address_state: r.State__c,
+      address_zip: r.Zip__c,
+      primary_use: r.Primary_Use__c,
+      square_footage: r.Square_Footage__c,
+      exclude_from_greenx: r.Exclude_from_GreenX__c,
+      last_synced_at: new Date().toISOString(),
+    }),
+  },
+  credentials: {
+    soql: "SELECT Id, Name, Contact__c, Organization__c, Credential_Type__c, Cert_ID__c, Included_in_Resume__c, Valid_To__c, Certified_Date__c, Status__c, Comments__c, Status_Reason__c, Credentials__c, Credentials_Description__c FROM Credentials__c",
+    map: (r) => ({
+      sf_id: r.Id, _sf_contact_id: r.Contact__c || null, _sf_account_id: r.Organization__c || null,
+      name: r.Name || r.Credentials__c,
+      credential_type: r.Credential_Type__c,
+      credential_number: r.Credentials__c,
+      cert_id: r.Cert_ID__c,
+      included_in_resume: r.Included_in_Resume__c,
+      valid_to: r.Valid_To__c,
+      certified_date: r.Certified_Date__c,
+      status: r.Status__c,
+      status_reason: r.Status_Reason__c,
+      comments: r.Comments__c,
+      credentials_description: r.Credentials_Description__c,
+      last_synced_at: new Date().toISOString(),
+    }),
+  },
+  connections: {
+    soql: "SELECT Id, Name, Organization__c, Contact__c, Role__c, Active__c, Notes__c, Start_Date__c, End_Date__c FROM Connection__c",
+    map: (r) => ({
+      sf_id: r.Id, _sf_account_id: r.Organization__c || null,
+      _sf_contact_id: r.Contact__c || null,
+      relationship_type: r.Role__c || r.Name,
+      notes: r.Notes__c, is_active: r.Active__c,
+      start_date: r.Start_Date__c, end_date: r.End_Date__c,
+      last_synced_at: new Date().toISOString(),
     }),
   },
   invoices: {
-    soql: "SELECT Id, Name, Invoice_Number__c, Invoice_Name__c, Status__c, Invoice_Date__c, Due_Date__c, Subtotal__c, Tax__c, Total__c, Amount_Paid__c, Applied_Amount__c, Contract_Amount__c, Description__c, Currency__c, Document_Type__c, Bill_Month__c, Post_Date__c, Scheduled_Date__c, Cycle_End_Date__c, Date_Delivered__c, Intacct_Status__c, Ready_For_Billing__c, Billing_Wizard__c, Invoice_Total__c, Account__c, Contract__c, Energy_Program__c FROM Invoice_Cen__c",
+    soql: "SELECT Id, Name, Invoice_ID__c, Invoice_Name__c, Intacct_Status__c, Due_Date__c, Applied_Amount__c, Contract_Amount__c, Description__c, Document_Type__c, Bill_Month__c, Post_Date__c, Scheduled_Date__c, Cycle_End_Date__c, Date_Delivered__c, Ready_For_Billing__c, Billing_Wizard__c, Invoice_Total__c, Credit_Total__c, Contract__c, Energy_Program__c FROM Invoice_CEN__c",
     map: (r) => ({
-      sf_id: r.Id, _sf_account_id: r.Account__c || null,
-      _sf_contract_id: r.Contract__c || null, _sf_energy_program_id: r.Energy_Program__c || null,
-      name: r.Name, invoice_number: r.Invoice_Number__c, invoice_name: r.Invoice_Name__c,
-      status: (r.Status__c || "draft").toLowerCase(), issue_date: r.Invoice_Date__c,
-      due_date: r.Due_Date__c, subtotal: r.Subtotal__c, tax: r.Tax__c, total: r.Total__c,
-      amount_paid: r.Amount_Paid__c, applied_amount: r.Applied_Amount__c,
+      sf_id: r.Id, _sf_contract_id: r.Contract__c || null, _sf_energy_program_id: r.Energy_Program__c || null,
+      name: r.Name, invoice_number: r.Invoice_ID__c, invoice_name: r.Invoice_Name__c,
+      status: (r.Intacct_Status__c || "draft").toLowerCase(),
+      due_date: r.Due_Date__c, total: r.Invoice_Total__c,
+      applied_amount: r.Applied_Amount__c,
       contract_amount: r.Contract_Amount__c, description: r.Description__c,
-      currency: r.Currency__c || "USD", document_type: r.Document_Type__c,
+      document_type: r.Document_Type__c,
       bill_month: r.Bill_Month__c, post_date: r.Post_Date__c,
       scheduled_date: r.Scheduled_Date__c, cycle_end_date: r.Cycle_End_Date__c,
       date_delivered: r.Date_Delivered__c, intacct_status: r.Intacct_Status__c,
@@ -454,36 +562,81 @@ const FIELD_MAPS: Record<string, { soql: string; table?: string; map: (r: any) =
       last_synced_at: new Date().toISOString(),
     }),
   },
+  invoice_items: {
+    soql: "SELECT Id, Name, Energy_Program__c, Invoice_Item_Type__c, Savings__c, Current_Cost_Avoidance__c, Special_Savings__c, Previous_Cost_Avoidance__c, Previous_Special_Savings__c, Current_Less_Previous__c, Credit__c, Fee_Amount__c, Period_Date__c, Invoice__c FROM Invoice_Item_CEN__c",
+    map: (r) => ({
+      sf_id: r.Id, _sf_invoice_id: r.Invoice__c || null, _sf_energy_program_id: r.Energy_Program__c || null,
+      name: r.Name,
+      invoice_item_type: r.Invoice_Item_Type__c,
+      savings: r.Savings__c,
+      current_cost_avoidance: r.Current_Cost_Avoidance__c,
+      special_savings: r.Special_Savings__c,
+      previous_cost_avoidance: r.Previous_Cost_Avoidance__c,
+      previous_special_savings: r.Previous_Special_Savings__c,
+      current_less_previous: r.Current_Less_Previous__c,
+      credit: r.Credit__c,
+      fee_amount: r.Fee_Amount__c,
+      period_date: r.Period_Date__c,
+      last_synced_at: new Date().toISOString(),
+    }),
+  },
   commission_splits: {
-    soql: "SELECT Id, Name, Sales_Rep_Name__c, Sales_Rep_Email__c, Split_Percentage__c, Amount__c, Commission_Percent__c, Commission_Percent_2__c, Commission_Type__c, Commission_Recipient_Name__c, Status__c, Status_Reason__c, Role__c, Description__c, Notes__c, Split_Type__c, Based_On_TCV_Or_NCV__c, TCV__c, NCV__c, Percentage__c, Customer_Sign_Date__c, Number_Of_Eligible_Years__c, Number_Of_Payments__c, First_Payment_Amount__c, First_Payment_Due_Date__c, First_Payment_Override__c, Total_Commission_For_Contract_Term__c, Total_Commission_Override__c, POP_Payment__c, Recoverable__c, Commissions_Approved__c, Commissions_Assigned__c, Over_Quota_Commission__c, Over_Quota_Commission_Amt__c, Over_Quota_Scheduled_Date__c, Opportunity__c, Contract__c, Contact__c, Energy_Program__c, Project__c FROM Commission_Split__c",
+    soql: "SELECT Id, Name, Based_on_TCV_or_NCV__c, Commision_Percent_Payments__c, Commission_Percent__c, Commission_Percent_Payments_2__c, Commission_Percent_2__c, Commission_Recipient__c, Commissions_Approved__c, Commissions_Assigned__c, Commission_Type__c, Percentage__c, Contract__c, Total_Commission_Override__c, Description__c, Number_of_Eligible_Years__c, Energy_Program__c, First_Payment_Amount__c, NCV__c, Notes__c, Number_of_Payments__c, Opportunity__c, Over_Quota_Commission__c, Over_Quota_Commission_amt__c, First_Payment_Override__c, POP_Payment__c, Recoverable__c, Role__c, TCV__c, Total_Commission_for_Contract_Term__c, Type__c, Status__c, Status_Reason__c, Customer_Sign_Date__c, First_Payment_Due_Date__c, Over_Quota_Scheduled_Date__c FROM Commission_Split__c",
     map: (r) => ({
       sf_id: r.Id, _sf_opportunity_id: r.Opportunity__c || null,
-      _sf_contract_id: r.Contract__c || null, _sf_contact_id: r.Contact__c || null,
-      _sf_energy_program_id: r.Energy_Program__c || null, _sf_project_id: r.Project__c || null,
-      sales_rep_name: r.Sales_Rep_Name__c || r.Name || "Unknown",
-      sales_rep_email: r.Sales_Rep_Email__c,
-      split_percentage: r.Split_Percentage__c || 100, amount: r.Amount__c,
+      _sf_contract_id: r.Contract__c || null, _sf_contact_id: r.Commission_Recipient__c || null,
+      _sf_energy_program_id: r.Energy_Program__c || null,
+      sales_rep_name: r.Name || "Unknown",
+      split_percentage: r.Percentage__c || 100,
+      amount: r.Total_Commission_for_Contract_Term__c,
       commission_percent: r.Commission_Percent__c,
       commission_percent_2: r.Commission_Percent_2__c,
       commission_type: r.Commission_Type__c,
-      commission_recipient_name: r.Commission_Recipient_Name__c,
       status: r.Status__c, status_reason: r.Status_Reason__c, role: r.Role__c,
-      description: r.Description__c, notes: r.Notes__c, split_type: r.Split_Type__c,
-      based_on_tcv_or_ncv: r.Based_On_TCV_Or_NCV__c, tcv: r.TCV__c, ncv: r.NCV__c,
+      description: r.Description__c, notes: r.Notes__c, split_type: r.Type__c,
+      based_on_tcv_or_ncv: r.Based_on_TCV_or_NCV__c, tcv: r.TCV__c, ncv: r.NCV__c,
       percentage: r.Percentage__c, customer_sign_date: r.Customer_Sign_Date__c,
-      number_of_eligible_years: r.Number_Of_Eligible_Years__c,
-      number_of_payments: r.Number_Of_Payments__c,
+      number_of_eligible_years: r.Number_of_Eligible_Years__c,
+      number_of_payments: r.Number_of_Payments__c,
       first_payment_amount: r.First_Payment_Amount__c,
       first_payment_due_date: r.First_Payment_Due_Date__c,
       first_payment_override: r.First_Payment_Override__c,
-      total_commission_for_contract_term: r.Total_Commission_For_Contract_Term__c,
+      total_commission_for_contract_term: r.Total_Commission_for_Contract_Term__c,
       total_commission_override: r.Total_Commission_Override__c,
       pop_payment: r.POP_Payment__c, recoverable: r.Recoverable__c,
       commissions_approved: r.Commissions_Approved__c,
       commissions_assigned: r.Commissions_Assigned__c,
       over_quota_commission: r.Over_Quota_Commission__c,
-      over_quota_commission_amt: r.Over_Quota_Commission_Amt__c,
+      over_quota_commission_amt: r.Over_Quota_Commission_amt__c,
       over_quota_scheduled_date: r.Over_Quota_Scheduled_Date__c,
+      last_synced_at: new Date().toISOString(),
+    }),
+  },
+  commission_split_schedules: {
+    soql: "SELECT Id, Name, Scheduled_Date__c, Commission_Percent__c, Commission_Amount__c, Payment_Status__c, Period__c, Commission_Split__c FROM Commission_Split_Schedule__c",
+    map: (r) => ({
+      sf_id: r.Id, _sf_commission_split_id: r.Commission_Split__c || null,
+      name: r.Name,
+      scheduled_date: r.Scheduled_Date__c,
+      commission_percent: r.Commission_Percent__c,
+      commission_amount: r.Commission_Amount__c,
+      payment_status: r.Payment_Status__c,
+      period: r.Period__c,
+      last_synced_at: new Date().toISOString(),
+    }),
+  },
+  energy_program_team_members: {
+    soql: "SELECT Id, Name, Active__c, EP_Team_Member__c, Role__c, Notes__c, Start_Date__c, End_Date__c, Is_Primary__c, Energy_Program__c FROM Energy_Program_Team_Members__c",
+    map: (r) => ({
+      sf_id: r.Id, _sf_energy_program_id: r.Energy_Program__c || null,
+      _sf_contact_id: r.EP_Team_Member__c || null,
+      name: r.Name,
+      role: r.Role__c,
+      notes: r.Notes__c,
+      start_date: r.Start_Date__c,
+      end_date: r.End_Date__c,
+      is_primary: r.Is_Primary__c,
+      is_active: r.Active__c,
       last_synced_at: new Date().toISOString(),
     }),
   },
@@ -533,6 +686,13 @@ async function batchUpsertRecords(
   const toInsert: Record<string, any>[] = [];
   const toUpdate: { id: string; data: Record<string, any> }[] = [];
   const relDefs = RELATIONSHIP_DEFS[objectName] || [];
+  const relationshipLookups: Record<string, Map<string, string>> = {};
+  for (const lookupTable of [...new Set(relDefs.map((rel) => rel.lookupTable))]) {
+    relationshipLookups[lookupTable] = await buildSfIdLookup(adminClient, lookupTable, tenantId);
+  }
+  if (objectName === "accounts") {
+    relationshipLookups.accounts = relationshipLookups.accounts || (await buildSfIdLookup(adminClient, "accounts", tenantId));
+  }
 
   for (const rawMapped of records) {
     const mapped = { ...rawMapped };
@@ -545,6 +705,22 @@ async function batchUpsertRecords(
       if (key.startsWith("_sf_")) {
         if (mapped[key]) sfRelFields[key] = mapped[key];
         delete mapped[key];
+      }
+    }
+
+    for (const rel of relDefs) {
+      const sfKey = `_sf_${rel.fkColumn}`;
+      const resolvedId = relationshipLookups[rel.lookupTable]?.get(sfRelFields[sfKey]);
+      if (resolvedId) {
+        mapped[rel.fkColumn] = resolvedId;
+        delete sfRelFields[sfKey];
+      }
+    }
+    if (objectName === "accounts" && sfRelFields["_sf_parent_account_id"]) {
+      const parentId = relationshipLookups.accounts?.get(sfRelFields["_sf_parent_account_id"]);
+      if (parentId) {
+        mapped.parent_account_id = parentId;
+        delete sfRelFields["_sf_parent_account_id"];
       }
     }
 

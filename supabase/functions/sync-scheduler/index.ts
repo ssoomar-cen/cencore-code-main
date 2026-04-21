@@ -11,19 +11,23 @@ const SYNC_ORDER = [
   "accounts",          // root entity — no dependencies
   "contacts",          // depends on accounts
   "leads",             // independent
-  "energy_programs",   // depends on accounts
   "campaigns",         // independent
   "opportunities",     // depends on accounts, contacts
-  "contracts",         // depends on accounts, opportunities
   "quotes",            // depends on opportunities
-  "cases",             // depends on accounts, contacts
+  "measures",
+  "energy_programs",   // depends on accounts
+  "contracts",         // depends on accounts, opportunities
+  "buildings",         // depends on energy_programs
+  "credentials",
   "activities",        // depends on accounts, contacts, opportunities
   "events",            // depends on accounts, contacts
+  "cases",             // depends on accounts, contacts
+  "connections",       // depends on contacts
   "invoices",          // depends on accounts, energy_programs
   "invoice_items",     // depends on invoices, energy_programs
-  "buildings",         // depends on energy_programs
   "commission_splits", // depends on opportunities
-  "connections",       // depends on contacts
+  "commission_split_schedules",
+  "energy_program_team_members",
 ];
 
 // Called by pg_cron every minute. Checks sync_schedules for due syncs and triggers them.

@@ -65,7 +65,7 @@ export default function ActivitiesPage() {
 
   const { data: listResult, isLoading } = useActivitiesList({ search: debouncedSearch, page, limit: PAGE_SIZE });
 
-  const { create, update, remove } = useActivities();
+  const { data, create, update, remove } = useActivities();
   const { data: accounts } = useAccounts();
   const { data: contacts } = useContacts();
   const { data: opportunities } = useOpportunities();
@@ -125,6 +125,7 @@ export default function ActivitiesPage() {
     <CrmDataTable title="Activities" description="Track activities and tasks"
       entityLabel="Activity"
       columns={columns} data={listResult?.data || []}
+      detailData={data || []}
       isLoading={isLoading} formFields={formFields}
       onCreate={(d) => create.mutate(mapRelatedTo(d))} onUpdate={(d) => update.mutate(mapRelatedTo(d))} onDelete={(id) => remove.mutate(id)}
       createLabel="Add Activity" filters={filters} kanban={kanban}

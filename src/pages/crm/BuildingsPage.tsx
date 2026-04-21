@@ -33,7 +33,7 @@ export default function BuildingsPage() {
 
   const { data: listResult, isLoading } = useBuildingsList({ search: debouncedSearch, page, limit: PAGE_SIZE });
 
-  const { create, update, remove } = useBuildings();
+  const { data, create, update, remove } = useBuildings();
   const { data: accounts } = useAccounts();
   const { data: energyAudits } = useEnergyAudits();
   const { data: activities, create: createActivity } = useActivities();
@@ -132,6 +132,7 @@ export default function BuildingsPage() {
     <CrmDataTable title="Buildings" description="Manage building records"
       entityLabel="Building"
       columns={columns} data={listResult?.data || []}
+      detailData={data || []}
       isLoading={isLoading} formFields={formFields}
       onCreate={(d) => create.mutate(d)} onUpdate={(d) => update.mutate(d)} onDelete={(id) => remove.mutate(id)}
       createLabel="Add Building" filters={filters} kanban={kanban}

@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { formatDate } from "@/lib/utils";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -52,6 +52,8 @@ export interface CrmDataTableProps {
   description?: string;
   columns: Column[];
   data: any[];
+  detailData?: any[];
+  loadDetailRecord?: (id: string) => Promise<any>;
   isLoading: boolean;
   formFields: FormField[];
   onCreate: (data: any) => void;
@@ -117,13 +119,50 @@ function toSearchable(val: any): string {
   return String(val);
 }
 
+const relationKeyAliases: Record<string, string> = {
+  account: "account_id",
+  accounts: "account_id",
+  organization: "account_id",
+  organizations: "account_id",
+  contact: "contact_id",
+  contacts: "contact_id",
+  connected_contact: "connected_contact_id",
+  opportunity: "opportunity_id",
+  opportunities: "opportunity_id",
+  quote: "quote_id",
+  quotes: "quote_id",
+  contract: "contract_id",
+  contracts: "contract_id",
+  invoice: "invoice_id",
+  invoices: "invoice_id",
+  building: "building_id",
+  buildings: "building_id",
+  project: "project_id",
+  projects: "project_id",
+  energy_program: "energy_program_id",
+  energy_programs: "energy_program_id",
+};
+
+const relatedToRoutes: Record<string, string> = {
+  account: "/crm/accounts",
+  organization: "/crm/accounts",
+  opportunity: "/crm/opportunities",
+  contact: "/crm/contacts",
+  quote: "/crm/quotes",
+  contract: "/crm/contracts",
+  invoice: "/crm/invoices",
+  building: "/crm/buildings",
+  energy_program: "/projects",
+  project: "/projects",
+};
+
 export function CrmDataTable({
   title, description, columns, data, isLoading, formFields,
   onCreate, onUpdate, onDelete, createLabel = "Add New",
   extraActions, rowActions, filters = [], kanban, onRowClick,
   detailRoute,
   entityLabel, headerFields, relatedTabs, lookupLinks, businessProcessFlow,
-  serverSide,
+  serverSide, detailData = [], loadDetailRecord,
 }: CrmDataTableProps) {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -153,9 +192,10 @@ export function CrmDataTable({
 
   // Auto-open record from URL query param ?open=<recordId>
   useEffect(() => {
+    let cancelled = false;
     const openId = searchParams.get("open");
-    if (openId && data && data.length > 0 && !detailRecord) {
-      const found = data.find((r) => r.id === openId);
+    if (openId && !detailRecord) {
+      const found = [...(data || []), ...(detailData || [])].find((r) => r.id === openId);
       if (found) {
         if (detailRoute) {
           navigate(`${detailRoute}/${found.id}`);
@@ -164,9 +204,20 @@ export function CrmDataTable({
         }
         searchParams.delete("open");
         setSearchParams(searchParams, { replace: true });
+      } else if (loadDetailRecord) {
+        loadDetailRecord(openId).then((record) => {
+          if (cancelled || !record) return;
+          setDetailRecord(record);
+          const nextParams = new URLSearchParams(searchParams);
+          nextParams.delete("open");
+          setSearchParams(nextParams, { replace: true });
+        }).catch(() => {
+          // Keep the user on the list if the linked record cannot be loaded.
+        });
       }
     }
-  }, [searchParams, data, detailRecord, detailRoute, navigate]);
+    return () => { cancelled = true; };
+  }, [searchParams, data, detailData, detailRecord, detailRoute, navigate, loadDetailRecord, setSearchParams]);
 
   const fieldMap = new Map(formFields.map((f) => [f.key, f]));
 
@@ -214,6 +265,58 @@ export function CrmDataTable({
   }, [data, serverSide, activeSearch, columns, filters, filterValues, sortKey, sortDir]);
 
   const recordCount = serverSide ? serverSide.total : filtered.length;
+
+  const getLinkedRecord = (col: Column, row: any) => {
+    if (col.key === "related_to_name" && row.related_to_type && row.related_to_id) {
+      const route = relatedToRoutes[String(row.related_to_type).toLowerCase()];
+      return route ? { route, id: row.related_to_id } : null;
+    }
+
+    const lookupKey = col.key.endsWith("_id")
+      ? col.key
+      : relationKeyAliases[col.key] || `${col.key}_id`;
+    const lookup = lookupLinks?.find((link) => link.key === lookupKey);
+    if (!lookup) return null;
+
+    const value = row[col.key];
+    const id =
+      row[lookup.key] ??
+      value?.id ??
+      value?.[lookup.key] ??
+      value?.[`${col.key}_id`] ??
+      value?.[lookup.key.replace(/_id$/, "_id")];
+
+    return id ? { route: lookup.route, id } : null;
+  };
+
+  const renderCellValue = (col: Column, row: any) => {
+    const value = row[col.key];
+    if (col.render) return col.render(value, row);
+    if ((col.key.endsWith("_date") || col.key === "valid_until" || col.key === "birthdate" || col.key.endsWith("_at")) && value) {
+      return formatDate(value);
+    }
+    return value ?? "—";
+  };
+
+  const renderDisplayCell = (col: Column, row: any) => {
+    const content = renderCellValue(col, row);
+    const linkedRecord = getLinkedRecord(col, row);
+    if (!linkedRecord) return content;
+    const to = linkedRecord.route.startsWith("/crm/")
+      ? `${linkedRecord.route}?open=${linkedRecord.id}`
+      : `${linkedRecord.route}/${linkedRecord.id}`;
+
+    return (
+      <Link
+        to={to}
+        className="text-primary hover:underline"
+        onClick={(event) => event.stopPropagation()}
+        onDoubleClick={(event) => event.stopPropagation()}
+      >
+        {content}
+      </Link>
+    );
+  };
 
   const resetForm = () => {
     setFormData({});
@@ -416,7 +519,7 @@ export function CrmDataTable({
                               onChange={(v) => setFormData((prev) => ({ ...prev, [col.key]: v }))}
                             />
                           ) : (
-                            col.render ? col.render(row[col.key], row) : (col.key.endsWith("_date") || col.key === "valid_until" || col.key === "birthdate" || col.key.endsWith("_at")) && row[col.key] ? formatDate(row[col.key]) : (row[col.key] ?? "—")
+                            renderDisplayCell(col, row)
                           )}
                         </TableCell>
                       ))}

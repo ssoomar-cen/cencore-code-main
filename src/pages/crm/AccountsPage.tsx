@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useAccounts, useAccountsList } from "@/hooks/useAccounts";
 import { useContacts } from "@/hooks/useContacts";
 import { useOpportunities } from "@/hooks/useOpportunities";
@@ -136,6 +136,13 @@ export default function AccountsPage() {
   const lookupLinks = useMemo(() => [
     { key: "parent_account_id", route: "/crm/accounts", data: data || [], labelFn: (a: any) => a.name },
   ], [data]);
+
+  const loadAccountDetail = useCallback(async (id: string) => {
+    const response = await fetch(`/api/accounts/${id}`);
+    if (!response.ok) return null;
+    const result = await response.json();
+    return result.data || null;
+  }, []);
 
   const relatedTabs: RelatedTab[] = useMemo(() => [
     {
@@ -310,6 +317,8 @@ export default function AccountsPage() {
       entityLabel="Organization"
       columns={columns}
       data={listResult?.data || []}
+      detailData={data || []}
+      loadDetailRecord={loadAccountDetail}
       isLoading={isLoading}
       formFields={formFields}
       onCreate={(d) => create.mutate(d)}

@@ -35,7 +35,7 @@ export interface DrillDownConfig {
 export interface RelatedTab {
   key: string;
   label: string;
-  foreignKey: string;
+  foreignKey: string | string[];
   columns: { key: string; label: string; render?: (value: any, row: any) => React.ReactNode }[];
   data: any[];
   panel?: "left" | "right";
@@ -121,9 +121,33 @@ export function CrmRecordDetail({
   const leftTabs = relatedTabs.filter((t) => t.panel !== "right");
   const rightTabs = relatedTabs.filter((t) => t.panel === "right");
 
+  const getCandidateIds = (row?: Record<string, any>) => {
+    if (!row) return [];
+    return [
+      row.id,
+      row.account_id,
+      row.contact_id,
+      row.opportunity_id,
+      row.quote_id,
+      row.contract_id,
+      row.invoice_id,
+      row.invoice_item_id,
+      row.energy_program_id,
+      row.building_id,
+      row.commission_split_id,
+    ].filter(Boolean).map(String);
+  };
+
+  const getRouteTarget = (route: string, id: string) =>
+    route.startsWith("/crm/") ? `${route}?open=${id}` : `${route}/${id}`;
+
   const getRelatedData = (tab: RelatedTab) => {
-    if (!record?.id) return [];
-    return tab.data.filter((row) => row[tab.foreignKey] === record.id);
+    const recordIds = getCandidateIds(record);
+    if (recordIds.length === 0) return [];
+    const foreignKeys = Array.isArray(tab.foreignKey) ? tab.foreignKey : [tab.foreignKey];
+    return tab.data.filter((row) =>
+      foreignKeys.some((key) => row[key] != null && recordIds.includes(String(row[key])))
+    );
   };
 
   const getLookupDisplay = (fieldKey: string, value: any): { label: string; route?: string; recordId?: string } | null => {
@@ -142,8 +166,10 @@ export function CrmRecordDetail({
     const defaults: Record<string, any> = {};
     tab.createFields.forEach((f) => { defaults[f.key] = ""; });
     // Pre-fill the foreign key
-    if (record?.id) {
-      defaults[tab.foreignKey] = record.id;
+    const primaryForeignKey = Array.isArray(tab.foreignKey) ? tab.foreignKey[0] : tab.foreignKey;
+    const primaryRecordId = getCandidateIds(record)[0];
+    if (primaryRecordId) {
+      defaults[primaryForeignKey] = primaryRecordId;
     }
     setCreateFormData(defaults);
     setCreateDialogTab(tabKey);
@@ -299,15 +325,17 @@ export function CrmRecordDetail({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {rows.map((row, idx) => (
-                  <TableRow
-                    key={row.id || idx}
+                {rows.map((row, idx) => {
+                  const rowId = getCandidateIds(row)[0];
+                  return (
+                    <TableRow
+                    key={rowId || idx}
                     className={(tab.route || tab.drillDown) ? "cursor-pointer hover:bg-accent/50 transition-colors" : ""}
                     onClick={() => {
                       if (tab.drillDown && onDrillDown) {
                         onDrillDown(row, tab.drillDown);
-                      } else if (tab.route && row.id) {
-                        navigate(`${tab.route}?open=${row.id}`);
+                      } else if (tab.route && rowId) {
+                        navigate(getRouteTarget(tab.route, rowId));
                       }
                     }}
                   >
@@ -316,8 +344,9 @@ export function CrmRecordDetail({
                         {col.render ? col.render(row[col.key], row) : (row[col.key] ?? "—")}
                       </TableCell>
                     ))}
-                  </TableRow>
-                ))}
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </div>
@@ -592,7 +621,12 @@ export function CrmRecordDetail({
           </DialogHeader>
           <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-1">
             {activeCreateTab?.createFields
-              ?.filter((f) => f.key !== activeCreateTab.foreignKey)
+              ?.filter((f) => {
+                const foreignKeys = Array.isArray(activeCreateTab.foreignKey)
+                  ? activeCreateTab.foreignKey
+                  : [activeCreateTab.foreignKey];
+                return !foreignKeys.includes(f.key);
+              })
               .map(renderCreateField)}
           </div>
           <div className="flex justify-end gap-2 pt-2">

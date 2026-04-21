@@ -40,3 +40,22 @@ contactRouter.get("/", async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Failed to fetch contacts" });
   }
 });
+
+// GET /api/contacts/:id - Get a single contact by id for deep-linked CRM detail views
+contactRouter.get("/:id", async (req: Request, res: Response) => {
+  try {
+    const rows = await db.query(
+      `SELECT c.*,
+              json_build_object('id', a.id, 'name', a.name) AS accounts
+       FROM contacts c
+       LEFT JOIN accounts a ON a.id = c.account_id
+       WHERE c.id = $1`,
+      [req.params.id],
+    );
+    if (!rows.length) return res.status(404).json({ error: "Contact not found" });
+    return res.json({ data: rows[0] });
+  } catch (error) {
+    console.error("Error fetching contact:", error);
+    return res.status(500).json({ error: "Failed to fetch contact" });
+  }
+});

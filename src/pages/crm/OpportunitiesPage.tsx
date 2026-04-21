@@ -36,7 +36,7 @@ export default function OpportunitiesPage() {
   }, [search]);
 
   const { data: listResult, isLoading } = useOpportunitiesList({ search: debouncedSearch, page, limit: PAGE_SIZE });
-  const { create, update, remove } = useOpportunities();
+  const { data, create, update, remove } = useOpportunities();
 
   const { data: accounts } = useAccounts();
   const { data: contacts } = useContacts();
@@ -158,6 +158,7 @@ export default function OpportunitiesPage() {
       entityLabel="Opportunity"
       columns={columns}
       data={listResult?.data || []}
+      detailData={data || []}
       isLoading={isLoading}
       formFields={formFields}
       onCreate={(d) => create.mutate(d)}

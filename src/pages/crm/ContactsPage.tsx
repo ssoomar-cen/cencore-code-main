@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useContacts, useContactsList } from "@/hooks/useContacts";
 import { useAccounts } from "@/hooks/useAccounts";
 import { useOpportunities } from "@/hooks/useOpportunities";
@@ -131,9 +131,16 @@ export default function ContactsPage() {
     { key: "account_id", route: "/crm/accounts", data: accounts || [], labelFn: (a) => a.name },
   ], [accounts]);
 
+  const loadContactDetail = useCallback(async (id: string) => {
+    const response = await fetch(`/api/contacts/${id}`);
+    if (!response.ok) return null;
+    const result = await response.json();
+    return result.data || null;
+  }, []);
+
   const relatedTabs: RelatedTab[] = useMemo(() => [
     {
-      key: "opportunities", label: "Opportunities", foreignKey: "contact_id", panel: "left" as const,
+      key: "opportunities", label: "Opportunities", foreignKey: ["contact_id", "primary_contact_id"], panel: "left" as const,
       route: "/crm/opportunities", data: opportunities || [],
       columns: [
         { key: "name", label: "Name" },
@@ -232,6 +239,8 @@ export default function ContactsPage() {
         entityLabel="Contact"
         columns={columns}
         data={listResult?.data || []}
+        detailData={data || []}
+        loadDetailRecord={loadContactDetail}
         isLoading={isLoading}
         formFields={formFields}
         onCreate={(d) => create.mutate(d)}

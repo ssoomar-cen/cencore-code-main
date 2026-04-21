@@ -67,9 +67,10 @@ function hexToHsl(hex?: string | null): string | null {
 
 type NavLeafItem = {
   title: string;
-  url: string;
+  url?: string;
   icon: React.ElementType;
   featureKey?: string;
+  note?: string;
 };
 
 type NavGroupItem = {
@@ -118,22 +119,25 @@ const dashboardItem: NavLeafItem = { title: "Dashboard", url: "/", icon: LayoutD
 // ── CRM & Sales ──
 const crmSalesSection: NavSectionItem[] = [
   {
-    title: "Customers",
+    title: "Organizations",
     icon: UserCheck,
     children: [
-      { title: "Leads", url: "/crm/leads", icon: UserPlus },
       { title: "Organizations", url: "/crm/accounts", icon: Building2 },
       { title: "Contacts", url: "/crm/contacts", icon: UserSquare2 },
+      { title: "Credentials", icon: ClipboardList, featureKey: "credentials", note: "Contact detail" },
       { title: "Connections", url: "/crm/connections", icon: Link },
+      { title: "Activities & Events", url: "/crm/activities", icon: CalendarDays },
     ],
   },
   {
     title: "Sales Pipeline",
     icon: TrendingUp,
     children: [
+      { title: "Leads", url: "/crm/leads", icon: UserPlus },
       { title: "Opportunities", url: "/crm/opportunities", icon: DollarSign },
       { title: "Quotes", url: "/crm/quotes", icon: FileText },
       { title: "Contracts", url: "/crm/contracts", icon: ScrollText },
+      { title: "Cases", icon: ClipboardList, featureKey: "cases", note: "Related record" },
     ],
   },
 ];
@@ -146,14 +150,16 @@ const operationsSection: NavSectionItem[] = [
     children: [
       { title: "Programs", url: "/projects", icon: ClipboardList },
       { title: "Buildings", url: "/crm/buildings", icon: FolderKanban },
+      { title: "Measures", url: "/views/measures", icon: ClipboardList },
+      { title: "Team Members", icon: UserSquare2, featureKey: "energy_program_team_members", note: "Program detail" },
       { title: "Energy Audits", url: "/energy-audits", icon: SearchIcon },
     ],
   },
   {
-    title: "Schedule",
+    title: "Activities & Events",
     icon: CalendarDays,
     children: [
-      { title: "Activities", url: "/crm/activities", icon: CalendarDays },
+      { title: "Activities & Events", url: "/crm/activities", icon: CalendarDays },
       { title: "Calendar", url: "/calendar", icon: Calendar },
     ],
   },
@@ -166,16 +172,30 @@ const marketingSection: NavSectionItem[] = [
 
 // ── Finance ──
 const financeSection: NavSectionItem[] = [
-  { title: "Invoices", url: "/crm/invoices", icon: Receipt },
-  { title: "Commission Splits", url: "/crm/commission-splits", icon: SplitSquareHorizontal },
+  {
+    title: "Billing",
+    icon: Receipt,
+    children: [
+      { title: "Invoices", url: "/crm/invoices", icon: Receipt },
+      { title: "Invoice Items", icon: FileText, featureKey: "invoice_items", note: "Invoice detail" },
+    ],
+  },
+  {
+    title: "Commissions",
+    icon: SplitSquareHorizontal,
+    children: [
+      { title: "Commission Splits", url: "/crm/commission-splits", icon: SplitSquareHorizontal },
+      { title: "Split Schedules", icon: CalendarDays, featureKey: "commission_split_schedules", note: "Split detail" },
+    ],
+  },
   { title: "Budget Tracking", url: "/budget", icon: Wallet },
 ];
 
 
 function getLeafUrls(items: NavSectionItem[]): string[] {
   return items.flatMap(item =>
-    isGroupItem(item) ? item.children.map(c => c.url) : [item.url]
-  );
+    isGroupItem(item) ? item.children.map(c => c.url).filter(Boolean) : [item.url].filter(Boolean)
+  ) as string[];
 }
 
 export function PortalSidebar() {
@@ -193,10 +213,12 @@ export function PortalSidebar() {
   const [operationsOpen, setOperationsOpen] = useState(true);
   const [marketingOpen, setMarketingOpen] = useState(false);
   const [financeOpen, setFinanceOpen] = useState(false);
-  const [customersOpen, setCustomersOpen] = useState(true);
+  const [organizationsOpen, setOrganizationsOpen] = useState(true);
   const [pipelineOpen, setPipelineOpen] = useState(true);
   const [programsOpen, setProgramsOpen] = useState(true);
-  const [scheduleOpen, setScheduleOpen] = useState(true);
+  const [activitiesOpen, setActivitiesOpen] = useState(true);
+  const [billingOpen, setBillingOpen] = useState(true);
+  const [commissionsOpen, setCommissionsOpen] = useState(true);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => setUser(user));
@@ -213,13 +235,13 @@ export function PortalSidebar() {
       .map(item => {
         if (isGroupItem(item)) {
           const filteredChildren = item.children.filter(child => {
-            const key = URL_FEATURE_KEY[child.url];
+            const key = child.featureKey ?? (child.url ? URL_FEATURE_KEY[child.url] : undefined);
             return !key || !disabledFeatures.has(key);
           });
           if (filteredChildren.length === 0) return null;
           return { ...item, children: filteredChildren };
         }
-        const key = URL_FEATURE_KEY[item.url];
+        const key = item.featureKey ?? (item.url ? URL_FEATURE_KEY[item.url] : undefined);
         if (key && disabledFeatures.has(key)) return null;
         return item;
       })
@@ -262,17 +284,20 @@ export function PortalSidebar() {
     if (financeUrls.some(isActive)) setFinanceOpen(true);
 
     // Auto-expand sub-groups
-    const customerUrls = ["/crm/leads", "/crm/accounts", "/crm/contacts", "/crm/connections"];
-    if (customerUrls.some(isActive)) { setCrmSalesOpen(true); setCustomersOpen(true); }
+    const organizationUrls = ["/crm/accounts", "/crm/contacts", "/crm/connections", "/crm/activities"];
+    if (organizationUrls.some(isActive)) { setCrmSalesOpen(true); setOrganizationsOpen(true); }
 
-    const pipelineUrls = ["/crm/opportunities", "/crm/quotes", "/crm/contracts"];
+    const pipelineUrls = ["/crm/leads", "/crm/opportunities", "/crm/quotes", "/crm/contracts"];
     if (pipelineUrls.some(isActive)) { setCrmSalesOpen(true); setPipelineOpen(true); }
 
     const scheduleUrls = ["/crm/activities", "/calendar"];
-    if (scheduleUrls.some(isActive)) { setOperationsOpen(true); setScheduleOpen(true); }
+    if (scheduleUrls.some(isActive)) { setOperationsOpen(true); setActivitiesOpen(true); }
 
-    const programUrls = ["/projects", "/crm/buildings", "/energy-audits"];
+    const programUrls = ["/projects", "/crm/buildings", "/views/measures", "/energy-audits"];
     if (programUrls.some(isActive)) { setOperationsOpen(true); setProgramsOpen(true); }
+
+    if (isActive("/crm/invoices")) { setFinanceOpen(true); setBillingOpen(true); }
+    if (isActive("/crm/commission-splits")) { setFinanceOpen(true); setCommissionsOpen(true); }
   }, [currentPath]);
 
   useEffect(() => {
@@ -295,7 +320,7 @@ export function PortalSidebar() {
   };
 
   const renderLeafItem = (item: NavLeafItem) => {
-    const active = isActive(item.url);
+    const active = item.url ? isActive(item.url) : false;
     return (
       <SidebarMenuItem key={item.title}>
         <SidebarMenuButton
@@ -308,7 +333,7 @@ export function PortalSidebar() {
               : "hover:bg-sidebar-accent text-sidebar-foreground/80 hover:text-sidebar-foreground"
           )}
         >
-          <NavLink to={item.url} className="flex items-center gap-3 px-3">
+          <NavLink to={item.url ?? "#"} className="flex items-center gap-3 px-3">
             <item.icon className={cn("h-4 w-4 transition-all duration-200", active ? "text-sidebar-foreground" : "text-sidebar-foreground/70 group-hover:text-sidebar-foreground")} />
             {(open || isMobile) && (
               <>
@@ -323,7 +348,33 @@ export function PortalSidebar() {
   };
 
   const renderSubLeafItem = (item: NavLeafItem) => {
-    const active = isActive(item.url);
+    const active = item.url ? isActive(item.url) : false;
+    const content = (
+      <>
+        <item.icon className={cn("h-4 w-4", active ? "text-sidebar-foreground" : "text-sidebar-foreground/60")} />
+        <span className="text-sm">{item.title}</span>
+        {item.note && <span className="ml-auto text-[10px] text-sidebar-foreground/45">{item.note}</span>}
+        {active && <div className="h-1.5 w-1.5 rounded-full bg-sidebar-foreground ml-auto animate-pulse" />}
+      </>
+    );
+
+    if (!item.url) {
+      return (
+        <SidebarMenuSubItem key={item.title}>
+          <SidebarMenuSubButton
+            asChild
+            aria-disabled="true"
+            title={item.note}
+            className="transition-all duration-200 text-sidebar-foreground/45 hover:bg-transparent hover:text-sidebar-foreground/45"
+          >
+            <span className="flex items-center gap-2">
+              {content}
+            </span>
+          </SidebarMenuSubButton>
+        </SidebarMenuSubItem>
+      );
+    }
+
     return (
       <SidebarMenuSubItem key={item.title}>
         <SidebarMenuSubButton
@@ -335,9 +386,7 @@ export function PortalSidebar() {
           )}
         >
           <NavLink to={item.url} className="flex items-center gap-2">
-            <item.icon className={cn("h-4 w-4", active ? "text-sidebar-foreground" : "text-sidebar-foreground/60")} />
-            <span className="text-sm">{item.title}</span>
-            {active && <div className="h-1.5 w-1.5 rounded-full bg-sidebar-foreground ml-auto animate-pulse" />}
+            {content}
           </NavLink>
         </SidebarMenuSubButton>
       </SidebarMenuSubItem>
@@ -345,10 +394,12 @@ export function PortalSidebar() {
   };
 
   const subGroupState: Record<string, [boolean, (v: boolean) => void]> = {
-    Customers: [customersOpen, setCustomersOpen],
+    Organizations: [organizationsOpen, setOrganizationsOpen],
     "Sales Pipeline": [pipelineOpen, setPipelineOpen],
     "Energy Programs": [programsOpen, setProgramsOpen],
-    Schedule: [scheduleOpen, setScheduleOpen],
+    "Activities & Events": [activitiesOpen, setActivitiesOpen],
+    Billing: [billingOpen, setBillingOpen],
+    Commissions: [commissionsOpen, setCommissionsOpen],
   };
 
   const renderSubGroup = (item: NavGroupItem, isOpen: boolean, onOpenChange: (v: boolean) => void) => {

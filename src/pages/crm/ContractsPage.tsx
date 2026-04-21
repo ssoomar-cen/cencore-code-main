@@ -11,7 +11,6 @@ import { Badge } from "@/components/ui/badge";
 const PAGE_SIZE = 250;
 
 const columns: Column[] = [
-  { key: "contract_number", label: "Contract #" },
   { key: "name", label: "Name" },
   { key: "accounts", label: "Organization", render: (v: any) => v?.name || "—" },
   { key: "contract_type", label: "Type" },
@@ -189,7 +188,7 @@ export default function ContractsPage() {
       ],
     },
     {
-      key: "activities", label: "Activities", foreignKey: "account_id", panel: "right" as const,
+      key: "activities", label: "Activities", foreignKey: "contract_id", panel: "right" as const,
       route: "/crm/activities", data: activities || [],
       columns: [
         { key: "subject", label: "Subject" },
@@ -204,6 +203,7 @@ export default function ContractsPage() {
     <CrmDataTable title="Contracts" description="Manage contracts"
       entityLabel="Contract"
       columns={columns} data={listResult?.data || []}
+      detailData={data || []}
       isLoading={isLoading} formFields={formFields}
       onCreate={(d) => create.mutate(d)} onUpdate={(d) => update.mutate(d)} onDelete={(id) => remove.mutate(id)}
       createLabel="Add Contract" filters={filters} kanban={kanban}
