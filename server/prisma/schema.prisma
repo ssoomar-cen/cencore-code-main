@@ -19,6 +19,33 @@ enum ShareScope {
   ORG
 }
 
+// ============================================================================
+// ENERGY CONSERVATION CRM ENUMS
+// ============================================================================
+
+enum SectorType {
+  K12
+  HIGHER_ED
+  HEALTHCARE
+  COMMERCIAL
+  INDUSTRIAL
+  MUNICIPAL
+  MIXED_USE
+}
+
+enum DocumentKind {
+  AUDIT_REPORT
+  UTILITY_BILL
+  FLOORPLAN
+  PROPOSAL
+  APPLICATION
+  COMMISSIONING
+  PHOTO
+  CUSTOMER_APPROVAL
+  CONTRACT
+  OTHER
+}
+
 model User {
   id         String      @id @default(cuid())
   name       String
@@ -33,6 +60,8 @@ model User {
   savedViews         SavedView[]
   favorites          ViewFavorite[]
   auditLogs          AuditLog[]
+  ownedPortfolios    Portfolio[]   @relation("PortfolioOwner")
+  uploadedDocuments  Document[]    @relation("DocumentUploader")
 
   @@index([teamId])
   @@index([orgId])
@@ -44,6 +73,7 @@ model Account {
   name        String
   industry    String?
   region      String?
+  sector      SectorType?
   teamId      String          @map("team_id")
   orgId       String          @map("org_id")
   createdAt   DateTime        @default(now()) @map("created_at")
@@ -68,9 +98,12 @@ model Account {
   contracts           Contract[]
   energyPrograms      EnergyProgram[]
   invoices            Invoice[]
+  portfolios          Portfolio[]
+  buildings           Building[]
 
   @@index([industry])
   @@index([region])
+  @@index([sector])
   @@index([teamId])
   @@index([orgId])
   @@index([salesforceId])
@@ -226,26 +259,26 @@ model Contract {
   salesforceId            String?             @unique @map("salesforce_id")
   name                    String
   accountId               String              @map("account_id")
-  
+
   // Contract Fields
   contractStatus          String?             @map("contract_status")
   contractType            String?             @map("contract_type")
   contractTerm            String?             @map("contract_term")
   contractStartDate       DateTime?           @map("contract_start_date")
   billingScheduleEndDate  DateTime?           @map("billing_schedule_end_date")
-  
+
   // Client Management
   clientManager           String?             @map("client_manager")
   serviceStatus           String?             @map("service_status")
-  
+
   // System Fields
   createdAt               DateTime            @default(now()) @map("created_at")
   updatedAt               DateTime            @updatedAt @map("updated_at")
-  
+
   // Relations
   account                 Account             @relation(fields: [accountId], references: [id], onDelete: Cascade)
   invoices                Invoice[]
-  
+
   @@index([accountId])
   @@index([salesforceId])
   @@index([contractStatus])
@@ -257,27 +290,28 @@ model EnergyProgram {
   salesforceId            String?             @unique @map("salesforce_id")
   name                    String
   accountId               String              @map("account_id")
-  
+
   // Program Fields
   status                  String?
   pgmId                   String?             @map("pgm_id")
-  
+
   // Technical Details
   technicalLead           String?             @map("technical_lead")
   implementationConsultant String?            @map("implementation_consultant")
-  
+
   // Dates
   contractStartDate       DateTime?           @map("contract_start_date")
   billingScheduleEndDate  DateTime?           @map("billing_schedule_end_date")
-  
+
   // System Fields
   createdAt               DateTime            @default(now()) @map("created_at")
   updatedAt               DateTime            @updatedAt @map("updated_at")
-  
+
   // Relations
   account                 Account             @relation(fields: [accountId], references: [id], onDelete: Cascade)
   invoices                Invoice[]
-  
+  buildings               Building[]
+
   @@index([accountId])
   @@index([salesforceId])
   @@index([status])
@@ -306,7 +340,7 @@ model Invoice {
 
   // Document type
   documentType          String?             @map("document_type")  // Invoice | Credit Memo | Debit Memo
-  
+
   // Dates
   issueDate             DateTime?           @map("issue_date")
   dueDate               DateTime?           @map("due_date")
@@ -474,4 +508,205 @@ model InvoiceRecon {
   @@index([reportDate])
   @@index([energyProgramId])
   @@map("invoice_recon")
+}
+
+// ============================================================================
+// ENERGY CONSERVATION CRM — PORTFOLIO & BUILDING HIERARCHY
+// ----------------------------------------------------------------------------
+// Portfolio groups a customer's buildings for portfolio selling, benchmarking,
+// and rollup reporting (e.g. a school district, a hospital system, a REIT).
+// Campus is an optional physical grouping beneath a Portfolio (e.g. a
+// university campus with multiple buildings). Buildings may belong directly
+// to a Portfolio without a Campus.
+// ============================================================================
+
+model Portfolio {
+  id            String       @id @default(cuid()) @map("portfolio_id")
+  tenantId      String       @map("tenant_id")
+  accountId     String       @map("account_id")
+  ownerUserId   String?      @map("owner_user_id")
+
+  name          String
+  description   String?
+  sector        SectorType?
+
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+
+  account       Account      @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  owner         User?        @relation("PortfolioOwner", fields: [ownerUserId], references: [id], onDelete: SetNull)
+  campuses      Campus[]
+  buildings     Building[]
+
+  @@index([tenantId])
+  @@index([accountId])
+  @@index([ownerUserId])
+  @@index([sector])
+  @@map("portfolio")
+}
+
+model Campus {
+  id            String       @id @default(cuid()) @map("campus_id")
+  tenantId      String       @map("tenant_id")
+  portfolioId   String       @map("portfolio_id")
+
+  name          String
+  description   String?
+
+  // Location
+  addressLine1  String?      @map("address_1")
+  addressLine2  String?      @map("address_2")
+  city          String?
+  state         String?
+  zip           String?
+  country       String?      @default("US")
+  latitude      Decimal?     @db.Decimal(10, 7)
+  longitude     Decimal?     @db.Decimal(10, 7)
+  climateZone   String?      @map("climate_zone")
+
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+
+  portfolio     Portfolio    @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  buildings     Building[]
+
+  @@index([tenantId])
+  @@index([portfolioId])
+  @@map("campus")
+}
+
+// ============================================================================
+// Building — first-class energy-conservation entity.
+// Column names intentionally match the pre-existing Supabase `building` table
+// consumed by useBuildings.tsx so the hook/UI keeps working when Prisma takes
+// over. New energy-CRM fields (portfolio/campus linkage, benchmarking, climate
+// zone, operating hours, square-foot variants) are additive.
+// ============================================================================
+
+model Building {
+  id                  String         @id @default(cuid()) @map("building_id")
+  tenantId            String         @map("tenant_id")
+  accountId           String         @map("account_id")
+  portfolioId         String?        @map("portfolio_id")
+  campusId            String?        @map("campus_id")
+  energyProgramId     String?        @map("energy_program_id")
+  projectId           String?        @map("project_id")
+
+  // Identity
+  name                String
+  buildingNo          String?        @map("building_no")
+  salesforceId        String?        @map("salesforce_id")
+
+  // Address (column names preserve existing Supabase table shape)
+  addressLine1        String?        @map("address_1")
+  addressLine2        String?        @map("address_2")
+  city                String?
+  state               String?
+  zip                 String?
+  country             String?        @default("US")
+  latitude            Decimal?       @db.Decimal(10, 7)
+  longitude           Decimal?       @db.Decimal(10, 7)
+
+  // Classification
+  primaryUse          String?        @map("primary_use")
+  sector              SectorType?
+  status              String?
+  statusReason        String?        @map("status_reason")
+
+  // Physical characteristics
+  squareFootage       Int?           @map("square_footage")
+  grossSqFt           Int?           @map("gross_sq_ft")
+  netSqFt             Int?           @map("net_sq_ft")
+  floors              Int?
+  yearBuilt           Int?           @map("year_built")
+  yearRenovated       Int?           @map("year_renovated")
+  occupancyType       String?        @map("occupancy_type")
+  operatingHours      Json?          @map("operating_hours")
+  climateZone         String?        @map("climate_zone")
+
+  // Benchmarking
+  energyStarId        String?        @map("energy_star_id")
+  energyStarScore     Int?           @map("energy_star_score")
+  eui                 Decimal?       @db.Decimal(10, 2)
+  targetEui           Decimal?       @db.Decimal(10, 2) @map("target_eui")
+
+  // Integration IDs (preserved for Salesforce / d365 / ECAP / Greenx compat)
+  placeCode           String?        @map("place_code")
+  placeId             String?        @map("place_id")
+  ecapBuildingId      String?        @map("ecap_building_id")
+  ecapOwner           String?        @map("ecap_owner")
+  buildingD365Id      String?        @map("building_d365_id")
+  measureBuildingId   String?        @map("measure_building_id")
+  excludeFromGreenx   Boolean?       @map("exclude_from_greenx")
+  db                  String?
+
+  // Misc
+  notes               String?
+
+  createdAt           DateTime       @default(now()) @map("created_at")
+  updatedAt           DateTime       @updatedAt @map("updated_at")
+
+  // Relations
+  account             Account        @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  portfolio           Portfolio?     @relation(fields: [portfolioId], references: [id], onDelete: SetNull)
+  campus              Campus?        @relation(fields: [campusId], references: [id], onDelete: SetNull)
+  energyProgram       EnergyProgram? @relation(fields: [energyProgramId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId])
+  @@index([accountId])
+  @@index([portfolioId])
+  @@index([campusId])
+  @@index([energyProgramId])
+  @@index([projectId])
+  @@index([salesforceId])
+  @@index([city, state])
+  @@index([primaryUse])
+  @@index([sector])
+  @@index([status])
+  @@map("building")
+}
+
+// ============================================================================
+// Document — polymorphic attachment record.
+// Metadata only: the binary lives in Supabase Storage (or another provider
+// keyed by `storage_provider`) at `bucket`/`storage_key`. Linked to any parent
+// entity via `parent_type` + `parent_id` — we intentionally avoid per-entity
+// join tables to keep the surface small. Routes should issue short-lived
+// signed URLs rather than exposing the storage key directly.
+// ============================================================================
+
+model Document {
+  id               String        @id @default(cuid()) @map("document_id")
+  tenantId         String        @map("tenant_id")
+
+  kind             DocumentKind
+  title            String?
+  description      String?
+
+  // Storage
+  storageProvider  String        @default("SUPABASE") @map("storage_provider")
+  bucket           String
+  storageKey       String        @map("storage_key")
+  filename         String
+  contentType      String?       @map("content_type")
+  sizeBytes        BigInt?       @map("size_bytes")
+  sha256           String?
+
+  // Polymorphic parent — set both or neither.
+  parentType       String?       @map("parent_type")
+  parentId         String?       @map("parent_id")
+
+  uploadedById     String?       @map("uploaded_by_id")
+
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+
+  uploadedBy       User?         @relation("DocumentUploader", fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  @@index([tenantId])
+  @@index([parentType, parentId])
+  @@index([uploadedById])
+  @@index([kind])
+  @@index([sha256])
+  @@map("document")
 }

@@ -198,6 +198,107 @@ async function main() {
       console.log(`✅ Imported ${invoiceCount} invoices`);
     }
 
+    // Step 5: Energy CRM demo entities (Portfolio / Campus / Building).
+    // Opt-in via SEED_ENERGY_DEMO=1 so this is only attempted after the
+    // new tables have been migrated. Safe to rerun — inserts are idempotent
+    // on (tenant_id, name) lookups.
+    if (process.env.SEED_ENERGY_DEMO === "1") {
+      console.log("\n🏫 Seeding energy CRM demo entities...");
+      const anchorAccountId = Object.values(accountMap)[0];
+      if (!anchorAccountId) {
+        console.log("⚠️  No anchor account available — skipping energy demo seed.");
+      } else {
+        const demoTenantId = process.env.SEED_TENANT_ID || "00000000-0000-0000-0000-000000000001";
+
+        const existingPortfolio = await client.query<{ portfolio_id: string }>(
+          `SELECT portfolio_id FROM portfolio WHERE tenant_id = $1 AND name = $2`,
+          [demoTenantId, "Demo ISD Energy Portfolio"],
+        );
+        const portfolioId =
+          existingPortfolio.rows[0]?.portfolio_id ?? crypto.randomUUID();
+        if (!existingPortfolio.rows[0]) {
+          await client.query(
+            `INSERT INTO portfolio (portfolio_id, tenant_id, account_id, name, description, sector)
+             VALUES ($1, $2, $3, $4, $5, $6)`,
+            [
+              portfolioId,
+              demoTenantId,
+              anchorAccountId,
+              "Demo ISD Energy Portfolio",
+              "Seeded district-wide portfolio for energy conservation demo.",
+              "K12",
+            ],
+          );
+        }
+
+        const campuses = [
+          { name: "North Campus", city: "Austin", state: "TX", zip: "78701", climateZone: "2A" },
+          { name: "South Campus", city: "Austin", state: "TX", zip: "78704", climateZone: "2A" },
+        ];
+        const campusIds: Record<string, string> = {};
+        for (const c of campuses) {
+          const existing = await client.query<{ campus_id: string }>(
+            `SELECT campus_id FROM campus WHERE portfolio_id = $1 AND name = $2`,
+            [portfolioId, c.name],
+          );
+          const campusId = existing.rows[0]?.campus_id ?? crypto.randomUUID();
+          if (!existing.rows[0]) {
+            await client.query(
+              `INSERT INTO campus (campus_id, tenant_id, portfolio_id, name, city, state, zip, climate_zone)
+               VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+              [campusId, demoTenantId, portfolioId, c.name, c.city, c.state, c.zip, c.climateZone],
+            );
+          }
+          campusIds[c.name] = campusId;
+        }
+
+        const buildings = [
+          { name: "Jefferson Elementary", buildingNo: "E-01", campus: "North Campus", primaryUse: "K-12 School", sqft: 65000, yearBuilt: 1998 },
+          { name: "Lincoln Middle School", buildingNo: "M-01", campus: "North Campus", primaryUse: "K-12 School", sqft: 110000, yearBuilt: 2004 },
+          { name: "Roosevelt High School", buildingNo: "H-01", campus: "South Campus", primaryUse: "K-12 School", sqft: 215000, yearBuilt: 1989 },
+        ];
+        let buildingInsertCount = 0;
+        for (const b of buildings) {
+          const existing = await client.query<{ building_id: string }>(
+            `SELECT building_id FROM building WHERE tenant_id = $1 AND name = $2`,
+            [demoTenantId, b.name],
+          );
+          if (existing.rows[0]) continue;
+          await client.query(
+            `INSERT INTO building (
+               building_id, tenant_id, account_id, portfolio_id, campus_id,
+               name, building_no, primary_use, sector, status,
+               square_footage, gross_sq_ft, year_built, climate_zone,
+               city, state, zip, country
+             )
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)`,
+            [
+              crypto.randomUUID(),
+              demoTenantId,
+              anchorAccountId,
+              portfolioId,
+              campusIds[b.campus],
+              b.name,
+              b.buildingNo,
+              b.primaryUse,
+              "K12",
+              "Active",
+              b.sqft,
+              b.sqft,
+              b.yearBuilt,
+              "2A",
+              "Austin",
+              "TX",
+              "78701",
+              "US",
+            ],
+          );
+          buildingInsertCount++;
+        }
+        console.log(`✅ Energy demo seeded: 1 portfolio, ${Object.keys(campusIds).length} campuses, ${buildingInsertCount} new buildings`);
+      }
+    }
+
     await client.query("COMMIT");
     console.log("\n✅ Data import completed successfully!");
   } catch (error) {
