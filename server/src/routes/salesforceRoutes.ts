@@ -123,7 +123,7 @@ const SF_TO_TABLE: Record<string, string> = {
   invoices: "invoice",
   invoice_items: "invoice_item",
   measures: "measure",
-  buildings: "building",
+  buildings: "buildings",
   credentials: "credential",
   commission_split_schedules: "commission_split_schedule",
   energy_program_team_members: "energy_program_team_member",

@@ -14,11 +14,12 @@ type Integration = {
   id: string;
   name: string;
   description: string | null;
+  provider_key: string | null;
   provider: string;
   icon_name: string;
   is_enabled: boolean;
   is_configured: boolean;
-  config: any;
+  config: Record<string, string> | null;
   category: string | null;
 };
 

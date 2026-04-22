@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -66,7 +66,7 @@ const DEFAULT_FIELDS: ConfigField[] = [
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  integration: { id: string; name: string; provider: string; config: any };
+  integration: { id: string; name: string; provider: string; provider_key?: string | null; config: Record<string, string> | null };
 };
 
 export default function IntegrationConfigDialog({ open, onOpenChange, integration }: Props) {
@@ -74,7 +74,7 @@ export default function IntegrationConfigDialog({ open, onOpenChange, integratio
   const [saving, setSaving] = useState(false);
   const [showSecrets, setShowSecrets] = useState<Record<string, boolean>>({});
 
-  const providerKey = integration.provider.toLowerCase().replace(/\s+/g, "");
+  const providerKey = (integration.provider_key || integration.id || integration.provider).toLowerCase().replace(/\s+/g, "");
   const fields = INTEGRATION_FIELDS[providerKey] || DEFAULT_FIELDS;
   const isSalesforce = providerKey === "salesforce";
 
@@ -84,10 +84,19 @@ export default function IntegrationConfigDialog({ open, onOpenChange, integratio
 
   useEffect(() => {
     if (open && integration.config) {
-      const existing = typeof integration.config === "object" ? integration.config : {};
-      setConfig(existing);
+      setConfig(integration.config);
     }
   }, [open, integration]);
+
+  const refreshConfig = useCallback(async () => {
+    const res = await fetch(`/api/integrations/${integration.id}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data?.config && typeof data.config === "object") {
+        setConfig(data.config as Record<string, string>);
+      }
+    }
+  }, [integration.id]);
 
   // Check for OAuth callback params in URL
   useEffect(() => {
@@ -109,17 +118,7 @@ export default function IntegrationConfigDialog({ open, onOpenChange, integratio
       url.searchParams.delete("sf_error");
       window.history.replaceState({}, "", url.toString());
     }
-  }, [open, isSalesforce]);
-
-  const refreshConfig = async () => {
-    const res = await fetch(`/api/integrations/${integration.id}`);
-    if (res.ok) {
-      const data = await res.json();
-      if (data?.config && typeof data.config === "object") {
-        setConfig(data.config as Record<string, string>);
-      }
-    }
-  };
+  }, [open, isSalesforce, refreshConfig]);
 
   const handleSave = async () => {
     const missingRequired = fields.filter(f => f.required && !config[f.key]?.trim());
@@ -209,7 +208,11 @@ export default function IntegrationConfigDialog({ open, onOpenChange, integratio
     const newWindow = window.open(authorizeUrl, '_blank');
     if (!newWindow) {
       // Fallback: try top-level navigation if popup was blocked
-      window.top?.location?.assign(authorizeUrl) ?? (window.location.href = authorizeUrl);
+      if (window.top) {
+        window.top.location.assign(authorizeUrl);
+      } else {
+        window.location.href = authorizeUrl;
+      }
     }
   };
 
