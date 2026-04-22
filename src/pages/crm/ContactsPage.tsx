@@ -254,7 +254,7 @@ export default function ContactsPage() {
           { key: "email", label: "Email" },
           { key: "phone", label: "Phone" },
           { key: "job_title", label: "Title" },
-          { key: "account_id", label: "Organization" },
+          { key: "accounts", label: "Organization" },
           { key: "contact_type", label: "Type" },
           { key: "status", label: "Status" },
         ]}

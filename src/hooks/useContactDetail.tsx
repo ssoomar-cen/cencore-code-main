@@ -63,12 +63,7 @@ export const useContactDetail = (contactId: string | undefined) => {
           account:account_id(
             account_id,
             name,
-            account_number,
-            owner:profile!fk_account_owner_user(
-              id,
-              first_name,
-              last_name
-            )
+            account_number
           ),
           recruited_by:recruited_by_user_id(
             id,

@@ -169,12 +169,13 @@ export const useContacts = (options?: ContactsQueryOptions) => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["contacts"] });
-      
-      // Invalidate parent account detail query
+
+      // Invalidate parent account detail and contacts queries
       if (data.account_id) {
         queryClient.invalidateQueries({ queryKey: ["account-detail", data.account_id] });
+        queryClient.invalidateQueries({ queryKey: ["account-contacts", data.account_id] });
       }
-      
+
       toast.success("Contact created successfully");
     },
     onError: (error: any) => {

@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/cenergistic-api/client";
+import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
 
 export const useAccountDetail = (accountId: string | undefined) => {
@@ -26,6 +26,14 @@ export const useAccountDetail = (accountId: string | undefined) => {
           queryClient.invalidateQueries({ queryKey: ["account-detail", accountId] });
         }
       )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'contact', filter: `account_id=eq.${accountId}` },
+        (payload) => {
+          console.log('Account contact changed:', payload);
+          queryClient.invalidateQueries({ queryKey: ["account-contacts", accountId] });
+        }
+      )
       .subscribe((status) => {
         console.log('Account detail realtime subscription status:', status);
       });
@@ -35,7 +43,22 @@ export const useAccountDetail = (accountId: string | undefined) => {
     };
   }, [accountId, queryClient]);
 
-  return useQuery({
+  const { data: contacts } = useQuery({
+    queryKey: ["account-contacts", accountId],
+    queryFn: async () => {
+      if (!accountId) return [];
+      const { data, error } = await supabase
+        .from("contact")
+        .select("contact_id, contact_number, first_name, last_name, email, phone, title, is_primary, is_active, created_at")
+        .eq("account_id", accountId)
+        .order("is_primary", { ascending: false });
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!accountId,
+  });
+
+  const mainQuery = useQuery({
     queryKey: ["account-detail", accountId],
     queryFn: async () => {
       if (!accountId) throw new Error("Account ID is required");
@@ -55,18 +78,6 @@ export const useAccountDetail = (accountId: string | undefined) => {
             first_name,
             last_name,
             company_name
-          ),
-          contacts:contact!account_id(
-            contact_id,
-            contact_number,
-            first_name,
-            last_name,
-            email,
-            phone,
-            title,
-            is_primary,
-            is_active,
-            created_at
           ),
           opportunities:opportunity!account_id(
             opportunity_id,
@@ -125,4 +136,13 @@ export const useAccountDetail = (accountId: string | undefined) => {
     },
     enabled: !!accountId,
   });
+
+  const mergedData = mainQuery.data
+    ? { ...mainQuery.data, contacts: contacts ?? [] }
+    : undefined;
+
+  return {
+    ...mainQuery,
+    data: mergedData,
+  };
 };
